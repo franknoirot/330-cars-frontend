@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>330 Cars</title>
+    <meta name='description' content='Locally-owned car rentals in Akron, Ohio.'>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;700&family=Work+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-10: #23313C;
+            --text-90: #F7FBFF;
+        }
+
+        body {
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Work Sans', sans-serif;
+            color: var(--text-10);
+        }
+
+        .text-90 {
+            color: var(--text-90);
+        }
+
+        .bg-gradient {
+            background: linear-gradient(0deg, rgba(35, 49, 60, 0.22), rgba(35, 49, 60, 0.22)),
+                radial-gradient(82.17% 780.64% at -0.42% 1.18%, #9EFFA2 0%, rgba(0, 255, 224, 0) 100%),
+                radial-gradient(103.74% 985.74% at 100.97% 100%, #00E0FF 0%, rgba(131, 102, 0, 0) 100%);
+
+        }
+
+        h1, h2, h3, h4, h5, h6, .big-text {
+            font-family: 'Source Serif Pro', serif;
+        }
+
+        h1 {
+            font-size: 2.1rem;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            margin: 1rem 0;
+        }
+
+        h2 {
+            font-size: 3.6rem;
+            font-weight: 400;
+            letter-spacing: -0.015em;
+            margin: 1rem 0;
+            line-height: 1.1;
+        }
+
+        section {
+            padding: 5vh 3vw;
+            max-width: 60ch;
+            box-shadow: 0px 6px 8px 0px rgba(0,0,0,.15);
+            box-shadow: 0px 4px 4px 0px rgba(0,0,0,.25);
+        }
+
+        a[href] {
+            color: inherit;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .text-90 a[href]:hover,
+        .text-90 a[href]:focus,
+        a[href].text-90:hover,
+        a[href].text-90:focus {
+            color: var(--text-10);
+        }
+
+        .m-b-lg { margin-bottom: 2.5rem; }
+        .m-b { margin-bottom: 1.5rem; }
+        .m-b-sm { margin-bottom: .5rem; }
+        .m-b-0 { margin-bottom: 0; }
+        
+        .row-6-6 {
+            display: grid;
+            grid-template-columns: 50% 50%;
+        }
+
+        .row-3-9 {
+            display: grid;
+            grid-template-columns: 25% 75%;
+            gap: 5%;
+        }
+
+        .row-2-10 {
+            display: grid;
+            grid-template-columns: 16.66% 83.33%;
+            gap: 2%;
+        }
+
+        .grid-center {
+            place-self: center;
+        }
+
+        .grid-icon {
+            box-sizing: border-box;
+            padding: 25%;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        small.label {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>330 Cars</h1>
+        <section class='text-90 bg-gradient'>
+            <h2>Hometown car rentals you can trust.</h2>
+            <p class='m-b-lg'>We’re locally-owned and operated right here in the <strong>330</strong>. We’ll get you in the car you need so you get there and back in style.</p>
+            <div class='row-6-6'>
+                <div class='row-2-10'>
+                    <img src='./public/map-icon.svg' class='grid-center grid-icon'>
+                    <div>
+                        <small class='label'>Located at</small>
+                        <a href='https://www.google.com/maps/place/330+N+Arlington+St,+Akron,+OH+44305/@41.0814338,-81.4928358,17z'>330 Arlington Road<br>
+                            Akron, OH 44312</a>
+                    </div>
+                </div>
+                <div class='row-2-10'>
+                    <img src='./public/phone-icon.svg' class='grid-center grid-icon'>
+                    <div>
+                        <small class='label'>Call</small>
+                        <a href='tel:3308580990'>(330) 858-6940
+                    </div>
+                </div>
+            </div>
+        </section>
+        <p class='big-text'>Online storefront coming soon.</p>
+    </main>
+</body>
+</html>
