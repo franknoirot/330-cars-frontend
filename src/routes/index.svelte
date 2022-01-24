@@ -20,8 +20,10 @@
 
 <script>
     import CarList from '$lib/components/CarList.svelte'
+    import BookingForm from '$lib/components/BookingForm.svelte'
     export let cars
 </script>
 
 <h1 style="text-align: center">330 Cars</h1>
+<BookingForm style="margin: 1.5rem auto;" />
 <CarList {cars} />
