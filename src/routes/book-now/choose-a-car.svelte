@@ -1,7 +1,7 @@
 <script context="module">
-    import { client, urlFor } from '$lib/sanity'
+    import { client } from '$lib/sanity'
 
-    export async function load({ params, url }) {
+    export async function load({ url }) {
         const pickup = url.searchParams.get('pickup')
         const dropoff = url.searchParams.get('dropoff')
 
@@ -14,9 +14,10 @@
 
         // query is all cars that are not referenced in a trip that overlaps the given dates.
         const query = `*[_type == "car" &&
-            count(*[_type == "trip" && references(^._id) &&
-                (scheduledPickup < $dropoff || scheduledDropoff > $pickup)][]
-            ) < 1
+            count(*[_type == "trip" &&
+                references(^._id) &&
+                !(scheduledDropoff <= $pickup || scheduledPickup >= $dropoff)
+            ]) < 1
         ] {
             make,
             model,
