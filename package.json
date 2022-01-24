@@ -1,6 +1,10 @@
 {
   "name": "330-cars",
   "version": "0.0.1",
+  "engineStrict": true,
+  "engines": {
+      "node": ">=16.0.0"
+  },
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
