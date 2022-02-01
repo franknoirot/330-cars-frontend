@@ -26,4 +26,14 @@ import CarList from "./CarList.svelte";
         background: #ade4ff;
         color: #0c3a53;
     }
+
+    button.available {
+        color: #157039;
+        background: #E2FFE8;
+    }
+
+    button.unavailable {
+        color: #8D787A;
+        background: #FFF4F5;
+    }
 </style>

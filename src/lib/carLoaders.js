@@ -4,7 +4,6 @@ export async function loadCarsWithDates(url, options) {
     const pickup = url.searchParams.get('pickup') || options.pickup;
     const dropoff = url.searchParams.get('dropoff') || options.dropoff;
 
-    console.log({ actualDropoff: dropoff, optDrop: options.dropoff, paramDrop: url.searchParams.get('dropoff') })
     let cars = []
 
     if (!pickup || !dropoff) {
@@ -50,4 +49,39 @@ export async function loadCarsWithDates(url, options) {
             cars,
         }
     }
+}
+
+export async function getCarById(id) {
+    const query = `*[_type == "car" && _id == $id][0] {
+        _id,
+        make,
+        model,
+        year,
+        images,
+        vinNumber,
+        mileage,
+        dailyRate,
+        status,
+    }`
+
+    const car = await client.fetch(query, { id })
+    
+    return car
+}
+
+export async function validateCarDates(id, options) {
+    const { pickup, dropoff } = options;
+
+    const query = `count(*[_type == "trip" &&
+        references($id) &&
+        !(scheduledDropoff <= $pickup || scheduledPickup >= $dropoff)
+    ]) < 1`
+
+    const isAvailable = await client.fetch(query, {
+        pickup,
+        dropoff,
+        id,
+    })
+
+    return isAvailable
 }

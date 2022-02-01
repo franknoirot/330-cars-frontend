@@ -4,3 +4,7 @@ html, body {
     padding: 0;
     --box-shadow-md: 0 .2em .5em hsla(190deg, 10%, 5%, .25), 0 .5em .9em hsla(190deg, 5%, 5%, 8%);
 }
+
+button:disabled {
+    cursor: disabled;
+}

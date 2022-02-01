@@ -1,37 +1,75 @@
 <script context="module">
     import { client, urlFor } from '$lib/sanity'
+    import { getCarById, validateCarDates } from '$lib/carLoaders.js'
+    import { offsetNowHours } from '$lib/timeHelpers';
 
-    export async function load({ params }) {
-        const query = `*[_type == "car" && _id == $id][0] {
-            make,
-            model,
-            year,
-            "image": images[0].asset,
-            vinNumber,
-            mileage,
-            dailyRate,
-            status,
-        }`
-        
-        const car = await client.fetch(query, { id: params.id })
-        
+    export async function load({ url, params }) {
+        const pickup = url.searchParams.get('pickup') || offsetNowHours(1.5).slice(0, -4)
+        const dropoff = url.searchParams.get('dropoff') || offsetNowHours(25.5).slice(0, -4)
+
+        const car = await getCarById(params.id)
+
+        const isAvailable = await validateCarDates(params.id, {
+            pickup,
+            dropoff,
+        })
+
         return {
-            props: { car }
+            props: {
+                car,
+                isAvailable,
+                pickup,
+                dropoff,
+            } 
         }
     }
 </script>
 
 <script>
-    export let car
+import BookingForm from "$lib/components/BookingForm.svelte"
+import { goto } from '$app/navigation';
 
-    $: ({ make, model, year, image, ...otherData} = car)
+    export let car, isAvailable, pickup, dropoff
+
+    $: ({ make, model, year, images, ...otherData} = car)
     $: carTitle = `${year} ${make} ${model}`
+
+    async function onFormChange(e) {
+        const { pickup, dropoff } = Object.fromEntries((new FormData(e.target.form)).entries())
+        if (!pickup || !dropoff) return
+        goto(`/cars/${car._id}?pickup=${pickup}&dropoff=${dropoff}`)
+    }
 </script>
 
 <svelte:head>
 	<title>Cars</title>
 </svelte:head>
 
-<h1>{carTitle}</h1>
-<img src={urlFor(image).width(600)} alt={carTitle} />
-<pre>{JSON.stringify(otherData, null, 2)}</pre>
+<div class="content-wrapper">
+    <section class="sidebar">
+        <aside>
+            <BookingForm {pickup} {dropoff} {isAvailable} onChange={onFormChange} />
+        </aside>
+    </section>
+    <section>
+        <h1>{carTitle}</h1>
+        <img src={urlFor(images[0]).width(600)} alt={carTitle} />
+        <pre>{JSON.stringify(otherData, null, 2)}</pre>
+    </section>
+</div>
+
+<style>
+    .content-wrapper {
+        display: grid;
+        gap: 3rem;
+        grid-template-columns: auto 1fr ;
+    }
+    .sidebar {
+        position: relative;
+    }
+
+    .sidebar aside {
+        position: sticky;
+        top: 32px;
+    }
+</style>

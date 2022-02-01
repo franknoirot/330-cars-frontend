@@ -4,8 +4,8 @@
 
     export async function load({ url }) {
         return loadCarsWithDates(url, {
-            pickup: offsetNowHours(1.5).slice(0, -3), // need to slice off seconds for use in Sanity query
-            dropoff: offsetNowHours(25.5).slice(0, -3),
+            pickup: offsetNowHours(1.5).slice(0, -4), // need to slice off seconds for use in Sanity query
+            dropoff: offsetNowHours(25.5).slice(0, -4),
         })
     }
 </script>

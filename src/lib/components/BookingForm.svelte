@@ -5,15 +5,18 @@
     import Icon from './Icon.svelte';
 
     export let onSubmit = handleSubmit
+    export let onChange = () => {} // no-op by default
     export let numResults = 0
     export let pickup = offsetNowHours(1.5) // 1.5 hours from now
     export let dropoff = offsetNowHours(25.5) // 25.5 hours from now
+    export let isAvailable
     let duration = 24 * 60 * 60 * 1000 // 1 day in ms
     
     async function handleSubmit(e) {
         const data = Object.fromEntries((new FormData(e.target)).entries())
         goto(`/book-now/choose-a-car?pickup=${data.pickup}&dropoff=${data.dropoff}`)
     }
+
 
     function onPickupChange(e) {
         dropoff = new Date(new Date(pickup + "Z").getTime() + duration).toISOString().slice(0, -1)
@@ -22,9 +25,21 @@
     function onDropoffChange() {
         duration = new Date(dropoff + "Z").getTime() - new Date(pickup + "Z").getTime()
     }
+
+    let buttonClass
+    $: switch (isAvailable) {
+        case (undefined):
+            buttonClass = ''
+            break;
+        case (false):
+            buttonClass = 'unavailable'
+            break;
+        case (true):
+            buttonClass = 'available'
+    }
 </script>
 
-<form id="booking-form" on:submit|preventDefault={onSubmit} {...$$restProps}>
+<form id="booking-form" on:submit|preventDefault={onSubmit} on:change|preventDefault={onChange} {...$$restProps}>
     <div class="fields">
         <label for="pickup">
             Pickup
@@ -37,7 +52,15 @@
                 step={15 * 60} min={pickup} on:change={onDropoffChange} required />
         </label>
     </div>
-    <Button type="submit" style="margin-top: 0; width: 100%;"><Icon type='search' width="18" stroke="#155070"/> {!numResults ? 'Search available cars' : numResults + ' cars available'}</Button>
+    <Button type="submit" style="margin-top: 0; width: 100%;" class={buttonClass} disabled={isAvailable === false}>
+        {#if isAvailable === undefined}
+            <Icon type="search" width="18" stroke="#155070"/> {!numResults ? 'Search available cars' : numResults + ' cars available'}
+        {:else if isAvailable}
+            <Icon type="check" width="18"/> Book Now
+        {:else if !isAvailable}
+            <Icon type="x" width="16"/> Choose another time
+        {/if}
+    </Button>
 </form>
 
 <style>
