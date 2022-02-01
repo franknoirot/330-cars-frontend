@@ -1,43 +1,8 @@
 <script context="module">
-    import { client } from '$lib/sanity'
+    import { loadCarsWithDates } from '$lib/carLoaders.js'
 
     export async function load({ url }) {
-        const pickup = url.searchParams.get('pickup')
-        const dropoff = url.searchParams.get('dropoff')
-
-        if (!pickup || !dropoff) {
-            return {
-                status: 302,
-                redirect: "/book-now",
-            };
-        }
-
-        // query is all cars that are not referenced in a trip that overlaps the given dates.
-        const query = `*[_type == "car" &&
-            count(*[_type == "trip" &&
-                references(^._id) &&
-                !(scheduledDropoff <= $pickup || scheduledPickup >= $dropoff)
-            ]) < 1
-        ] {
-            make,
-            model,
-            year,
-            "image": images[0].asset,
-            _id
-        }`
-        
-        const cars = await client.fetch(query, {
-            pickup,
-            dropoff,
-        })
-        
-        return {
-            props: {
-                pickup,
-                dropoff,
-                cars,
-            }
-        }
+        loadCarsWithDates(url)
     }
 </script>
 
