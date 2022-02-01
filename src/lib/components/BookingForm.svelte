@@ -1,23 +1,38 @@
 <script>
     import { goto } from '$app/navigation'
+    import { offsetNowHours } from '$lib/timeHelpers';
     import Button from '$lib/components/Button.svelte'
-
+    export let onSubmit = handleSubmit
+    export let pickup = offsetNowHours(1.5) // 1.5 hours from now
+    export let dropoff = offsetNowHours(25.5) // 25.5 hours from now
+    let duration = 24 * 60 * 60 * 1000 // 1 day in ms
+    
     async function handleSubmit(e) {
         const data = Object.fromEntries((new FormData(e.target)).entries())
         goto(`/book-now/choose-a-car?pickup=${data.pickup}&dropoff=${data.dropoff}`)
     }
+
+    function onPickupChange(e) {
+        dropoff = new Date(new Date(pickup + "Z").getTime() + duration).toISOString().slice(0, -1)
+    }
+
+    function onDropoffChange() {
+        duration = new Date(dropoff + "Z").getTime() - new Date(pickup + "Z").getTime()
+    }
 </script>
 
-<form id="booking-form" on:submit|preventDefault={handleSubmit} {...$$restProps}>
+<form id="booking-form" on:submit|preventDefault={onSubmit} {...$$restProps}>
     <label for="pickup">
         Pickup
-        <input type="datetime-local" id="pickup" name="pickup" required />
+        <input type="datetime-local" id="pickup" name="pickup" bind:value={pickup}
+            step={15 * 60} min={offsetNowHours(1)} on:change={onPickupChange} required />
     </label>
     <label for="dropoff">
         Dropoff
-        <input type="datetime-local" id="dropoff" name="dropoff" required />
+        <input type="datetime-local" id="dropoff" name="dropoff" bind:value={dropoff}
+            step={15 * 60} min={pickup} on:change={onDropoffChange} required />
     </label>
-    <Button typ e="submit" style="display: block; width: 100%;">🔍 Search</Button>
+    <Button type="submit" style="display: block; width: 100%;">🔍 Search</Button>
 </form>
 
 <style>
