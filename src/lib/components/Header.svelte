@@ -1,8 +1,12 @@
 <header>
     <nav>
-    <a href="/">Home</a>
+    <a href="/">
+        <img src="/logo.svg" class="logo" />
+    </a>
         <ul class="top-nav">
-            <li><a href="/book-now">Book Now</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/help">Help</a></li>
+            <li><a href="/login">Login</a></li>
         </ul>
     </nav>
 </header>
@@ -19,11 +23,18 @@
         justify-content: space-between;
         align-items: center;
         margin: auto;
-        padding: 1rem;
+        padding: .5rem 1rem;
+    }
+
+    .logo {
+        width: 20vw;
+        max-width: 200px;
     }
 
     ul {
         list-style: none;
+        display: flex;
+        gap: 2rem;
     }
 
     a {
