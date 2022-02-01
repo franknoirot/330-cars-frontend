@@ -13,6 +13,7 @@
         in:fly="{{ y: 20, duration: 200, delay: 50 * i }}" out:fade="{{ duration: 100 }}">
         <img src={urlFor(car.image).width(400)} alt={car.year +' '+ car.make +' '+ car.model} />
         <h2>{car.year} {car.make} {car.model}</h2>
+        <p><span style="text-transform: capitalize;">{car.vehicleClass}</span> • ${car.dailyRate}/day</p>
     </a>
     {/each}
 </div>

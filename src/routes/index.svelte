@@ -18,6 +18,9 @@
     export let cars = []
     export let pickup, dropoff
 
+    let vehicleClassFilter = "All Classes"
+
+    $: filteredCars = cars.filter(car => vehicleClassFilter == "All Classes" || car.vehicleClass === vehicleClassFilter.toLowerCase())
 
     async function dateFormSubmit(e) {
         console.log('submitting')
@@ -29,7 +32,28 @@
 <div class="wrapper">
     <aside>
         <section>
-            <BookingForm style="margin: 1.5rem auto;" onSubmit={dateFormSubmit} />
+            <BookingForm style="margin: 1.5rem auto;" onSubmit={dateFormSubmit} numResults={cars.length} />
+            <fieldset class="vc-fields">
+                <legend for="vehicleClass" class="vc-label">Car Class 
+                    {#if (cars.length !== filteredCars.length)}<span>  filtered to {filteredCars.length} cars</span>{/if}
+                </legend>
+                <label>
+                    <input name="vehicleClass" type="radio" value="All Classes" bind:group={vehicleClassFilter}/>
+                    All Classes
+                </label>
+                <label>
+                    <input name="vehicleClass" type="radio" value="economy" bind:group={vehicleClassFilter}/>
+                    Economy
+                </label>
+                <label>
+                    <input name="vehicleClass" type="radio" value="standard" bind:group={vehicleClassFilter}/>
+                    Standard
+                </label>
+                <label>
+                    <input name="vehicleClass" type="radio" value="luxury" bind:group={vehicleClassFilter}/>
+                    Luxury
+                </label>
+            </fieldset>
         </section>
     </aside>
     <section>
@@ -42,7 +66,7 @@
                 <a href="/about">You can read our full story here →</a>
             </p>
         </div>
-        <CarList {cars} {pickup} {dropoff} columns={3} />
+        <CarList cars={filteredCars} {pickup} {dropoff} columns={3} />
     </section>
 </div>
 
@@ -77,5 +101,23 @@
     .welcome-statement a {
         text-decoration: none;
         color: cornflowerblue;
+    }
+
+    .vc-fields {
+        border: solid 1px hsl(190deg, 60%, 96%);
+    }
+
+    .vc-fields > label {
+        display: block;
+        margin: 1rem 0;
+    }
+
+    .vc-label {
+        font-weight: bold;
+    }
+
+    .vc-label span {
+        color: gray;
+        font-weight: normal;
     }
 </style>

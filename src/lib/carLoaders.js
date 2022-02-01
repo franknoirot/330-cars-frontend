@@ -13,6 +13,8 @@ export async function loadCarsWithDates(url, options) {
             model,
             year,
             "image": images[0].asset,
+            vehicleClass,
+            dailyRate,
             _id
         }`
         
@@ -29,7 +31,9 @@ export async function loadCarsWithDates(url, options) {
             model,
             year,
             "image": images[0].asset,
-            _id
+            vehicleClass,
+            dailyRate,
+            _id,
         }`
         
         cars = await client.fetch(query, {

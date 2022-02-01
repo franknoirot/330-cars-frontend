@@ -11,11 +11,18 @@ import CarList from "./CarList.svelte";
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: center;
+        gap: 8px;
         padding: 12px;
 
+        background: #E2F5FF;
+        color: #155070;
+        border: none;
         font-size: 1.2rem;
-        background: linear-gradient(180deg, #F9FDFF 0%, #E2F5FF 100%);
-        border: 1px solid #75C5FF;
-        border-radius: 8px;
+        border-radius: 4px;
+    }
+
+    button:hover {
+        background: #dbeff9;
     }
 </style>
