@@ -1,3 +1,7 @@
+<script>
+    import Icon from "./Icon.svelte";
+</script>
+
 <header>
     <nav>
     <a href="/">
@@ -7,6 +11,11 @@
             <li><a href="/about">About</a></li>
             <li><a href="/help">Help</a></li>
             <li><a href="/login">Login</a></li>
+            <div class="vl"></div>
+            <li><a href="tel:3308586940" class="phone-number">
+                <Icon type="phone" width="28"/> 
+                <span><strong>330</strong>-858-6940</span>
+            </a></li>
         </ul>
     </nav>
 </header>
@@ -34,11 +43,28 @@
     ul {
         list-style: none;
         display: flex;
+        align-items: center;
         gap: 2rem;
     }
 
+    .vl {
+        height: 1.5rem;
+        border-inline-start: 1px solid #23313C;
+    }
+
+    .phone-number {
+        display: flex;
+        align-items: center;
+        color: inherit;
+        gap: 6px;
+    }
+
     a {
-        color: hsl(190deg, 60%, 35%);
+        color: inherit;
         text-decoration: none;
+    }
+
+    a:hover {
+        color: cornflowerblue;
     }
 </style>

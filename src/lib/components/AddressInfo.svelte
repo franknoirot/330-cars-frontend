@@ -20,6 +20,10 @@
         gap: 20px;
     }
 
+    a:hover {
+        color: cornflowerblue;
+    }
+
     small, p {
         margin: 7px 0;
     }

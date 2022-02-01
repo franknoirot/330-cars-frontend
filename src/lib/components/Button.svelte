@@ -23,6 +23,7 @@ import CarList from "./CarList.svelte";
     }
 
     button:hover {
-        background: #dbeff9;
+        background: #ade4ff;
+        color: #0c3a53;
     }
 </style>
