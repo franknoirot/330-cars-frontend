@@ -50,6 +50,15 @@ import { goto } from '$app/navigation';
         <aside>
             <BookingForm {pickup} {dropoff} {isAvailable} onChange={onFormChange} />
         </aside>
+        <hr />
+        <div class="features">
+            {#each car.features as feature, j (j)}
+            <p>
+                <strong>{ feature.primary }</strong> <br/>
+                { feature.secondary }
+            </p>
+            {/each}
+        </div>
     </section>
     <section>
         <h1>{carTitle}</h1>
@@ -77,5 +86,29 @@ import { goto } from '$app/navigation';
     .description {
         margin-block-start: 2.5rem;
         line-height: 1.4;
+    }
+
+    hr {
+        margin-top: 2rem;
+        border: solid 1px #f4f8fc;
+    }
+
+    .features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        width: 80%;
+        margin: 1rem auto;
+        font-size: 1.1rem;
+    }
+
+    .features p {
+        text-align: center;
+        flex: 40%;
+    }
+
+    .features strong {
+        font-size: 1.3rem;
+        line-height: 1.5;
     }
 </style>
