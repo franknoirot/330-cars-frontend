@@ -8,3 +8,19 @@ html, body {
 button:disabled {
     cursor: disabled;
 }
+
+.display-contents {
+    display: contents;
+}
+
+@media(min-width: 769px) {
+    .mobile-only {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none;
+    }
+}

@@ -4,18 +4,13 @@
     import Button from '$lib/components/Button.svelte'
     import Icon from './Icon.svelte';
 
-    export let onSubmit = handleSubmit
+    export let onSubmit = () => {} // no-op by default
     export let onChange = () => {} // no-op by default
     export let numResults = 0
     export let pickup = offsetNowHours(1.5) // 1.5 hours from now
     export let dropoff = offsetNowHours(25.5) // 25.5 hours from now
     export let isAvailable
     let duration = 24 * 60 * 60 * 1000 // 1 day in ms
-    
-    async function handleSubmit(e) {
-        const data = Object.fromEntries((new FormData(e.target)).entries())
-        goto(`/book-now/choose-a-car?pickup=${data.pickup}&dropoff=${data.dropoff}`)
-    }
 
 
     function onPickupChange(e) {
@@ -89,5 +84,11 @@
         font-family: sans-serif;
         border: 1px solid #e9f2fc;
         margin-top: .5rem;
+    }
+
+    @media (max-width: 768px) {
+        #booking-form {
+            margin-top: 0;
+        }
     }
 </style>

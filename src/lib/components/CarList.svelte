@@ -7,7 +7,7 @@
 </script>
 
 {#if cars.length}
-<div class="car-list" style={`--columns: repeat(${columns}, 1fr);`}>
+<div class="car-list" style={`--columns-desktop: ${columns}`}>
     {#each cars as car, i ('car-'+i)}
     <a class="car-item" href={'/cars/' + car._id + (pickup && dropoff ? `?pickup=${pickup}&dropoff=${dropoff}` : '')}
         in:fly="{{ y: 20, duration: 200, delay: 50 * i }}" out:fade="{{ duration: 100 }}">
@@ -21,8 +21,9 @@
 
 <style>
     .car-list {
+        --columns: 2;
         display: grid;
-        grid-template-columns: var(--columns);
+        grid-template-columns:  repeat(var(--columns), 1fr);
         row-gap: 60px;
         column-gap: 48px;
     }
@@ -53,7 +54,23 @@
     .car-item img {
         max-width: 100%;
         height: 10vw;
+        min-height: 120px;
         object-fit: contain;
         mix-blend-mode: darken;
+    }
+
+    @media (min-width: 769px) {
+        .car-list {
+            grid-template-columns:  repeat(var(--columns-desktop), 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .car-list {
+            gap: 2rem;
+        }
+        .car-item h2 {
+            font-size: 1rem;
+        }
     }
 </style>

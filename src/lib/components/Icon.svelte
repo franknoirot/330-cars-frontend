@@ -10,6 +10,12 @@
 {:else if type == "check"}
     <svg viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg" {...$$restProps}>
         <path d="M2.25 12.5L9.75 20L21.75 2.00003" stroke={fill} stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>  
+{:else if type == "menu"}
+    <svg viewBox="0 0 27 26" fill="none" xmlns="http://www.w3.org/2000/svg" {...$$restProps}>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M27 3.5H0V0.5H27V3.5Z" fill={fill}/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M27 14.5H0V11.5H27V14.5Z" fill={fill}/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M27 25.5H0V22.5H27V25.5Z" fill={fill}/>
     </svg>    
 {:else if type == "phone"}
     <svg viewBox="0 0 28 27" xmlns="http://www.w3.org/2000/svg" {...$$restProps}>

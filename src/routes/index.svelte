@@ -22,17 +22,16 @@
 
     $: filteredCars = cars.filter(car => vehicleClassFilter == "All Classes" || car.vehicleClass === vehicleClassFilter.toLowerCase())
 
-    async function dateFormSubmit(e) {
-        console.log('submitting')
-        const data = Object.fromEntries((new FormData(e.target)).entries())
-        goto(`/?pickup=${data.pickup}&dropoff=${data.dropoff}`)
+    async function dateFormUpdate(e) {
+        const { pickup, dropoff } = Object.fromEntries((new FormData(e.target.form || e.target)).entries())
+        goto(`/?pickup=${pickup}&dropoff=${dropoff}`)
     }
 </script>
 
 <div class="wrapper">
     <aside>
         <section>
-            <BookingForm style="margin: 1.5rem auto;" onSubmit={dateFormSubmit} numResults={cars.length} />
+            <BookingForm style="margin: 1.5rem auto;" onChange={dateFormUpdate} onSubmit={dateFormUpdate} numResults={cars.length} />
             <fieldset class="vc-fields">
                 <legend for="vehicleClass" class="vc-label">Car Class 
                     {#if (cars.length !== filteredCars.length)}<span>  filtered to {filteredCars.length} cars</span>{/if}
@@ -74,7 +73,7 @@
     .wrapper {
         display: grid;
         grid-template-columns: auto 1fr;
-        gap: 48px;
+        gap: 3rem;
     }
 
     aside {
@@ -119,5 +118,36 @@
     .vc-label span {
         color: gray;
         font-weight: normal;
+    }
+
+    @media (max-width: 768px) {
+        .wrapper {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .info-row {
+            display: none;
+        }
+
+        aside * {
+            position: static;
+        }
+
+        .vc-fields {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            padding: .5rem 1rem;
+        }
+
+        .vc-fields legend {
+            padding-inline-start: 1rem;
+        }
+
+        .vc-fields label {
+            flex: 40%;
+            margin: .25rem;
+        }
     }
 </style>
