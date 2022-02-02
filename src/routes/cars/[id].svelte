@@ -1,7 +1,7 @@
 <script context="module">
-    import { client, urlFor } from '$lib/sanity'
     import { getCarById, validateCarDates } from '$lib/carLoaders.js'
     import { offsetNowHours } from '$lib/timeHelpers';
+    import CarCarousel from '$lib/components/CarCarousel.svelte'
 
     export async function load({ url, params }) {
         const pickup = url.searchParams.get('pickup') || offsetNowHours(1.5).slice(0, -4)
@@ -53,7 +53,7 @@ import { goto } from '$app/navigation';
     </section>
     <section>
         <h1>{carTitle}</h1>
-        <img src={urlFor(images[0]).width(600)} alt={carTitle} />
+        <CarCarousel images={car.images} />
         <pre>{JSON.stringify(otherData, null, 2)}</pre>
     </section>
 </div>
