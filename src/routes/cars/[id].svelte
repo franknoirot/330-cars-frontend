@@ -73,6 +73,7 @@ import { goto } from '$app/navigation';
         gap: 3rem;
         grid-template-columns: auto 1fr;
         width: 100%;
+        box-sizing: border-box;
     }
     .sidebar {
         position: relative;
@@ -110,5 +111,24 @@ import { goto } from '$app/navigation';
     .features strong {
         font-size: 1.3rem;
         line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+        .content-wrapper {
+            grid-template-columns: 1fr;
+            padding: 1rem;
+        }
+
+        h1 {
+            margin-block-start: 1rem;
+        }
+
+        .sidebar {
+            order: 2;
+        }
+
+        .sidebar aside {
+            position: static;
+        }
     }
 </style>

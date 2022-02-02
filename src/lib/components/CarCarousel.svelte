@@ -104,4 +104,39 @@
         height: 3rem;
         object-fit: cover;
     }
+
+    @media (max-width: 768px) {
+        .grid-wrapper {
+            width: 100%;
+            grid-template-columns: 1fr;
+        }
+
+        .film-strip {
+            box-sizing: border-box;
+            padding: .5rem;
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+        }
+
+        .film-strip button {
+            margin: 0;
+        }
+
+        .film-strip img {
+            width: auto;
+            height: 70px;
+        }   
+
+        .main-image {
+            max-width: 100%;
+        }
+        
+        .main-image img {
+            height: 280px;
+            width: 100%;
+            max-width: 100%;
+            display: block;
+        }
+    }
 </style>
