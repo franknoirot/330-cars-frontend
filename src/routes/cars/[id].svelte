@@ -54,7 +54,7 @@ import { goto } from '$app/navigation';
     <section>
         <h1>{carTitle}</h1>
         <CarCarousel images={car.images} />
-        <pre>{JSON.stringify(otherData, null, 2)}</pre>
+        <p class="description">{ car.description }</p>
     </section>
 </div>
 
@@ -62,7 +62,8 @@ import { goto } from '$app/navigation';
     .content-wrapper {
         display: grid;
         gap: 3rem;
-        grid-template-columns: auto 1fr ;
+        grid-template-columns: auto 1fr;
+        width: 100%;
     }
     .sidebar {
         position: relative;
@@ -71,5 +72,10 @@ import { goto } from '$app/navigation';
     .sidebar aside {
         position: sticky;
         top: 32px;
+    }
+
+    .description {
+        margin-block-start: 2.5rem;
+        line-height: 1.4;
     }
 </style>

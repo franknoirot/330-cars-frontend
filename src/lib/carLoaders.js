@@ -62,6 +62,8 @@ export async function getCarById(id) {
         mileage,
         dailyRate,
         status,
+        description,
+        features
     }`
 
     const car = await client.fetch(query, { id })
