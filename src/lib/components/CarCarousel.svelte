@@ -7,14 +7,16 @@
     const increment = () => { currentIndex = (currentIndex < images.length -1) ? currentIndex + 1 : 0 }
 </script>
 
+{#if images.length}
 <div class="grid-wrapper">
     <div class="main-image">
-        {#if images.length}
-        <img src={urlFor(images[currentIndex]).width(600)} alt={' image ' + currentIndex} />
-        {/if}
+        <img src={urlFor(images[currentIndex]).width(720)} alt={' image ' + currentIndex} />
+        {#if images.length > 1}
         <button class="back" on:click={decrement}>←</button>
         <button class="forward" on:click={increment}>→</button>
+        {/if}
     </div>
+    {#if images.length > 1}
     <ul class="film-strip">
         {#each images as image, i ('image-'+i)}
         <li>
@@ -24,7 +26,9 @@
         </li>
         {/each}
     </ul>
+    {/if}
 </div>
+{/if}
 
 <style>
     .grid-wrapper {

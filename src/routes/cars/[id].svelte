@@ -50,6 +50,7 @@ import { goto } from '$app/navigation';
         <aside>
             <BookingForm {pickup} {dropoff} {isAvailable} onChange={onFormChange} />
         </aside>
+        {#if car.features && car.features.length }
         <hr />
         <div class="features">
             {#each car.features as feature, j (j)}
@@ -59,11 +60,12 @@ import { goto } from '$app/navigation';
             </p>
             {/each}
         </div>
+        {/if}
     </section>
     <section>
         <h1>{carTitle}</h1>
         <CarCarousel images={car.images} />
-        <p class="description">{ car.description }</p>
+        {#if car.description}<p class="description">{ car.description }</p>{/if}
     </section>
 </div>
 
