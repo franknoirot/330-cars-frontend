@@ -12,7 +12,7 @@
 
 <style>
     footer {
-        background: #E2F5FF;
+        background: var(--bg);
         padding: 6px 32px;
         margin-top: 3rem;
         margin-bottom: 0;

@@ -1,12 +1,12 @@
 <script>
-    import Icon from "./Icon.svelte";
+    import Icon from "$lib/components/Icon.svelte";
     let menuOpen = false
 </script>
 
 <header>
     <nav>
-    <a href="/">
-        <img src="/logo.svg" class="logo" alt="330 Cars" />
+    <a href="/" class="logo">
+        <Icon type="logo" />
     </a>
         <ul class="top-nav">
             <div class="display-contents desktop-only">
@@ -39,7 +39,7 @@
 
 <style>
     header {
-        background: white;
+        background: var(--bg);
         border-bottom: solid 1px hsl(190deg, 20%, 85%);
         width: 100%;
         box-sizing: border-box;
@@ -60,6 +60,7 @@
         width: 20vw;
         max-width: 200px;
         min-width: 125px;
+        display: block;
     }
 
     ul {
