@@ -2,7 +2,37 @@ html, body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
+
+    /* Light */
+    --bg-light: white;
+    --text-light: hsl(220deg, 30%, 95%);
+
+    /* Dark */
+    --bg-dark: hsl(190deg, 40%, 5%);
+    --text-dark: #202026;
+
+    /* Global */
     --box-shadow-md: 0 .2em .5em hsla(190deg, 10%, 5%, .25), 0 .5em .9em hsla(190deg, 5%, 5%, 8%);
+
+    background: var(--bg);
+    color: var(--text-dark);
+}
+
+.visually-hidden {
+    clip-path: inset(100%);
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+@media(prefers-color-scheme: dark) {
+    body, html {
+        --bg: hsl(190deg, 40%, 5%);
+        --text-dark: hsl(220deg, 30%, 95%);
+    }
 }
 
 button:disabled {
