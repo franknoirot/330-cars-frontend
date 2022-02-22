@@ -1,6 +1,7 @@
 // import { client } from './sanity.js';
 function queryUrl(query) {
     const baseUrl = 'https://yycjemqk.api.sanity.io/v2022-02-22/data/query/production?query='
+    console.log({ baseUrl, query })
     return baseUrl + encodeURIComponent(query.replaceAll(/\s/g,''))
 }
 
