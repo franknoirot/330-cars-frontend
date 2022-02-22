@@ -30,41 +30,39 @@
 
 <div class="wrapper">
     <aside>
-        <section>
-            <BookingForm style="margin: 1.5rem auto;" onChange={dateFormUpdate} onSubmit={dateFormUpdate} numResults={cars.length} />
-            <fieldset class="vc-fields">
-                <legend for="vehicleClass" class="vc-label">Car Class 
-                    {#if (cars.length !== filteredCars.length)}<span>  filtered to {filteredCars.length} cars</span>{/if}
-                </legend>
-                <label>
-                    <input name="vehicleClass" type="radio" value="All Classes" bind:group={vehicleClassFilter}/>
-                    All Classes
-                </label>
-                <label>
-                    <input name="vehicleClass" type="radio" value="economy" bind:group={vehicleClassFilter}/>
-                    Economy
-                </label>
-                <label>
-                    <input name="vehicleClass" type="radio" value="standard" bind:group={vehicleClassFilter}/>
-                    Standard
-                </label>
-                <label>
-                    <input name="vehicleClass" type="radio" value="luxury" bind:group={vehicleClassFilter}/>
-                    Luxury
-                </label>
-            </fieldset>
-        </section>
+        <BookingForm class="home" onChange={dateFormUpdate} onSubmit={dateFormUpdate} numResults={cars.length} />
+        <fieldset class="vc-fields">
+            <legend for="vehicleClass" class="vc-label">Car Class 
+                {#if (cars.length !== filteredCars.length)}<span>  filtered to {filteredCars.length} cars</span>{/if}
+            </legend>
+            <label>
+                <input name="vehicleClass" type="radio" value="All Classes" bind:group={vehicleClassFilter}/>
+                All Classes
+            </label>
+            <label>
+                <input name="vehicleClass" type="radio" value="economy" bind:group={vehicleClassFilter}/>
+                Economy
+            </label>
+            <label>
+                <input name="vehicleClass" type="radio" value="standard" bind:group={vehicleClassFilter}/>
+                Standard
+            </label>
+            <label>
+                <input name="vehicleClass" type="radio" value="luxury" bind:group={vehicleClassFilter}/>
+                Luxury
+            </label>
+        </fieldset>
     </aside>
-    <section>
-        <div class="info-row">
-            <AddressInfo />
-            <p class="welcome-statement">
-                330 Cars is a family-owned local rental car business in Warren, Ohio. 
-                We offer unbeatable rates, after-rental pickup, and other luxuries that big rental companies 
-                can’t offer because thier lawyers cost too much. 
-                <a href="/about">You can read our full story here →</a>
-            </p>
-        </div>
+    <section class="info-row">
+        <div class="hidden-small-tablet"><AddressInfo /></div>
+        <p class="welcome-statement">
+            330 Cars is a family-owned local rental car business in Warren, Ohio. 
+            We offer unbeatable rates, after-rental pickup, and other luxuries that big rental companies 
+            can’t offer because thier lawyers cost too much. 
+            <a href="/about">You can read our full story here →</a>
+        </p>
+    </section>
+    <section class="car-list">
         <CarList cars={filteredCars} {pickup} {dropoff} columns={3} />
     </section>
 </div>
@@ -73,11 +71,14 @@
     .wrapper {
         display: grid;
         grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
         gap: 3rem;
     }
 
     aside {
         position: relative;
+        grid-column: 1 / 2;
+        grid-row: span 2;
     }
     aside * {
         position: sticky;
@@ -89,7 +90,11 @@
         grid-template-columns: 1fr 2fr;
         gap: 48px;
         align-items: center;
-        margin-bottom: 40px;
+    }
+
+    .car-list {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
     }
 
     .welcome-statement {
@@ -104,11 +109,16 @@
 
     .vc-fields {
         border: solid 1px hsl(190deg, 60%, 96%);
+        box-sizing: border-box;
     }
 
     .vc-fields > label {
         display: block;
         margin: 1rem 0;
+    }
+
+    .vc-fields input {
+        accent-color: #48e;
     }
 
     .vc-label {
@@ -120,14 +130,20 @@
         font-weight: normal;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 920px) {
         .wrapper {
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 1rem;
         }
-        
+
         .info-row {
-            display: none;
+            order: -1;
+            padding: 1rem;
+        }
+
+        aside {
+            grid-row: 2 / 3;
         }
 
         aside * {
@@ -139,6 +155,7 @@
             gap: 1rem;
             flex-wrap: wrap;
             padding: .5rem 1rem;
+            margin: 1rem;
         }
 
         .vc-fields legend {
@@ -148,6 +165,16 @@
         .vc-fields label {
             flex: 40%;
             margin: .25rem;
+        }
+    }
+
+    @media(max-width: 720px) {
+        .info-row {
+            display: block;
+        }
+
+        .hidden-small-tablet {
+            display: none;
         }
     }
 </style>

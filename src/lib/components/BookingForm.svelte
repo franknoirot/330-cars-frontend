@@ -86,9 +86,39 @@
         margin-top: .5rem;
     }
 
+    :global(#booking-form.home) {
+        margin: 1.5rem auto;
+    }
     @media (max-width: 768px) {
         #booking-form {
             margin-top: 0;
+        }
+
+        :global(#booking-form.home) {
+            margin: 0;
+            width: 100%;
+            padding: 0 1rem;
+            box-sizing: border-box;
+            margin-block-end: 1.5rem;
+        }
+
+        /* Home page-specific mobile styles */
+        :global(#booking-form.home) .fields {
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-block-end: 1rem;
+        }
+
+        :global(#booking-form.home) label {
+            margin: 0;
+            width: 100%;
+        }
+
+        :global(#booking-form.home) input[type="datetime-local"] {
+            box-sizing: border-box;
+            width: 100%;
         }
     }
 </style>

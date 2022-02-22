@@ -1,18 +1,26 @@
 <script>
+    import { page } from '$app/stores'
     import Icon from "$lib/components/Icon.svelte";
     let menuOpen = false
+    let isCurrentPage = url => $page.url.pathname === url ? 'active' : ''
+    let showTagline = isCurrentPage('/')
 </script>
 
 <header>
     <nav>
-    <a href="/" class="logo">
-        <Icon type="logo" />
-    </a>
+        <div class="logo-lockup">
+            <a href="/" class="logo">
+                <Icon type="logo" />
+            </a>
+            {#if showTagline }
+            <span class="tagline">Homegrown car rentals for Cleveland and Akron, Ohio.</span>
+            {/if}
+        </div>
         <ul class="top-nav">
             <div class="display-contents desktop-only">
-                <li><a href="/about">About</a></li>
-                <li><a href="/help">Help</a></li>
-                <li><a href="/login">Login</a></li>
+                <li><a href="/about" class={isCurrentPage('/about')}>About</a></li>
+                <li><a href="/help"  class={isCurrentPage('/help')}>Help</a></li>
+                <li><a href="/login" class={isCurrentPage('/login')}>Login</a></li>
             </div>
             <li class="mobile-only">
                 <a href="https://www.google.com/maps/place/330+N+Arlington+St,+Akron,+OH+44305/@41.0814338,-81.4928358,17z" target="_blank" rel="noopener noreferrer">
@@ -39,7 +47,7 @@
 
 <style>
     header {
-        background: var(--bg);
+        background: var(--bg-light);
         border-bottom: solid 1px hsl(190deg, 20%, 85%);
         width: 100%;
         box-sizing: border-box;
@@ -54,6 +62,20 @@
         align-items: center;
         margin: auto;
         padding: 1rem;
+    }
+
+    .logo-lockup {
+        display: flex;
+        align-items: center;
+        column-gap: 1rem;
+        row-gap: .4rem;
+        flex-wrap: wrap;
+    }
+
+    .tagline {
+        font-size: .8rem;
+        font-style: italic;
+        color: hsl(190deg, 20%, 40%);
     }
 
     .logo {
@@ -82,6 +104,7 @@
         align-items: center;
         color: inherit;
         gap: 6px;
+        white-space: nowrap;
     }
 
     a {
@@ -89,7 +112,8 @@
         text-decoration: none;
     }
 
-    a:hover {
+    a:hover,
+    a.active {
         color: cornflowerblue;
     }
 
@@ -118,6 +142,10 @@
         }
         .phone-number {
             order: -1;
+        }
+
+        .tagline {
+            display: none;
         }
     }
 </style>

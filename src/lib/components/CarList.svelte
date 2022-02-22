@@ -67,10 +67,22 @@
 
     @media (max-width: 768px) {
         .car-list {
-            gap: 2rem;
+            gap: 1rem;
         }
+
+        .car-item {
+            padding: .6rem;
+        }
+
         .car-item h2 {
             font-size: 1rem;
+            margin: 0;
+        }
+
+        .car-item p {
+            color: hsl(190deg, 3%, 48%);
+            font-size: .9rem;
+            margin: .25rem 0;
         }
     }
 </style>
