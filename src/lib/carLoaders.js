@@ -1,13 +1,13 @@
-import { client } from '$lib/sanity'
+import { client } from '$lib/sanity';
 
 export async function loadCarsWithDates(url, options) {
-    const pickup = url.searchParams.get('pickup') || options.pickup;
-    const dropoff = url.searchParams.get('dropoff') || options.dropoff;
+	const pickup = url.searchParams.get('pickup') || options.pickup;
+	const dropoff = url.searchParams.get('dropoff') || options.dropoff;
 
-    let cars = []
+	let cars = [];
 
-    if (!pickup || !dropoff) {
-        const query = `*[_type == "car"] {
+	if (!pickup || !dropoff) {
+		const query = `*[_type == "car"] {
             make,
             model,
             year,
@@ -15,12 +15,12 @@ export async function loadCarsWithDates(url, options) {
             vehicleClass,
             dailyRate,
             _id
-        }`
-        
-        cars = await client.fetch(query)
-    } else {
-        // query is all cars that are not referenced in a trip that overlaps the given dates.
-        const query = `*[_type == "car" &&
+        }`;
+
+		cars = await client.fetch(query);
+	} else {
+		// query is all cars that are not referenced in a trip that overlaps the given dates.
+		const query = `*[_type == "car" &&
             count(*[_type == "trip" &&
                 references(^._id) &&
                 !(scheduledDropoff <= $pickup || scheduledPickup >= $dropoff)
@@ -33,26 +33,25 @@ export async function loadCarsWithDates(url, options) {
             vehicleClass,
             dailyRate,
             _id,
-        }`
-        
-        cars = await client.fetch(query, {
-            pickup,
-            dropoff,
-        })
-    }
+        }`;
 
-    
-    return {
-        props: {
-            pickup,
-            dropoff,
-            cars,
-        }
-    }
+		cars = await client.fetch(query, {
+			pickup,
+			dropoff
+		});
+	}
+
+	return {
+		props: {
+			pickup,
+			dropoff,
+			cars
+		}
+	};
 }
 
 export async function getCarById(id) {
-    const query = `*[_type == "car" && _id == $id][0] {
+	const query = `*[_type == "car" && _id == $id][0] {
         _id,
         make,
         model,
@@ -64,26 +63,26 @@ export async function getCarById(id) {
         status,
         description,
         features
-    }`
+    }`;
 
-    const car = await client.fetch(query, { id })
-    
-    return car
+	const car = await client.fetch(query, { id });
+
+	return car;
 }
 
 export async function validateCarDates(id, options) {
-    const { pickup, dropoff } = options;
+	const { pickup, dropoff } = options;
 
-    const query = `count(*[_type == "trip" &&
+	const query = `count(*[_type == "trip" &&
         references($id) &&
         !(scheduledDropoff <= $pickup || scheduledPickup >= $dropoff)
-    ]) < 1`
+    ]) < 1`;
 
-    const isAvailable = await client.fetch(query, {
-        pickup,
-        dropoff,
-        id,
-    })
+	const isAvailable = await client.fetch(query, {
+		pickup,
+		dropoff,
+		id
+	});
 
-    return isAvailable
+	return isAvailable;
 }

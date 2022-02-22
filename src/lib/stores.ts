@@ -1,12 +1,12 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store';
 
 export interface INotification {
-    id: string,
-    message: string,
-    type: string,
-    duration?: number,
+	id: string;
+	message: string;
+	type: string;
+	duration?: number;
 }
 
-type NotificationsById = Map<string, INotification>
+type NotificationsById = Map<string, INotification>;
 
-export const notifications = writable({} as NotificationsById)
+export const notifications = writable({} as NotificationsById);
