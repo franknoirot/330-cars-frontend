@@ -1,8 +1,11 @@
 <script context="module">
 	import { loadCarsWithDates } from '$lib/carLoaders';
 	import { offsetNowHours } from '$lib/timeHelpers';
+	import { client } from '$lib/sanity'
 
 	export async function load({ url }) {
+		console.log("This function runs on the server and the client'", { loadCarsWithDates, offsetNowHours, client })
+		
 		return loadCarsWithDates(url, {
 			pickup: offsetNowHours(1.5).slice(0, -4), // need to slice off seconds for use in Sanity query
 			dropoff: offsetNowHours(25.5).slice(0, -4)
