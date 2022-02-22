@@ -1,4 +1,4 @@
-import { client } from '$lib/sanity';
+import { client } from './sanity.js';
 
 export async function loadCarsWithDates(url, options) {
 	const pickup = url.searchParams.get('pickup') || options.pickup;
