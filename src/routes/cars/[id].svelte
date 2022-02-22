@@ -3,13 +3,13 @@
 	import { offsetNowHours } from '$lib/timeHelpers';
 	import CarCarousel from '$lib/components/CarCarousel.svelte';
 
-	export async function load({ url, params }) {
+	export async function load({ url, fetch, params }) {
 		const pickup = url.searchParams.get('pickup') || offsetNowHours(1.5).slice(0, -4);
 		const dropoff = url.searchParams.get('dropoff') || offsetNowHours(25.5).slice(0, -4);
 
-		const car = await getCarById(params.id);
+		const car = await getCarById(params.id, fetch);
 
-		const isAvailable = await validateCarDates(params.id, {
+		const isAvailable = await validateCarDates(params.id, fetch, {
 			pickup,
 			dropoff
 		});

@@ -1,12 +1,12 @@
-import { client } from './sanity.js';
+// import { client } from './sanity.js';
+const baseUrl = 'https://yycjemqk.api.sanity.io/v2022-02-22/data/query/production?query='
+const queryUrl = query => baseUrl + encodeURIComponent(query.replaceAll(/\s/g,''))
 
-export async function loadCarsWithDates(url, options) {
+export async function loadCarsWithDates(url, fetch, options) {
 	const pickup = url.searchParams.get('pickup') || options.pickup;
 	const dropoff = url.searchParams.get('dropoff') || options.dropoff;
 
 	let cars = [];
-
-    console.log('From within the loadCarsWithDates function!', { url, options, client })
 
 	if (!pickup || !dropoff) {
 		const query = `*[_type == "car"] {
@@ -19,7 +19,9 @@ export async function loadCarsWithDates(url, options) {
             _id
         }`;
 
-		cars = await client.fetch(query);
+		cars = await handleResponse(
+            await fetch(queryUrl(query))
+        )
 	} else {
 		// query is all cars that are not referenced in a trip that overlaps the given dates.
 		const query = `*[_type == "car" &&
@@ -37,10 +39,9 @@ export async function loadCarsWithDates(url, options) {
             _id,
         }`;
 
-		cars = await client.fetch(query, {
-			pickup,
-			dropoff
-		});
+		cars = await handleResponse(
+            await fetch(queryUrl(query) + `&$pickup="${pickup}"&$dropoff="${dropoff}"`)
+        )
 	}
 
 	return {
@@ -52,7 +53,7 @@ export async function loadCarsWithDates(url, options) {
 	};
 }
 
-export async function getCarById(id) {
+export async function getCarById(id, fetch) {
 	const query = `*[_type == "car" && _id == $id][0] {
         _id,
         make,
@@ -67,12 +68,14 @@ export async function getCarById(id) {
         features
     }`;
 
-	const car = await client.fetch(query, { id });
+	const car = await handleResponse(
+        await fetch(queryUrl(query) + `&$id="${id}"` )
+    )
 
 	return car;
 }
 
-export async function validateCarDates(id, options) {
+export async function validateCarDates(id, fetch, options) {
 	const { pickup, dropoff } = options;
 
 	const query = `count(*[_type == "trip" &&
@@ -80,11 +83,17 @@ export async function validateCarDates(id, options) {
         !(scheduledDropoff <= $pickup || scheduledPickup >= $dropoff)
     ]) < 1`;
 
-	const isAvailable = await client.fetch(query, {
-		pickup,
-		dropoff,
-		id
-	});
+	const isAvailable = await handleResponse(
+        await fetch(queryUrl(query) + `&$pickup="${pickup}"&$dropoff="${dropoff}"&$id="${id}"`)
+    )
 
 	return isAvailable;
+}
+
+async function handleResponse(res) {
+    if (res.ok) {
+        return (await res.json()).result
+    } else {
+        throw new Error(res.message)
+    }
 }

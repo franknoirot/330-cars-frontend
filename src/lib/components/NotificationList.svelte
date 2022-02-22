@@ -9,8 +9,6 @@
 
 	$: notificationArray = Object.values($notifications);
 
-	$: console.log($notifications);
-
 	function notificationTimer(node, notification) {
 		// runs when a notification is added
 		window.setTimeout(() => {
