@@ -1,6 +1,8 @@
 // import { client } from './sanity.js';
-const baseUrl = 'https://yycjemqk.api.sanity.io/v2022-02-22/data/query/production?query='
-const queryUrl = query => baseUrl + encodeURIComponent(query.replaceAll(/\s/g,''))
+function queryUrl(query) {
+    const baseUrl = 'https://yycjemqk.api.sanity.io/v2022-02-22/data/query/production?query='
+    return baseUrl + encodeURIComponent(query.replaceAll(/\s/g,''))
+}
 
 export async function loadCarsWithDates(url, fetch, options) {
 	const pickup = url.searchParams.get('pickup') || options.pickup;
