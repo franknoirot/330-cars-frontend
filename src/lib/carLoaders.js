@@ -1,4 +1,5 @@
-// import { client } from './sanity.js';
+import { client } from './sanity.js';
+
 function queryUrl(query) {
     const baseUrl = 'https://yycjemqk.api.sanity.io/v2022-02-22/data/query/production?query='
     console.log({ baseUrl, query })
@@ -22,9 +23,7 @@ export async function loadCarsWithDates(url, fetch, options) {
             _id
         }`;
 
-		cars = await handleResponse(
-            await fetch(queryUrl(query))
-        )
+		cars = await client.fetch(query)
 	} else {
 		// query is all cars that are not referenced in a trip that overlaps the given dates.
 		const query = `*[_type == "car" &&
@@ -42,9 +41,10 @@ export async function loadCarsWithDates(url, fetch, options) {
             _id,
         }`;
 
-		cars = await handleResponse(
-            await fetch(queryUrl(query) + `&$pickup="${pickup}"&$dropoff="${dropoff}"`)
-        )
+		cars = await client.fetch(query, {
+            pickup,
+            dropoff,
+        })
 	}
 
 	return {
@@ -71,9 +71,7 @@ export async function getCarById(id, fetch) {
         features
     }`;
 
-	const car = await handleResponse(
-        await fetch(queryUrl(query) + `&$id="${id}"` )
-    )
+	const car = await client.fetch(query, { id })
 
 	return car;
 }
@@ -86,9 +84,11 @@ export async function validateCarDates(id, fetch, options) {
         !(scheduledDropoff <= $pickup || scheduledPickup >= $dropoff)
     ]) < 1`;
 
-	const isAvailable = await handleResponse(
-        await fetch(queryUrl(query) + `&$pickup="${pickup}"&$dropoff="${dropoff}"&$id="${id}"`)
-    )
+	const isAvailable = await client.fetch(query, {
+            id,
+            pickup,
+            dropoff,
+        })
 
 	return isAvailable;
 }
