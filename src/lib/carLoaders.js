@@ -1,4 +1,11 @@
-import { client } from '$lib/sanity';
+import sanityClient from '@sanity/client';
+
+const client = sanityClient({
+	projectId: 'yycjemqk',
+	dataset: 'production',
+	apiVersion: '2022-02-21',
+	useCdn: false
+});
 
 export async function loadCarsWithDates(url, options) {
 	const pickup = url.searchParams.get('pickup') || options.pickup;
