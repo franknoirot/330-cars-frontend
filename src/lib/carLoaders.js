@@ -1,17 +1,12 @@
-import sanityClient from '@sanity/client';
-
-const client = sanityClient({
-	projectId: 'yycjemqk',
-	dataset: 'production',
-	apiVersion: '2022-02-21',
-	useCdn: false
-});
+import { client } from '$lib/sanity';
 
 export async function loadCarsWithDates(url, options) {
 	const pickup = url.searchParams.get('pickup') || options.pickup;
 	const dropoff = url.searchParams.get('dropoff') || options.dropoff;
 
 	let cars = [];
+
+    console.log('From within the loadCarsWithDates function!', { url, options, client })
 
 	if (!pickup || !dropoff) {
 		const query = `*[_type == "car"] {
