@@ -46,6 +46,7 @@
 				{#if !$userStore}
 				<li><button class={'link-button'} on:click={handleSignIn}>Log in</button></li>
 				{:else}
+				<li><a href="/account" class={isCurrentPage('/account')}>Account</a></li>
 				<li><button class={'link-button'} on:click={handleSignOut}>Log out</button></li>
 				{/if}
 			</div>

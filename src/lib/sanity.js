@@ -13,3 +13,18 @@ const builder = imageUrlBuilder(client);
 export function urlFor(source) {
 	return builder.image(source);
 }
+
+
+export async function getCustomerById(id) {
+	const query = `*[_type == "customer" && _id == $id][0] {
+        _id,
+        name,
+		status,
+		license,
+		stripeId
+    }`;
+
+	const customer = await client.fetch(query, { id })
+
+	return customer;
+}
