@@ -23,13 +23,7 @@ export async function handle({ event, resolve }) {
         ssr: !event.url.pathname.startsWith('/account'),
       });
 
-    return {
-        ...response,
-        headers: {
-        ...response.headers,
-        // 'x-custom-header': 'potato',
-        }
-    };
+    return response;
 }
 
 /** @type {import('@sveltejs/kit').GetSession} */
