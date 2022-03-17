@@ -4,8 +4,8 @@
 
     export async function load({ session }) {
         const user = session?.user
-        console.log({ session })
-        if (!user) {
+        console.log({ user })
+        if (!user.authenticated) {
             return {
                 redirect: '/',
                 status: 301,
@@ -13,7 +13,6 @@
         } else {
             customer = await getCustomerById(user.sub)
             return {
-                status: 200,
                 props: {
                     customer
                 }

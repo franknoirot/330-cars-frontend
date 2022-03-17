@@ -26,5 +26,7 @@ export async function getCustomerById(id) {
 
 	const customer = await client.fetch(query, { id })
 
+	console.log({ id, customer })
+
 	return customer;
 }
