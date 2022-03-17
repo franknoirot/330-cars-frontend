@@ -8,6 +8,7 @@
         if (!user) {
             return {
                 redirect: '/',
+                status: 301,
             }
         }
 
