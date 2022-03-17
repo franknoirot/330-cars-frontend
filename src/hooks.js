@@ -1,4 +1,4 @@
-import { parseIdentityCookies, parseJwt } from '$lib/utils/authTokens';
+import { parseIdentityCookies, parseJwt } from '$lib/authTokens';
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
