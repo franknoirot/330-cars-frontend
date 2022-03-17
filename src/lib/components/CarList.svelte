@@ -67,6 +67,16 @@
 		mix-blend-mode: darken;
 	}
 
+	@media (prefers-color-scheme: dark) {
+		.car-item:hover {
+			background-color: hsl(198deg, 15%, 14%);
+		}
+		.car-item img {
+			mix-blend-mode: normal;
+
+		}
+	}
+
 	@media (min-width: 769px) {
 		.car-list {
 			grid-template-columns: repeat(var(--columns-desktop), 1fr);

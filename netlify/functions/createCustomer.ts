@@ -12,8 +12,6 @@ const client = sanityClient({
 const handler: Handler = async (httpEvent) => {
     const { event, user } = JSON.parse(httpEvent.body);
     
-    console.log({ event, user, body: JSON.parse(httpEvent.body)})
-
     if (!event || !user) {
         return {
             statusCode: 400,
@@ -26,12 +24,10 @@ const handler: Handler = async (httpEvent) => {
         }
     }
 
-    console.log("user info", user)
-
     const customer = {
         _type: 'customer',
         _id: user.id,
-        name: (user.app_metadata?.provider == "google") ? user.user_metadata.full_name : user.name,
+        name: user.user_metadata.full_name,
         email: user.email,
     }
 
