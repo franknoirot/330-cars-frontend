@@ -30,11 +30,12 @@ const handler: Handler = async (httpEvent) => {
 
     const customer = {
         _type: 'customer',
+        _id: user.id,
         name: (user.app_metadata?.provider == "google") ? user.user_metadata.full_name : user.name,
         email: user.email,
     }
 
-    const res = await client.create(customer)
+    const res = await client.createIfNotExists(customer)
     console.log(`User created, ID is ${res._id}`)
 
   return {

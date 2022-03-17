@@ -24,6 +24,11 @@
 		border-block-start: solid 1px hsl(190deg, 20%, 85%);
 	}
 
+	@media (prefers-color-scheme: dark) {
+		footer {
+			background: hsl(225, 11%, 7%);
+		}
+	}
 	footer nav {
 		max-width: 1260px;
 		box-sizing: border-box;
