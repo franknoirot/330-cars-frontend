@@ -1,7 +1,6 @@
 <script context="module">
 	import { loadCarsWithDates } from '$lib/carLoaders';
 	import { offsetNowHours } from '$lib/timeHelpers';
-	import { client } from '$lib/sanity'
 
 	export async function load({ url, fetch }) {		
 		const results = await loadCarsWithDates(url, fetch, {
@@ -10,7 +9,9 @@
 		});
 
 		console.log('loaded cars results', results)
-		return results
+		return {
+			props: results,
+		}
 	}
 </script>
 

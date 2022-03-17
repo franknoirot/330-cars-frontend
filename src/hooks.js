@@ -5,8 +5,6 @@ export async function handle({ event, resolve }) {
     // parse jwt from cookie in event, if present, and populate locals.user
     const { jwt } = parseIdentityCookies(event);
 
-    console.log({event, headers: event.request.headers.get("cookie")})
-
     if (jwt) {
         event.locals.token = jwt;
         event.locals.user = parseJwt(jwt);
@@ -31,8 +29,6 @@ export async function handle({ event, resolve }) {
 
 /** @type {import('@sveltejs/kit').GetSession} */
 export function getSession(event) {
-    console.log('someones is getting a session', { event })
-
     return event.locals.user
       ? {
           user: event.locals.user,

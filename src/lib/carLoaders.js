@@ -48,11 +48,9 @@ export async function loadCarsWithDates(url, fetch, options) {
 	}
 
 	return {
-		props: {
-			pickup,
-			dropoff,
-			cars
-		}
+        pickup,
+        dropoff,
+        cars
 	};
 }
 

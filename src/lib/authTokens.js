@@ -15,7 +15,6 @@ export const parseIdentityCookies = (event) => {
   const cookies = event.request.headers.get("cookie");
   let jwt = null;
 
-  console.log('cookies', cookies)
   // grab JWT value, if cookie is present
   if (cookies) jwt = cookies.split('; ').find((row) => row.startsWith(JWT_COOKIE_NAME))
   if (jwt) jwt = jwt.slice(JWT_COOKIE_NAME.length + 1);
