@@ -19,7 +19,7 @@ const handler: Handler = async (httpEvent) => {
             statusCode: 400,
             body: JSON.stringify({ message: 'Missing user info' }),
         }
-    } else if (event !== "identity-validate") {
+    } else if (event !== "validate") {
         return {
             statusCode: 400,
             body: JSON.stringify({ message: "Invalid event value" }),
@@ -30,7 +30,7 @@ const handler: Handler = async (httpEvent) => {
 
     const customer = {
         _type: 'customer',
-        name: user.fullname || user.fullName || user.name,
+        name: (user.app_metadata?.provider == "google") ? user.user_metadata.full_name : user.name,
         email: user.email,
     }
 
