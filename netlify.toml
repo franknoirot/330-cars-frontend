@@ -1,10 +1,11 @@
 [build]
-  functions = "functions/"
   command = "npm run build"
   publish = "build"
+  functions = "functions-serve"
 
 [functions]
+  directory = "netlify/functions"
   node_bundler = "esbuild"
 
 [dev]
-  command = "npm run dev"
+  command = "svelte-kit dev"
