@@ -6,13 +6,13 @@
         const user = session?.user
         console.log({ session })
         if (!user) {
-            return {
-                redirect: '/',
-                status: 301,
-            }
+            // return {
+            //     redirect: '/',
+            //     // status: 301,
+            // }
+        } else {
+            customer = await getCustomerById(user.id)
         }
-
-        customer = await getCustomerById(user.id)
     }   
 </script>
 
