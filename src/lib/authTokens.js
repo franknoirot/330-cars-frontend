@@ -9,7 +9,7 @@ import { serverResponse } from '$lib/server';
 // Authentication cookie utilities
 // ------------------------------------------------------
 
-const JWT_COOKIE_NAME = 'id_jwt';
+const JWT_COOKIE_NAME = 'nf_jwt';
 
 export const parseIdentityCookies = (event) => {
   const cookies = event.request.headers.get("cookie");
