@@ -21,7 +21,7 @@
     }   
 </script>
 <script>
-    export const customer = {}
+    export let customer = {}
 </script>
 
 <h1>User Account for {customer.name}</h1>
