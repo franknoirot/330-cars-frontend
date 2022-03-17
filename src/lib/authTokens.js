@@ -3,7 +3,7 @@
 // by Clayton Farr: https://github.com/ClaytonFarr/sveltekit-netlify-stripe-fauna-example/blob/master/src/lib/utils/cookies.js
 // ======================================================
 
-import { serverResponse } from '$lib/utils/server';
+import { serverResponse } from '$lib/server';
 
 // ------------------------------------------------------
 // Authentication cookie utilities
