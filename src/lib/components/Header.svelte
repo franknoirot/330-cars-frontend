@@ -14,7 +14,10 @@
 	}
 
 	function handleSignIn() { netlifyIdentity.open() }
-	function handleSignOut() { netlifyIdentity.logout() }
+	function handleSignOut() {
+		netlifyIdentity.logout()
+		userStore.set(null)
+	}
 </script>
 
 <script>
