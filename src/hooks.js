@@ -4,6 +4,9 @@ import { parseIdentityCookies, parseJwt } from '$lib/authTokens';
 export async function handle({ event, resolve }) {
     // parse jwt from cookie in event, if present, and populate locals.user
     const { jwt } = parseIdentityCookies(event);
+
+    console.log({event, jwt})
+
     if (jwt) {
         event.locals.token = jwt;
         event.locals.user = parseJwt(jwt);
