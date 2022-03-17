@@ -11,7 +11,7 @@
                 status: 200,
             }
         } else {
-            customer = await getCustomerById(user.id)
+            customer = await getCustomerById(user.sub)
         }
     }   
 </script>
