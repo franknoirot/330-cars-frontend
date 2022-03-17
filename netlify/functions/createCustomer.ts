@@ -9,27 +9,34 @@ const client = sanityClient({
     useCdn: false,
 })
 
-const handler: Handler = async (event) => {
-    if (!event.body) {
+const handler: Handler = async ({ body }) => {
+    const { event, user } = JSON.parse(body);
+    
+    if (!event || !user) {
         return {
             statusCode: 400,
-            body: JSON.stringify({
-                message: 'Missing body'
-            }),
+            body: JSON.stringify({ message: 'Missing user info' }),
+        }
+    } else if (event !== "identity-validate") {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ message: "Invalid event value" }),
         }
     }
 
+    console.log("user info", user)
+
     const customer = {
         _type: 'customer',
-        ...JSON.parse(event.body),
+        name: user.fullname || user.fullName || user.name,
+        email: user.email,
     }
 
     const res = await client.create(customer)
     console.log(`User created, ID is ${res._id}`)
 
   return {
-    statusCode: 201,
-    body: JSON.stringify({ message: res }),
+    statusCode: 200,
   };
 };
 
