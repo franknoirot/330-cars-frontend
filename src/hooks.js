@@ -1,17 +1,44 @@
- /** @type {import('@sveltejs/kit').GetSession} */
+import { parseIdentityCookies, parseJwt } from '$lib/utils/authTokens';
+
+/** @type {import('@sveltejs/kit').Handle} */
+export async function handle({ event, resolve }) {
+    // parse jwt from cookie in event, if present, and populate locals.user
+    const { jwt } = parseIdentityCookies(event);
+    if (jwt) {
+        event.locals.token = jwt;
+        event.locals.user = parseJwt(jwt);
+    }
+    if (event.locals.user) {
+        event.locals.user.authenticated = true;
+    } else {
+        event.locals.user = {};
+        event.locals.user.authenticated = false;
+    }
+    
+    // console.log(new Date().toISOString(), ': HOOKS handle jwt :', jwt);
+    // console.log(new Date().toISOString(), ': HOOKS handle locals.user.authenticated :', event.locals.user.authenticated);
+
+    // process evented route/endpoint
+    const response = await resolve(event, {
+        ssr: !event.url.pathname.startsWith('/account'),
+      });
+
+    return {
+        ...response,
+        headers: {
+        ...response.headers,
+        // 'x-custom-header': 'potato',
+        }
+    };
+}
+
+/** @type {import('@sveltejs/kit').GetSession} */
 export function getSession(event) {
     console.log('someones is getting a session', { event })
 
     return event.locals.user
       ? {
-          user: {
-            // only include properties needed client-side —
-            // exclude anything else attached to the user
-            // like access tokens etc
-            name: event.locals.user.name,
-            email: event.locals.user.email,
-            avatar: event.locals.user.avatar
-          }
+          user: event.locals.user,
         }
       : {};
   }
