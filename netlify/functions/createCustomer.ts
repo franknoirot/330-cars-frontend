@@ -9,9 +9,11 @@ const client = sanityClient({
     useCdn: false,
 })
 
-const handler: Handler = async ({ body }) => {
-    const { event, user } = JSON.parse(body);
+const handler: Handler = async (httpEvent) => {
+    const { event, user } = JSON.parse(httpEvent.body);
     
+    console.log({ event, user, body: JSON.parse(httpEvent.body)})
+
     if (!event || !user) {
         return {
             statusCode: 400,
