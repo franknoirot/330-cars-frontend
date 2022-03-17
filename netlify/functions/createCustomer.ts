@@ -24,7 +24,7 @@ const handler: Handler = async (event) => {
         ...JSON.parse(event.body),
     }
 
-    const res = await client.createIfNotExists(customer)
+    const res = await client.create(customer)
     console.log(`User created, ID is ${res._id}`)
 
   return {
