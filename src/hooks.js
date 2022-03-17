@@ -5,7 +5,7 @@ export async function handle({ event, resolve }) {
     // parse jwt from cookie in event, if present, and populate locals.user
     const { jwt } = parseIdentityCookies(event);
 
-    console.log({event, jwt})
+    console.log({event, headers: event.request.headers.get("cookie")})
 
     if (jwt) {
         event.locals.token = jwt;

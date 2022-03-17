@@ -12,7 +12,7 @@ import { serverResponse } from '$lib/server';
 const JWT_COOKIE_NAME = 'id_jwt';
 
 export const parseIdentityCookies = (event) => {
-  const cookies = event.request.headers.cookie;
+  const cookies = event.request.headers.get("cookie");
   let jwt = null;
 
   console.log('cookies', cookies)
