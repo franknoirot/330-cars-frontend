@@ -10,3 +10,5 @@ export interface INotification {
 type NotificationsById = Map<string, INotification>;
 
 export const notifications = writable({} as NotificationsById);
+
+export const userStore = writable(null)

@@ -32,6 +32,7 @@
 	"type": "module",
 	"dependencies": {
 		"@sanity/client": "2.23",
-		"@sanity/image-url": "^1.0.1"
+		"@sanity/image-url": "^1.0.1",
+		"netlify-identity-widget": "^1.9.2"
 	}
 }

@@ -1,3 +1,22 @@
+<script context="module">
+	import netlifyIdentity from 'netlify-identity-widget'
+	import { browser } from '$app/env'
+	import { userStore } from '$lib/stores'
+
+	const storeUser = user => {
+		console.log('storing user', user)
+		userStore.set(user)
+	}
+
+	if (browser) {
+		netlifyIdentity.on('init', storeUser)
+		netlifyIdentity.init()
+	}
+
+	function handleSignIn() { netlifyIdentity.open() }
+	function handleSignOut() { netlifyIdentity.logout() }
+</script>
+
 <script>
 	import { page } from '$app/stores';
 	import Icon from '$lib/components/Icon.svelte';
@@ -20,7 +39,11 @@
 			<div class="display-contents desktop-only">
 				<li><a href="/about" class={isCurrentPage('/about')}>About</a></li>
 				<li><a href="/help" class={isCurrentPage('/help')}>Help</a></li>
-				<li><a href="/login" class={isCurrentPage('/login')}>Login</a></li>
+				{#if !$userStore}
+				<li><button class={'link-button'} on:click={handleSignIn}>Log in</button></li>
+				{:else}
+				<li><button class={'link-button'} on:click={handleSignOut}>Log out</button></li>
+				{/if}
 			</div>
 			<li class="mobile-only">
 				<a
@@ -117,13 +140,22 @@
 		white-space: nowrap;
 	}
 
-	a {
+	a, button.link-button {
 		color: inherit;
 		text-decoration: none;
 	}
 
+	button.link-button {
+		background: none;
+		font: inherit;
+		border: none;
+	}
+
 	a:hover,
-	a.active {
+	a.active,
+	button.link-button:hover,
+	button.link-button:active {
+		cursor: pointer;
 		color: cornflowerblue;
 	}
 
