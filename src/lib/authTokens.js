@@ -11,8 +11,8 @@ import { serverResponse } from '$lib/server';
 
 const JWT_COOKIE_NAME = 'id_jwt';
 
-export const parseIdentityCookies = (request) => {
-  const cookies = request.headers.cookie;
+export const parseIdentityCookies = (event) => {
+  const cookies = event.request.headers.cookie;
   let jwt = null;
   // grab JWT value, if cookie is present
   if (cookies) jwt = cookies.split('; ').find((row) => row.startsWith(JWT_COOKIE_NAME))
