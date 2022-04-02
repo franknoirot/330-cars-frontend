@@ -2,6 +2,7 @@
 	import { getCarById, validateCarDates } from '$lib/carLoaders.js';
 	import { offsetNowHours } from '$lib/timeHelpers';
 	import CarCarousel from '$lib/components/CarCarousel.svelte';
+	export const prerender = false; // set page to not pre-render for live car info
 
 	export async function load({ url, fetch, params }) {
 		const pickup = url.searchParams.get('pickup') || offsetNowHours(1.5).slice(0, -4);
@@ -30,9 +31,11 @@
 	import BookingForm from '$lib/components/BookingForm.svelte';
 	import { goto } from '$app/navigation';
 	import AvailabilityButton from '$lib/components/AvailabilityButton.svelte';
+	import { durationInDays, roundToDecimalPlaces } from '$lib/utils';
+	import BuyCTA from '$lib/components/BuyCTA.svelte';
 
 	export let car, isAvailable, pickup, dropoff;
-	let duration = 1; // trip duration in days
+	let duration = durationInDays(pickup, dropoff); // trip duration in days
 
 	$: ({ make, model, year, images, ...otherData } = car);
 	$: carTitle = `${year} ${make} ${model}`;
@@ -44,7 +47,7 @@
 	}
 
 	function handleClick(e) {
-		console.log('Clicked!');
+		console.log('Clicked!'); // TODO: Start reservation flow
 	}
 </script>
 
@@ -65,13 +68,13 @@
 				}}
 			/>
 			<AvailabilityButton {isAvailable} on:click={handleClick} />
+			<div class="cost-info">
+				<h2>${car.dailyRate}<span class="capitalized-label">&nbsp;/ day</span></h2>
+				<p>
+					<strong style="font-weight: 600">${roundToDecimalPlaces(car.dailyRate * duration, 2)}</strong> + taxes due at pickup
+				</p>
+			</div>
 		</aside>
-		<div class="cost-info">
-			<h2>${car.dailyRate}<span class="capitalized-label">&nbsp;/ day</span></h2>
-			<p>
-				<strong style="font-weight: 600">${car.dailyRate * duration}</strong> + taxes due at pickup
-			</p>
-		</div>
 	</section>
 	<section>
 		<h1>{carTitle}</h1>
@@ -94,6 +97,7 @@
 				</div>
 			{/if}
 		</div>
+		<BuyCTA />
 	</section>
 </div>
 
@@ -101,7 +105,7 @@
 	.content-wrapper {
 		display: grid;
 		gap: 5rem;
-		grid-template-columns: auto 1fr;
+		grid-template-columns: 2fr 5fr;
 		width: 100%;
 		box-sizing: border-box;
 	}

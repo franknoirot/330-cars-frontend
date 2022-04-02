@@ -14,6 +14,12 @@ const config = {
 			split: true
 		}),
 
+		// makes all pages prerendered by default, and only dynamic if opted-out
+		// docs: https://kit.svelte.dev/docs/configuration#prerender
+		// prerender: {
+		// 	default: true, 
+		// },
+
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte'
 	}

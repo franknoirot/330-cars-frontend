@@ -86,7 +86,7 @@
 
 <style>
 	header {
-		background: var(--bg);
+		background: var(--bg-light);
 		border-bottom: solid 1px hsl(190deg, 20%, 85%);
 		width: 100%;
 		box-sizing: border-box;
@@ -94,7 +94,7 @@
 
 	nav {
 		box-sizing: border-box;
-		max-width: 1260px;
+		max-width: 1366px;
 		width: 100%;
 		display: flex;
 		justify-content: space-between;
@@ -105,10 +105,8 @@
 
 	.logo-lockup {
 		display: flex;
-		align-items: center;
-		column-gap: 1rem;
-		row-gap: 0.4rem;
-		flex-wrap: wrap;
+		flex-direction: column;
+		row-gap: 0.2rem;
 	}
 
 	.tagline {
@@ -118,9 +116,9 @@
 	}
 
 	.logo {
-		width: 20vw;
-		max-width: 200px;
-		min-width: 125px;
+		width: 10vw;
+		max-width: 150px;
+		min-width: 100px;
 		display: block;
 	}
 

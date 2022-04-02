@@ -24,9 +24,9 @@
 	main {
 		box-sizing: border-box;
 		width: 100%;
-		max-width: 1280px;
+		max-width: 1366px;
 		margin: 0 auto;
-		padding: 2rem;
+		padding: 2rem 1rem;
 	}
 
 	@media (max-width: 768px) {
