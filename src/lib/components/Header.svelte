@@ -1,33 +1,8 @@
-<script context="module">
-	import netlifyIdentity from 'netlify-identity-widget';
-	import { browser } from '$app/env';
-	import { userStore } from '$lib/stores';
-
-	const storeUser = (user) => {
-		userStore.set(user);
-	};
-
-	if (browser) {
-		netlifyIdentity.on('init', storeUser);
-		netlifyIdentity.on('login', storeUser);
-		netlifyIdentity.init();
-	}
-
-	function handleSignIn() {
-		netlifyIdentity.open();
-	}
-	function handleSignOut() {
-		netlifyIdentity.logout();
-		userStore.set(null);
-	}
-</script>
-
 <script>
 	import { page } from '$app/stores';
 	import Icon from '$lib/components/Icon.svelte';
 	let menuOpen = false;
 	let isCurrentPage = (url) => ($page.url.pathname === url ? 'active' : '');
-	let showTagline = isCurrentPage('/');
 </script>
 
 <header>
@@ -36,20 +11,13 @@
 			<a href="/" class="logo">
 				<Icon type="logo" />
 			</a>
-			{#if showTagline}
-				<span class="tagline">Homegrown car rentals for Cleveland and Akron, Ohio.</span>
-			{/if}
+			<span class="tagline">Homegrown car rentals for Cleveland and Akron, Ohio.</span>
 		</div>
 		<ul class="top-nav">
 			<div class="display-contents desktop-only">
 				<li><a href="/about" class={isCurrentPage('/about')}>About</a></li>
 				<li><a href="/help" class={isCurrentPage('/help')}>Help</a></li>
-				{#if !$userStore}
-					<li><button class={'link-button'} on:click={handleSignIn}>Log in</button></li>
-				{:else}
-					<li><a href="/account" class={isCurrentPage('/account')}>Account</a></li>
-					<li><button class={'link-button'} on:click={handleSignOut}>Log out</button></li>
-				{/if}
+				<li><a href="/reservation" class={isCurrentPage('/reservation')}>Reservation</a></li>
 			</div>
 			<li class="mobile-only">
 				<a
