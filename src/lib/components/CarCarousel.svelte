@@ -1,5 +1,6 @@
 <script>
 	import { urlFor } from '$lib/sanity';
+	import Icon from './Icon.svelte';
 	export let images = [];
 	let currentIndex = 0;
 
@@ -14,10 +15,16 @@
 {#if images.length}
 	<div class="grid-wrapper">
 		<div class="main-image">
-			<img src={urlFor(images[currentIndex]).width(720)} alt={' image ' + currentIndex} />
+			<img src={urlFor(images[currentIndex]).width(720)} alt={images[currentIndex].altText} />
 			{#if images.length > 1}
-				<button class="back" on:click={decrement}>←</button>
-				<button class="forward" on:click={increment}>→</button>
+				<button class="back" on:click={decrement}>
+					Previous
+					<div class="icon"><Icon type="arrow" width="70" /></div>
+				</button>
+				<button class="forward" on:click={increment}>
+					Next
+					<div class="icon flip-x"><Icon type="arrow" width="70" /></div>
+				</button>
 			{/if}
 		</div>
 		{#if images.length > 1}
@@ -30,7 +37,7 @@
 								currentIndex = i;
 							}}
 						>
-							<img src={urlFor(image).width(150)} alt={' image ' + i} />
+							<img src={urlFor(image).width(150)} alt={image.altText} />
 						</button>
 					</li>
 				{/each}
@@ -59,31 +66,58 @@
 	}
 
 	.main-image button {
+		opacity: 0;
+		transition: opacity 0.11s ease-out;
 		position: absolute;
 		background: transparent;
+		font-weight: 600;
+		width: 15%;
 		top: 0;
 		bottom: 0;
 		border: 0;
+		display: flex;
+		padding: 1rem;
+		flex-direction: column;
+		justify-content: flex-end;
 	}
 
 	.main-image:focus-within button,
 	.main-image:hover button {
-		background: hsla(190deg, 60%, 90%, 0.2);
+		opacity: 1;
+		background: linear-gradient(
+			180deg,
+			rgba(226, 245, 255, 0) 31.54%,
+			rgba(226, 245, 255, 0.4) 100%
+		);
 	}
 
 	.main-image button:focus,
 	.main-image button:hover {
-		background: hsla(190deg, 60%, 90%, 0.4);
+		background: linear-gradient(
+			180deg,
+			rgba(226, 245, 255, 0) 31.54%,
+			rgba(226, 245, 255, 0.8) 100%
+		);
 	}
 
 	.main-image .back {
 		left: 0;
 		border-radius: 4px 0 0 4px;
+		align-items: flex-end;
 	}
 
 	.main-image .forward {
 		right: 0;
 		border-radius: 0 4px 4px 0;
+		align-items: flex-start;
+	}
+
+	.icon {
+		margin: 0.5rem 0 1rem;
+	}
+
+	.flip-x {
+		transform: scaleX(-1);
 	}
 
 	.film-strip,

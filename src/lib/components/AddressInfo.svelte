@@ -7,7 +7,7 @@
 	target="_blank"
 	rel="noopener noreferrer"
 >
-	<Icon type="mapPin" width="28"/>
+	<Icon type="mapPin" width="28" />
 	<div>
 		<small class="capitalized-label">Location</small>
 		<p>330 Arlington Road <br />Akron, OH 44312</p>

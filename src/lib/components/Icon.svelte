@@ -78,4 +78,19 @@
 			stroke-linejoin="round"
 		/>
 	</svg>
+{:else if type == 'arrow'}
+	<svg
+		viewBox="0 0 {$$restProps.width} 10"
+		fill="none"
+		xmlns="http://www.w3.org/2000/svg"
+		{...$$restProps}
+	>
+		<path
+			d="M1 5 l5 4 M1 5 l5 -4 M1 5 l{parseInt($$restProps.width) - 1} 0"
+			stroke={fill}
+			stroke-width={$$restProps.strokeWidth || 2}
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		/>
+	</svg>
 {/if}

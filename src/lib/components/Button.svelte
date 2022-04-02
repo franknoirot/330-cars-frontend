@@ -1,8 +1,4 @@
-<script>
-	import CarList from './CarList.svelte';
-</script>
-
-<button {...$$restProps}>
+<button on:click {...$$restProps}>
 	<slot />
 </button>
 
@@ -13,27 +9,17 @@
 		align-items: center;
 		justify-content: center;
 		gap: 8px;
-		padding: 12px;
+		padding: 10px;
 
-		background: #e2f5ff;
-		color: #155070;
-		border: none;
-		font-size: 1.2rem;
+		background: #0b85c9;
+		border: 1px solid rgba(226, 245, 255, 0.5);
+		color: #e2f5ff;
+		font-weight: 600;
+		font-size: 1rem;
 		border-radius: 4px;
 	}
 
 	button:hover {
-		background: #ade4ff;
-		color: #0c3a53;
-	}
-
-	button.available {
-		color: #157039;
-		background: #e2ffe8;
-	}
-
-	button.unavailable {
-		color: #8d787a;
-		background: #fff4f5;
+		background: #035785;
 	}
 </style>

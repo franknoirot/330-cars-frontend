@@ -26,10 +26,13 @@
 </script>
 
 <script>
+	import SEO from '$lib/components/SEO.svelte';
 	import BookingForm from '$lib/components/BookingForm.svelte';
 	import { goto } from '$app/navigation';
+	import AvailabilityButton from '$lib/components/AvailabilityButton.svelte';
 
 	export let car, isAvailable, pickup, dropoff;
+	let duration = 1; // trip duration in days
 
 	$: ({ make, model, year, images, ...otherData } = car);
 	$: carTitle = `${year} ${make} ${model}`;
@@ -39,40 +42,65 @@
 		if (!pickup || !dropoff) return;
 		goto(`/cars/${car._id}?pickup=${pickup}&dropoff=${dropoff}`);
 	}
+
+	function handleClick(e) {
+		console.log('Clicked!');
+	}
 </script>
 
-<svelte:head>
-	<title>Cars</title>
-</svelte:head>
-
+<SEO
+	title={`${carTitle} | 330 Cars`}
+	description={`This ${carTitle} is available for rent in Akron and Cleveland, Ohio for affordable rates, and even with pickup!`}
+/>
 <div class="content-wrapper">
 	<section class="sidebar">
 		<aside>
-			<BookingForm {pickup} {dropoff} {isAvailable} onChange={onFormChange} />
+			<BookingForm
+				{pickup}
+				{dropoff}
+				{isAvailable}
+				onChange={onFormChange}
+				on:duration_update={(e) => {
+					duration = e.detail;
+				}}
+			/>
+			<AvailabilityButton {isAvailable} on:click={handleClick} />
 		</aside>
-		{#if car.features && car.features.length}
-			<hr />
-			<div class="features">
-				{#each car.features as feature, j (j)}
-					<p>
-						<strong>{feature.primary}</strong> <br />
-						{feature.secondary}
-					</p>
-				{/each}
-			</div>
-		{/if}
+		<div class="cost-info">
+			<h2>${car.dailyRate}<span class="capitalized-label">&nbsp;/ day</span></h2>
+			<p>
+				<strong style="font-weight: 600">${car.dailyRate * duration}</strong> + taxes due at pickup
+			</p>
+		</div>
 	</section>
 	<section>
 		<h1>{carTitle}</h1>
 		<CarCarousel images={car.images} />
-		{#if car.description}<p class="description">{car.description}</p>{/if}
+		<div class="info-wrapper">
+			{#if car.description}
+				<div class="description">
+					<p class="capitalized-label">Description</p>
+					<p>{car.description}</p>
+				</div>
+			{/if}
+			{#if car.features && car.features.length}
+				<div class="features">
+					{#each car.features as feature, j (j)}
+						<p>
+							<strong>{feature.primary}</strong> <br />
+							{feature.secondary}
+						</p>
+					{/each}
+				</div>
+			{/if}
+		</div>
 	</section>
 </div>
 
 <style>
 	.content-wrapper {
 		display: grid;
-		gap: 3rem;
+		gap: 5rem;
 		grid-template-columns: auto 1fr;
 		width: 100%;
 		box-sizing: border-box;
@@ -86,27 +114,64 @@
 		top: 32px;
 	}
 
-	.description {
-		margin-block-start: 2.5rem;
-		line-height: 1.4;
+	h1 {
+		font-family: var(--serif);
+		font-size: 4rem;
+		font-weight: 600;
+		margin: 0;
+		margin-bottom: 2rem;
 	}
 
-	hr {
-		margin-top: 2rem;
-		border: solid 1px #f4f8fc;
+	.cost-info h2 {
+		font-family: var(--serif);
+		font-size: 2.5rem;
+		margin-bottom: 0;
+		margin-top: 3rem;
+	}
+
+	.cost-info .capitalized-label {
+		font-family: var(--sans-serif);
+		font-weight: 400;
+	}
+
+	.description {
+		line-height: 1.4;
+		padding-inline-start: 1.875rem;
+		position: relative;
+	}
+
+	.description::before {
+		content: '';
+		position: absolute;
+		width: 1px;
+		height: 3rem;
+		top: 0;
+		left: 0;
+		background: var(--gray);
+	}
+
+	.description .capitalized-label {
+		margin-block-start: 0;
+	}
+
+	.info-wrapper {
+		margin-block-start: 3rem;
+		display: grid;
+		grid-template-columns: 3fr 2fr;
+		gap: 2rem;
 	}
 
 	.features {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 1rem;
-		width: 80%;
-		margin: 1rem auto;
 		font-size: 1.1rem;
+		margin: 0 auto;
 	}
 
 	.features p {
 		text-align: center;
+		margin: 0 auto;
 		flex: 40%;
 	}
 

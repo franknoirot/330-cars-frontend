@@ -1,18 +1,24 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
 	import { offsetNowHours } from '$lib/timeHelpers';
 
+	const dispatch = createEventDispatcher();
 	export let onSubmit = () => {}; // no-op by default
 	export let onChange = () => {}; // no-op by default
 	export let pickup = offsetNowHours(1.5); // 1.5 hours from now
 	export let dropoff = offsetNowHours(25.5); // 25.5 hours from now
-	let duration = 24 * 60 * 60 * 1000; // 1 day in ms
+	const ONE_DAY_MS = 24 * 60 * 60 * 1000; // 1 day in ms
+	let duration = ONE_DAY_MS;
 
 	function onPickupChange(e) {
 		dropoff = new Date(new Date(pickup + 'Z').getTime() + duration).toISOString().slice(0, -1);
 	}
 
 	function onDropoffChange() {
-		duration = new Date(dropoff + 'Z').getTime() - new Date(pickup + 'Z').getTime();
+		duration = Math.ceil(
+			(new Date(dropoff + 'Z').getTime() - new Date(pickup + 'Z').getTime()) / ONE_DAY_MS
+		);
+		dispatch('duration_update', duration);
 	}
 </script>
 

@@ -2,20 +2,21 @@
 	import { loadCarsWithDates } from '$lib/carLoaders';
 	import { offsetNowHours } from '$lib/timeHelpers';
 
-	export async function load({ url, fetch }) {		
+	export async function load({ url, fetch }) {
 		const results = await loadCarsWithDates(url, fetch, {
 			pickup: offsetNowHours(1.5).slice(0, -4), // need to slice off seconds for use in Sanity query
 			dropoff: offsetNowHours(25.5).slice(0, -4)
 		});
 
 		return {
-			props: results,
-		}
+			props: results
+		};
 	}
 </script>
 
 <script>
 	import { goto } from '$app/navigation';
+	import SEO from '$lib/components/SEO.svelte';
 	import CarList from '$lib/components/CarList.svelte';
 	import BookingForm from '$lib/components/BookingForm.svelte';
 	import AddressInfo from '$lib/components/AddressInfo.svelte';
@@ -25,20 +26,28 @@
 
 	let vehicleClassFilter = 'All Classes';
 
-	$: vehicleClassCounts = (cars.length) ? cars.reduce((prev, car) => {
-		const vehicleClassObj = Object.assign({}, prev)
-		if (vehicleClassObj[car.vehicleClass] !== undefined) {
-			vehicleClassObj[car.vehicleClass]++
-		} else {
-			vehicleClassObj[car.vehicleClass] = 1
-		}
-		return vehicleClassObj
-	}, { 'All Classes': cars.length }) : [];
+	$: vehicleClassCounts = cars.length
+		? cars.reduce(
+				(prev, car) => {
+					const vehicleClassObj = Object.assign({}, prev);
+					if (vehicleClassObj[car.vehicleClass] !== undefined) {
+						vehicleClassObj[car.vehicleClass]++;
+					} else {
+						vehicleClassObj[car.vehicleClass] = 1;
+					}
+					return vehicleClassObj;
+				},
+				{ 'All Classes': cars.length }
+		  )
+		: [];
 
-	$: filteredCars = (cars.length) ? cars.filter(
-		(car) =>
-			vehicleClassFilter == 'All Classes' || car.vehicleClass === vehicleClassFilter.toLowerCase()
-	) : [];
+	$: filteredCars = cars.length
+		? cars.filter(
+				(car) =>
+					vehicleClassFilter == 'All Classes' ||
+					car.vehicleClass === vehicleClassFilter.toLowerCase()
+		  )
+		: [];
 
 	async function dateFormUpdate(e) {
 		const { pickup, dropoff } = Object.fromEntries(
@@ -48,11 +57,12 @@
 	}
 </script>
 
+<SEO />
 <div class="wrapper">
 	<aside>
 		<div>
-			<BookingForm class="home" onChange={dateFormUpdate}/>
-			<VehicleClassFilter vehicleClassesWithCounts={vehicleClassCounts} bind:vehicleClassFilter={vehicleClassFilter} />
+			<BookingForm class="home" onChange={dateFormUpdate} />
+			<VehicleClassFilter vehicleClassesWithCounts={vehicleClassCounts} bind:vehicleClassFilter />
 		</div>
 	</aside>
 	<section class="info-row">
