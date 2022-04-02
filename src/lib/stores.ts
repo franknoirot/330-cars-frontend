@@ -11,4 +11,4 @@ type NotificationsById = Map<string, INotification>;
 
 export const notifications = writable({} as NotificationsById);
 
-export const userStore = writable(null)
+export const userStore = writable(null);

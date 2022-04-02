@@ -1,22 +1,24 @@
 <script context="module">
-	import netlifyIdentity from 'netlify-identity-widget'
-	import { browser } from '$app/env'
-	import { userStore } from '$lib/stores'
+	import netlifyIdentity from 'netlify-identity-widget';
+	import { browser } from '$app/env';
+	import { userStore } from '$lib/stores';
 
-	const storeUser = user => {
-		userStore.set(user)
-	}
+	const storeUser = (user) => {
+		userStore.set(user);
+	};
 
 	if (browser) {
-		netlifyIdentity.on('init', storeUser)
-		netlifyIdentity.on('login', storeUser)
-		netlifyIdentity.init()
+		netlifyIdentity.on('init', storeUser);
+		netlifyIdentity.on('login', storeUser);
+		netlifyIdentity.init();
 	}
 
-	function handleSignIn() { netlifyIdentity.open() }
+	function handleSignIn() {
+		netlifyIdentity.open();
+	}
 	function handleSignOut() {
-		netlifyIdentity.logout()
-		userStore.set(null)
+		netlifyIdentity.logout();
+		userStore.set(null);
 	}
 </script>
 
@@ -43,10 +45,10 @@
 				<li><a href="/about" class={isCurrentPage('/about')}>About</a></li>
 				<li><a href="/help" class={isCurrentPage('/help')}>Help</a></li>
 				{#if !$userStore}
-				<li><button class={'link-button'} on:click={handleSignIn}>Log in</button></li>
+					<li><button class={'link-button'} on:click={handleSignIn}>Log in</button></li>
 				{:else}
-				<li><a href="/account" class={isCurrentPage('/account')}>Account</a></li>
-				<li><button class={'link-button'} on:click={handleSignOut}>Log out</button></li>
+					<li><a href="/account" class={isCurrentPage('/account')}>Account</a></li>
+					<li><button class={'link-button'} on:click={handleSignOut}>Log out</button></li>
 				{/if}
 			</div>
 			<li class="mobile-only">
@@ -144,7 +146,8 @@
 		white-space: nowrap;
 	}
 
-	a, button.link-button {
+	a,
+	button.link-button {
 		color: inherit;
 		text-decoration: none;
 	}

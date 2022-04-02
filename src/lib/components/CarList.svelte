@@ -73,7 +73,6 @@
 		}
 		.car-item img {
 			mix-blend-mode: normal;
-
 		}
 	}
 

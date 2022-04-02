@@ -13,29 +13,40 @@
 //    })
 
 export function serverResponse(statusCode, successful = true, body = {}, headers = null) {
-    // use for SvelteKit .js endpoints (returns code as 'status')
-    // do not user for 'additional_functions' functions (need to return code as 'statusCode')
-  
-    // set statusMessage
-    let statusMessage;
-    if (successful) { statusMessage = 'success' };
-    if (!successful && !body.statusMessage) { statusMessage = 'error' };
-  
-    // set errorMessage
-    let errorMessage = body.error;
-    if ((statusCode === 405 || statusCode === 502) && !body.error) errorMessage = 'Issue reaching server - please submit again.';
-    if ((statusCode === 500 && !body.error) || body.error?.toLowerCase().includes('unexpected token')) errorMessage = 'We encountered a system error - please try again.';
-    if ((statusCode === 401 || statusCode === 403) && !body.error) errorMessage = 'Unauthorized Request';
-    if (statusCode === 200 && !successful && !body.error) { errorMessage = 'Request error.' };
-    if (statusCode === 404 && !body.error) { errorMessage = 'Item not found.' };
-  
-    // compose body
-    if (successful) body = { statusMessage, ...body };
-      else body = { statusMessage, error: errorMessage, ...body };
-  
-    return {
-      status: statusCode,
-      headers,
-      body: JSON.stringify(body),
-    }
-  }
+	// use for SvelteKit .js endpoints (returns code as 'status')
+	// do not user for 'additional_functions' functions (need to return code as 'statusCode')
+
+	// set statusMessage
+	let statusMessage;
+	if (successful) {
+		statusMessage = 'success';
+	}
+	if (!successful && !body.statusMessage) {
+		statusMessage = 'error';
+	}
+
+	// set errorMessage
+	let errorMessage = body.error;
+	if ((statusCode === 405 || statusCode === 502) && !body.error)
+		errorMessage = 'Issue reaching server - please submit again.';
+	if ((statusCode === 500 && !body.error) || body.error?.toLowerCase().includes('unexpected token'))
+		errorMessage = 'We encountered a system error - please try again.';
+	if ((statusCode === 401 || statusCode === 403) && !body.error)
+		errorMessage = 'Unauthorized Request';
+	if (statusCode === 200 && !successful && !body.error) {
+		errorMessage = 'Request error.';
+	}
+	if (statusCode === 404 && !body.error) {
+		errorMessage = 'Item not found.';
+	}
+
+	// compose body
+	if (successful) body = { statusMessage, ...body };
+	else body = { statusMessage, error: errorMessage, ...body };
+
+	return {
+		status: statusCode,
+		headers,
+		body: JSON.stringify(body)
+	};
+}

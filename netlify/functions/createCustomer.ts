@@ -1,42 +1,42 @@
-import { Handler } from "@netlify/functions";
-import sanityClient from "@sanity/client"
+import { Handler } from '@netlify/functions';
+import sanityClient from '@sanity/client';
 
 const client = sanityClient({
-    projectId: 'yycjemqk',
-    dataset: 'production',
-    apiVersion: '2022-03-16',
-    token: process.env.SANITY_TOKEN,
-    useCdn: false,
-})
+	projectId: 'yycjemqk',
+	dataset: 'production',
+	apiVersion: '2022-03-16',
+	token: process.env.SANITY_TOKEN,
+	useCdn: false
+});
 
 const handler: Handler = async (httpEvent) => {
-    const { event, user } = JSON.parse(httpEvent.body);
-    
-    if (!event || !user) {
-        return {
-            statusCode: 400,
-            body: JSON.stringify({ message: 'Missing user info' }),
-        }
-    } else if (event !== "validate") {
-        return {
-            statusCode: 400,
-            body: JSON.stringify({ message: "Invalid event value" }),
-        }
-    }
+	const { event, user } = JSON.parse(httpEvent.body);
 
-    const customer = {
-        _type: 'customer',
-        _id: user.id,
-        name: user.user_metadata.full_name,
-        email: user.email,
-    }
+	if (!event || !user) {
+		return {
+			statusCode: 400,
+			body: JSON.stringify({ message: 'Missing user info' })
+		};
+	} else if (event !== 'validate') {
+		return {
+			statusCode: 400,
+			body: JSON.stringify({ message: 'Invalid event value' })
+		};
+	}
 
-    const res = await client.createIfNotExists(customer)
+	const customer = {
+		_type: 'customer',
+		_id: user.id,
+		name: user.user_metadata.full_name,
+		email: user.email
+	};
 
-  return {
-    statusCode: 200,
-    body: res,
-  };
+	const res = await client.createIfNotExists(customer);
+
+	return {
+		statusCode: 200,
+		body: res
+	};
 };
 
 export { handler };

@@ -1,9 +1,8 @@
 import { client } from './sanity.js';
 
 function queryUrl(query) {
-    const baseUrl = 'https://yycjemqk.api.sanity.io/v2022-02-22/data/query/production?query='
-    console.log({ baseUrl, query })
-    return baseUrl + encodeURIComponent(query.replace(/\s/g,''))
+	const baseUrl = 'https://yycjemqk.api.sanity.io/v2022-02-22/data/query/production?query=';
+	return baseUrl + encodeURIComponent(query.replace(/\s/g, ''));
 }
 
 export async function loadCarsWithDates(url, fetch, options) {
@@ -23,7 +22,7 @@ export async function loadCarsWithDates(url, fetch, options) {
             _id
         }`;
 
-		cars = await client.fetch(query)
+		cars = await client.fetch(query);
 	} else {
 		// query is all cars that are not referenced in a trip that overlaps the given dates.
 		const query = `*[_type == "car" &&
@@ -42,15 +41,15 @@ export async function loadCarsWithDates(url, fetch, options) {
         }`;
 
 		cars = await client.fetch(query, {
-            pickup,
-            dropoff,
-        })
+			pickup,
+			dropoff
+		});
 	}
 
 	return {
-        pickup,
-        dropoff,
-        cars
+		pickup,
+		dropoff,
+		cars
 	};
 }
 
@@ -69,7 +68,7 @@ export async function getCarById(id, fetch) {
         features
     }`;
 
-	const car = await client.fetch(query, { id })
+	const car = await client.fetch(query, { id });
 
 	return car;
 }
@@ -83,18 +82,18 @@ export async function validateCarDates(id, fetch, options) {
     ]) < 1`;
 
 	const isAvailable = await client.fetch(query, {
-            id,
-            pickup,
-            dropoff,
-        })
+		id,
+		pickup,
+		dropoff
+	});
 
 	return isAvailable;
 }
 
 async function handleResponse(res) {
-    if (res.ok) {
-        return (await res.json()).result
-    } else {
-        throw new Error(res.message)
-    }
+	if (res.ok) {
+		return (await res.json()).result;
+	} else {
+		throw new Error(res.message);
+	}
 }
