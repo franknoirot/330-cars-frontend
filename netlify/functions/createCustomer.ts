@@ -32,10 +32,10 @@ const handler: Handler = async (httpEvent) => {
     }
 
     const res = await client.createIfNotExists(customer)
-    console.log(`User created, ID is ${res._id}`)
 
   return {
     statusCode: 200,
+    body: res,
   };
 };
 

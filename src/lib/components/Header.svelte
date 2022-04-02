@@ -4,7 +4,6 @@
 	import { userStore } from '$lib/stores'
 
 	const storeUser = user => {
-		console.log('storing user', user)
 		userStore.set(user)
 	}
 

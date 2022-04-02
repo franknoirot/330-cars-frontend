@@ -16,9 +16,6 @@ export async function handle({ event, resolve }) {
         event.locals.user.authenticated = false;
     }
     
-    // console.log(new Date().toISOString(), ': HOOKS handle jwt :', jwt);
-    // console.log(new Date().toISOString(), ': HOOKS handle locals.user.authenticated :', event.locals.user.authenticated);
-
     // process evented route/endpoint
     const response = await resolve(event, {
         ssr: !event.url.pathname.startsWith('/account'),

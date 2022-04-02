@@ -4,7 +4,6 @@
 
     export async function load({ session }) {
         const user = session?.user
-        console.log({ user })
         if (!user.authenticated) {
             return {
                 redirect: '/',

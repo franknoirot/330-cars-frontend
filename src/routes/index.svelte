@@ -8,7 +8,6 @@
 			dropoff: offsetNowHours(25.5).slice(0, -4)
 		});
 
-		console.log('loaded cars results', results)
 		return {
 			props: results,
 		}
@@ -20,10 +19,21 @@
 	import CarList from '$lib/components/CarList.svelte';
 	import BookingForm from '$lib/components/BookingForm.svelte';
 	import AddressInfo from '$lib/components/AddressInfo.svelte';
+	import VehicleClassFilter from '$lib/components/VehicleClassFilter.svelte';
 	export let cars = [];
 	export let pickup, dropoff;
 
 	let vehicleClassFilter = 'All Classes';
+
+	$: vehicleClassCounts = (cars.length) ? cars.reduce((prev, car) => {
+		const vehicleClassObj = Object.assign({}, prev)
+		if (vehicleClassObj[car.vehicleClass] !== undefined) {
+			vehicleClassObj[car.vehicleClass]++
+		} else {
+			vehicleClassObj[car.vehicleClass] = 1
+		}
+		return vehicleClassObj
+	}, { 'All Classes': cars.length }) : [];
 
 	$: filteredCars = (cars.length) ? cars.filter(
 		(car) =>
@@ -40,41 +50,10 @@
 
 <div class="wrapper">
 	<aside>
-		<BookingForm
-			class="home"
-			onChange={dateFormUpdate}
-			onSubmit={dateFormUpdate}
-			numResults={cars.length}
-		/>
-		<fieldset class="vc-fields">
-			<legend for="vehicleClass" class="vc-label"
-				>Car Class
-				{#if cars.length !== filteredCars.length}<span>
-						filtered to {filteredCars.length} cars</span
-					>{/if}
-			</legend>
-			<label>
-				<input
-					name="vehicleClass"
-					type="radio"
-					value="All Classes"
-					bind:group={vehicleClassFilter}
-				/>
-				All Classes
-			</label>
-			<label>
-				<input name="vehicleClass" type="radio" value="economy" bind:group={vehicleClassFilter} />
-				Economy
-			</label>
-			<label>
-				<input name="vehicleClass" type="radio" value="standard" bind:group={vehicleClassFilter} />
-				Standard
-			</label>
-			<label>
-				<input name="vehicleClass" type="radio" value="luxury" bind:group={vehicleClassFilter} />
-				Luxury
-			</label>
-		</fieldset>
+		<div>
+			<BookingForm class="home" onChange={dateFormUpdate}/>
+			<VehicleClassFilter vehicleClassesWithCounts={vehicleClassCounts} bind:vehicleClassFilter={vehicleClassFilter} />
+		</div>
 	</aside>
 	<section class="info-row">
 		<div class="hidden-small-tablet"><AddressInfo /></div>
@@ -95,7 +74,9 @@
 		display: grid;
 		grid-template-columns: auto 1fr;
 		grid-template-rows: auto auto;
-		gap: 3rem;
+		column-gap: 5rem;
+		row-gap: 3rem;
+		position: relative;
 	}
 
 	aside {
@@ -103,7 +84,11 @@
 		grid-column: 1 / 2;
 		grid-row: span 2;
 	}
-	aside * {
+
+	aside > div {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
 		position: sticky;
 		top: 32px;
 	}
@@ -127,30 +112,13 @@
 
 	.welcome-statement a {
 		text-decoration: none;
+		font-weight: 700;
+		color: inherit;
+	}
+
+	.welcome-statement a:hover,
+	.welcome-statement a:focus {
 		color: cornflowerblue;
-	}
-
-	.vc-fields {
-		border: solid 1px hsl(190deg, 60%, 96%);
-		box-sizing: border-box;
-	}
-
-	.vc-fields > label {
-		display: block;
-		margin: 1rem 0;
-	}
-
-	.vc-fields input {
-		accent-color: #48e;
-	}
-
-	.vc-label {
-		font-weight: bold;
-	}
-
-	.vc-label span {
-		color: gray;
-		font-weight: normal;
 	}
 
 	@media (max-width: 920px) {
@@ -167,27 +135,6 @@
 
 		aside {
 			grid-row: 2 / 3;
-		}
-
-		aside * {
-			position: static;
-		}
-
-		.vc-fields {
-			display: flex;
-			gap: 1rem;
-			flex-wrap: wrap;
-			padding: 0.5rem 1rem;
-			margin: 1rem;
-		}
-
-		.vc-fields legend {
-			padding-inline-start: 1rem;
-		}
-
-		.vc-fields label {
-			flex: 40%;
-			margin: 0.25rem;
 		}
 	}
 
