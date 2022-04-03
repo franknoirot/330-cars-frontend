@@ -24,11 +24,12 @@
 
 <script>
 	import { pickup, dropoff } from '$lib/stores';
+	import { goto } from '$app/navigation';
 	import SEO from '$lib/components/SEO.svelte';
 	import BookingForm from '$lib/components/BookingForm.svelte';
 	import AvailabilityButton from '$lib/components/AvailabilityButton.svelte';
-	import { durationInDays, roundToDecimalPlaces } from '$lib/utils';
 	import BuyCTA from '$lib/components/BuyCTA.svelte';
+	import { durationInDays, roundToDecimalPlaces } from '$lib/utils';
 
 	export let car, isAvailable;
 	let duration = durationInDays($pickup, $dropoff); // trip duration in days
@@ -43,7 +44,7 @@
 	}
 
 	function handleClick(e) {
-		console.log('Clicked!'); // TODO: Start reservation flow
+		goto(`/reserve/${car._id}`)
 	}
 </script>
 
