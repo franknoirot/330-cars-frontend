@@ -3,7 +3,6 @@
 	import { urlFor } from '$lib/sanity';
 	export let cars = [];
 	export let columns = 3;
-	export let pickup, dropoff;
 </script>
 
 {#if cars.length}
@@ -11,9 +10,7 @@
 		{#each cars as car, i ('car-' + i)}
 			<a
 				class="car-item"
-				href={'/cars/' +
-					car._id +
-					(pickup && dropoff ? `?pickup=${pickup}&dropoff=${dropoff}` : '')}
+				href={'/cars/' + car._id }
 				in:fly={{ y: 20, duration: 200, delay: 50 * i }}
 				out:fade={{ duration: 100 }}
 			>

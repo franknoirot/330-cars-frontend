@@ -5,10 +5,15 @@ function queryUrl(query) {
 	return baseUrl + encodeURIComponent(query.replace(/\s/g, ''));
 }
 
-export async function loadCarsWithDates(url, fetch, options) {
-	const pickup = url.searchParams.get('pickup') || options.pickup;
-	const dropoff = url.searchParams.get('dropoff') || options.dropoff;
+// Sanity needs its datetimes without seconds or milliseconds,
+// but some browser functions and inputs return them. This slices that off if present
+export function prepTimeString(timeString) {
+	return (timeString.includes('.'))
+		? timeString.slice(0, -4) // need to slice off seconds from datetime input for use in Sanity query
+		: timeString
+}
 
+export async function loadCarsWithDates(pickup, dropoff) {
 	let cars = [];
 
 	if (!pickup || !dropoff) {
@@ -46,14 +51,10 @@ export async function loadCarsWithDates(url, fetch, options) {
 		});
 	}
 
-	return {
-		pickup,
-		dropoff,
-		cars
-	};
+	return cars
 }
 
-export async function getCarById(id, fetch) {
+export async function getCarById(id) {
 	const query = `*[_type == "car" && _id == $id][0] {
         _id,
         make,
@@ -73,7 +74,7 @@ export async function getCarById(id, fetch) {
 	return car;
 }
 
-export async function validateCarDates(id, fetch, options) {
+export async function validateCarDates(id, options) {
 	const { pickup, dropoff } = options;
 
 	const query = `count(*[_type == "trip" &&

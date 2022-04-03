@@ -3,8 +3,6 @@
 	export let title = '330 Cars | Cleveland-Akron Car Rentals';
 	export let description = 'A small family-operated car rental service for Ohians';
 	export let image = '';
-
-	console.log({ page: $page });
 </script>
 
 <svelte:head>

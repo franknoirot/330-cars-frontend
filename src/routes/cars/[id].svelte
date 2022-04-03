@@ -1,49 +1,45 @@
 <script context="module">
-	import { getCarById, validateCarDates } from '$lib/carLoaders.js';
+	import { getCarById, prepTimeString, validateCarDates } from '$lib/carLoaders.js';
 	import { offsetNowHours } from '$lib/timeHelpers';
 	import CarCarousel from '$lib/components/CarCarousel.svelte';
+	import { pickupInitialValue, dropoffInitialValue } from '$lib/stores';
 	export const prerender = false; // set page to not pre-render for live car info
 
-	export async function load({ url, fetch, params }) {
-		const pickup = url.searchParams.get('pickup') || offsetNowHours(1.5).slice(0, -4);
-		const dropoff = url.searchParams.get('dropoff') || offsetNowHours(25.5).slice(0, -4);
+	export async function load({ params }) {
+		const car = await getCarById(params.id);
 
-		const car = await getCarById(params.id, fetch);
-
-		const isAvailable = await validateCarDates(params.id, fetch, {
-			pickup,
-			dropoff
+		const isAvailable = await validateCarDates(params.id, {
+			pickup: prepTimeString(pickupInitialValue),
+			dropoff: prepTimeString(dropoffInitialValue),
 		});
 
 		return {
 			props: {
 				car,
 				isAvailable,
-				pickup,
-				dropoff
 			}
 		};
 	}
 </script>
 
 <script>
+	import { pickup, dropoff } from '$lib/stores';
 	import SEO from '$lib/components/SEO.svelte';
 	import BookingForm from '$lib/components/BookingForm.svelte';
-	import { goto } from '$app/navigation';
 	import AvailabilityButton from '$lib/components/AvailabilityButton.svelte';
 	import { durationInDays, roundToDecimalPlaces } from '$lib/utils';
 	import BuyCTA from '$lib/components/BuyCTA.svelte';
 
-	export let car, isAvailable, pickup, dropoff;
-	let duration = durationInDays(pickup, dropoff); // trip duration in days
+	export let car, isAvailable;
+	let duration = durationInDays($pickup, $dropoff); // trip duration in days
 
-	$: ({ make, model, year, images, ...otherData } = car);
-	$: carTitle = `${year} ${make} ${model}`;
+	$: carTitle = `${car.year} ${car.make} ${car.model}`;
 
 	async function onFormChange(e) {
-		const { pickup, dropoff } = Object.fromEntries(new FormData(e.target.form).entries());
-		if (!pickup || !dropoff) return;
-		goto(`/cars/${car._id}?pickup=${pickup}&dropoff=${dropoff}`);
+		isAvailable = await validateCarDates(car._id, {
+			pickup: prepTimeString($pickup),
+			dropoff: prepTimeString($dropoff),
+		});
 	}
 
 	function handleClick(e) {
@@ -59,8 +55,6 @@
 	<section class="sidebar">
 		<aside>
 			<BookingForm
-				{pickup}
-				{dropoff}
 				{isAvailable}
 				onChange={onFormChange}
 				on:duration_update={(e) => {

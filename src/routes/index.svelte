@@ -1,28 +1,29 @@
 <script context="module">
-	import { loadCarsWithDates } from '$lib/carLoaders';
-	import { offsetNowHours } from '$lib/timeHelpers';
+	import { loadCarsWithDates, prepTimeString } from '$lib/carLoaders';
+	import { pickupInitialValue, dropoffInitialValue } from '$lib/stores';
 
-	export async function load({ url, fetch }) {
-		const results = await loadCarsWithDates(url, fetch, {
-			pickup: offsetNowHours(1.5).slice(0, -4), // need to slice off seconds for use in Sanity query
-			dropoff: offsetNowHours(25.5).slice(0, -4)
-		});
+	export async function load() {		
+		const cars = await loadCarsWithDates(			
+			pickupInitialValue,
+			dropoffInitialValue,
+		);
 
 		return {
-			props: results
+			props: {
+				cars
+			},
 		};
 	}
 </script>
 
 <script>
-	import { goto } from '$app/navigation';
+	import { pickup, dropoff } from '$lib/stores';
 	import SEO from '$lib/components/SEO.svelte';
 	import CarList from '$lib/components/CarList.svelte';
 	import BookingForm from '$lib/components/BookingForm.svelte';
 	import AddressInfo from '$lib/components/AddressInfo.svelte';
 	import VehicleClassFilter from '$lib/components/VehicleClassFilter.svelte';
 	export let cars = [];
-	export let pickup, dropoff;
 
 	let vehicleClassFilter = 'All Classes';
 
@@ -50,10 +51,14 @@
 		: [];
 
 	async function dateFormUpdate(e) {
-		const { pickup, dropoff } = Object.fromEntries(
-			new FormData(e.target.form || e.target).entries()
-		);
-		goto(`/?pickup=${pickup}&dropoff=${dropoff}`);
+		const newCars = await loadCarsWithDates(
+			prepTimeString($pickup),
+			prepTimeString($dropoff),
+		)
+
+		console.log({ newCars, cars, p: prepTimeString($pickup) })
+
+		cars = newCars
 	}
 </script>
 
@@ -75,7 +80,7 @@
 		</p>
 	</section>
 	<section class="car-list">
-		<CarList cars={filteredCars} {pickup} {dropoff} columns={3} />
+		<CarList cars={filteredCars} columns={3} />
 	</section>
 </div>
 

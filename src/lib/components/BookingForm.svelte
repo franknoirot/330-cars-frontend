@@ -1,21 +1,20 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
+	import { pickup, dropoff } from '$lib/stores';
 	import { offsetNowHours } from '$lib/timeHelpers';
 	import { durationInDays, ONE_DAY_MS } from '$lib/utils';
 
 	const dispatch = createEventDispatcher();
 	export let onSubmit = () => {}; // no-op by default
 	export let onChange = () => {}; // no-op by default
-	export let pickup = offsetNowHours(1.5); // 1.5 hours from now
-	export let dropoff = offsetNowHours(25.5); // 25.5 hours from now
 	let duration = ONE_DAY_MS;
 
 	function onPickupChange(e) {
-		dropoff = new Date(new Date(pickup + 'Z').getTime() + duration).toISOString().slice(0, -1);
+		$dropoff = new Date(new Date($pickup + 'Z').getTime() + duration).toISOString().slice(0, -1);
 	}
 
 	function onDropoffChange() {
-		duration = durationInDays(pickup, dropoff)
+		duration = durationInDays($pickup, $dropoff)
 		dispatch('duration_update', duration);
 	}
 </script>
@@ -35,7 +34,7 @@
 					type="datetime-local"
 					id="pickup"
 					name="pickup"
-					bind:value={pickup}
+					bind:value={$pickup}
 					step={15 * 60}
 					min={offsetNowHours(1)}
 					on:change={onPickupChange}
@@ -48,9 +47,9 @@
 					type="datetime-local"
 					id="dropoff"
 					name="dropoff"
-					bind:value={dropoff}
+					bind:value={$dropoff}
 					step={15 * 60}
-					min={pickup}
+					min={$pickup}
 					on:change={onDropoffChange}
 					required
 				/>
