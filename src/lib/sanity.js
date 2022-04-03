@@ -14,16 +14,16 @@ export function urlFor(source) {
 	return builder.image(source);
 }
 
-export async function getCustomerById(id) {
-	const query = `*[_type == "customer" && _id == $id][0] {
+export async function getAllExtras() {
+	const query = `*[_type == "extra"] {
         _id,
-        name,
-		status,
-		license,
-		stripeId
+        title,
+		description,
+		price,
+		rateType
     }`;
 
-	const customer = await client.fetch(query, { id });
+	const extras = await client.fetch(query);
 
-	return customer;
+	return extras;
 }
