@@ -56,8 +56,6 @@
 			prepTimeString($dropoff),
 		)
 
-		console.log({ newCars, cars, p: prepTimeString($pickup) })
-
 		cars = newCars
 	}
 </script>
