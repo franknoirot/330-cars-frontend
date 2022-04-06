@@ -1,5 +1,5 @@
 <script context="module">
-	import { getCarById } from '$lib/carLoaders.js';
+	import { getCarById } from '$lib/sanity';
 	import { getAllExtras, urlFor } from '$lib/sanity';
 	export const prerender = false; // set page to not pre-render for live car info
 
@@ -41,7 +41,7 @@
 		<div class="extras-area">
 			{#each extras as extra, i (extra._id)}
 			<label class={'extra ' + (($tripExtras[extra._id]) ? 'active' : '')}>
-				<input type="checkbox" class="visually-hidden" id={extra._id} on:change={e => setExtraSelection(e.target.checked, extra)}/>
+				<input type="checkbox" class="visually-hidden" id={extra._id} checked={!!$tripExtras[extra._id]} on:change={e => setExtraSelection(e.target.checked, extra)}/>
 				<h2>{ extra.title }</h2>
 				<p>{ extra.description }</p>
 				<p class="price-rate"><span class="price">${ extra.price }</span> / { extra.rateType }</p>
@@ -65,7 +65,6 @@
 		font-size: 4rem;
 		font-weight: 600;
 		margin: 0;
-		margin-bottom: 2rem;
 	}
 
 	.btn-link {
@@ -87,7 +86,7 @@
 		display: grid;
 		grid-template-columns: 1fr auto;
 		align-items: center;
-		margin: 3rem 0 1.5rem;
+		margin: 3rem 0;
 	}
 
 	.heading-row:first-of-type {

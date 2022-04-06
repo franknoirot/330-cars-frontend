@@ -1,6 +1,5 @@
 <script context="module">
-	import { getCarById, prepTimeString, validateCarDates } from '$lib/carLoaders.js';
-	import { offsetNowHours } from '$lib/timeHelpers';
+	import { getCarById, prepTimeString, validateCarDates } from '$lib/sanity';
 	import CarCarousel from '$lib/components/CarCarousel.svelte';
 	import { pickupInitialValue, dropoffInitialValue } from '$lib/stores';
 	export const prerender = false; // set page to not pre-render for live car info

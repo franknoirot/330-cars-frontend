@@ -1,6 +1,6 @@
 import { browser } from '$app/env';
 import { writable } from 'svelte/store';
-import { prepTimeString } from './carLoaders';
+import { prepTimeString } from './sanity';
 import { offsetNowHours } from './timeHelpers';
 
 export interface INotification {
@@ -13,21 +13,27 @@ export interface INotification {
 type NotificationsById = Map<string, INotification>;
 
 export const notifications = writable({} as NotificationsById);
-
 export const userStore = writable(null);
 
+
+// TODO: Implement a check on localStorage date values against this
 const isAfterNow = storedValue => new Date(storedValue).getTime() > new Date().getTime()
 
+// Trip pickup, saved as a Date.
+// Initial value is used in the individual car page to validate availability on load,
+// Because Svelte stores are not available within that context.
 export const pickupInitialValue = fromLocalStorage('pickup', offsetNowHours(1.5))
 export const pickup = writable(prepTimeString(pickupInitialValue))
 toLocalStorage(pickup, 'pickup')
 
+// Trip dropoff, saved as a Date.
 export const dropoffInitialValue = fromLocalStorage('dropoff', offsetNowHours(25.5))
 export const dropoff = writable(prepTimeString(dropoffInitialValue))
 toLocalStorage(dropoff, 'dropoff')
 
-export const tripExtrasInitialValue = fromLocalStorage('tripExtras', {}, )
-export const tripExtras = writable(tripExtrasInitialValue)
+// Trip extra service packages. Saved as an object with keys matching each selected Extra's Sanity ID.
+// If user selects and deselects an Extra, this object will contain keys with `false` values that need to be filtered out.
+export const tripExtras = writable(fromLocalStorage('tripExtras', {}, ))
 toLocalStorage(tripExtras, 'tripExtras')
 
 // Get value from localStorage if in browser and the value is stored, otherwise fallback
@@ -51,12 +57,14 @@ function toLocalStorage(store, storageKey: string) {
 	}
 }
 
+// Simple agnostic casting to string for localStorage interface above
 function toString(value) {
 	if (typeof value === "string") { return value }
 	else if (typeof value === "object") { return JSON.stringify(value) }
 	else { return value.toString() }
 }
 
+// Simple agnostic casting from string for localStorage interface above
 function fromString(value, type) {
 	switch (type) {
 		case "string":

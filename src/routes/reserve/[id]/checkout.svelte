@@ -1,5 +1,5 @@
 <script context="module">
-	import { getCarById } from '$lib/carLoaders.js';
+	import { getCarById } from '$lib/sanity';
 	export const prerender = false; // set page to not pre-render for live car info
 
 	export async function load({ params }) {

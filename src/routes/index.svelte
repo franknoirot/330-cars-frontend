@@ -1,9 +1,9 @@
 <script context="module">
-	import { loadCarsWithDates, prepTimeString } from '$lib/carLoaders';
+	import { allCarsWithinDates, prepTimeString } from '$lib/sanity';
 	import { pickupInitialValue, dropoffInitialValue } from '$lib/stores';
 
 	export async function load() {		
-		const cars = await loadCarsWithDates(			
+		const cars = await allCarsWithinDates(			
 			pickupInitialValue,
 			dropoffInitialValue,
 		);
@@ -51,7 +51,7 @@
 		: [];
 
 	async function dateFormUpdate(e) {
-		const newCars = await loadCarsWithDates(
+		const newCars = await allCarsWithinDates(
 			prepTimeString($pickup),
 			prepTimeString($dropoff),
 		)
