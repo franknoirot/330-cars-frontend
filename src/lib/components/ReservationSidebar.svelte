@@ -1,7 +1,16 @@
 <script>
     import { urlFor } from '$lib/sanity';
+    import { durationInDays, roundToDecimalPlaces } from '$lib/utils';
     export let car, pickup, dropoff, tripExtras = false
     $: carTitle = car && `${car.year} ${car.make} ${car.model}`;
+
+    const costs = {
+        rental: roundToDecimalPlaces(car.dailyRate * durationInDays($pickup, $dropoff), 2),
+        extras: roundToDecimalPlaces(Object.values(tripExtras).filter(x => x).reduce((prev, curr) => prev + curr.price, 0), 2),
+        serviceFee: 3.00,
+    }
+
+    costs.tax = roundToDecimalPlaces((costs.rental + costs.extras) * .1, 2)
 
     function formatDate(dateString) {
 		function normalizeHour(hour) {
@@ -54,7 +63,7 @@
         {#if tripExtras}
         <div>
             <div class="heading-row">
-                <h2>Protection & Extras</h2>
+                <h2>Protection & extras</h2>
                 <a href={`/reserve/${car._id}`} class="capitalized-label">Modify</a>
             </div>
             {#each Object.values(tripExtras).filter(isNotFalsey => isNotFalsey) as extra, i (extra._id)}
@@ -63,6 +72,36 @@
                 <span>${ extra.price } / { extra.rateType }</span>
             </div>
             {/each}
+        </div>
+        {/if}
+        {#if pickup && dropoff && car && tripExtras}
+        <div>
+            <div class="heading-row">
+                <h2>Total cost</h2>
+            </div>
+            <div>
+                <div class="basic-row">
+                    <span>Vehicle rental</span>
+                    <span>${ costs.rental }</span>
+                </div>
+                <div class="basic-row">
+                    <span>Production & extras</span>
+                    <span>${ costs.extras }</span>
+                </div>
+                <div class="basic-row">
+                    <span>Tax</span>
+                    <span>${ costs.tax }</span>
+                </div>
+                <div class="basic-row">
+                    <span>Service Fee</span>
+                    <span>${ costs.serviceFee }</span>
+                </div>
+                <hr>
+                <div class="basic-row">
+                    <strong>Total</strong>
+                    <span>${ roundToDecimalPlaces(Object.values(costs).reduce((prev, curr) => prev + curr, 0), 2) }</span>
+                </div>
+            </div>
         </div>
         {/if}
     </aside>

@@ -29,8 +29,8 @@
 		}, Object.fromEntries(formData.entries()))
 
 		console.log(formObj)
-		
-		const res = await fetch('/.netlify/createTrip', {
+
+		const res = await fetch('/.netlify/functions/createTrip', {
 			method: 'POST', // *GET, POST, PUT, DELETE, etc.
 			mode: 'same-origin', // no-cors, *cors, same-origin
 			credentials: 'same-origin', // include, *same-origin, omit
