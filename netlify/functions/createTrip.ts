@@ -10,8 +10,10 @@ const client = sanityClient({
 });
 
 const handler: Handler = async (httpEvent) => {
-	console.log({httpEvent})
-	const trip = httpEvent.body;
+	console.log({ body: httpEvent.body})
+
+	// HTTP POST bodies are always strings
+	const trip = JSON.parse(httpEvent.body);
 
 	if (!trip) {
 		return {
