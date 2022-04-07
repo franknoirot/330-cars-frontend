@@ -99,6 +99,10 @@
 		padding: 0;
 	}
 
+	li {
+		margin: 0;
+	}
+
 	.vl {
 		height: 1.5rem;
 		border-inline-start: 1px solid #b5cde8;
