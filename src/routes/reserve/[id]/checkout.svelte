@@ -49,6 +49,8 @@
 		})
 
 		console.log({ res })
+		const resData = await res.body.json()
+		console.log({ resData })
 	}
 </script>
 
@@ -78,8 +80,8 @@
 							<input id="card" name="card" type="text" required />
 						</div>
 						<div>
-							<label class="capitalized-label" for="exp-date">Exp. Date</label>
-							<input id="exp-date" name="exp-date" type="text" required />
+							<label class="capitalized-label" for="expDate">Exp. Date</label>
+							<input id="expDate" name="expDate" type="text" required />
 						</div>
 					</div>
 					<p>
