@@ -1,5 +1,6 @@
 import { Handler } from '@netlify/functions';
 import sanityClient from '@sanity/client';
+import { SanityImageObject } from '@sanity/image-url/lib/types/types';
 
 const client = sanityClient({
 	projectId: 'yycjemqk',
@@ -22,7 +23,7 @@ const handler: Handler = async (httpEvent) => {
 
 	trip._type = "trip"
 
-	const res = await client.createIfNotExists(trip);
+	const res = await client.create(trip);
 
 	return {
 		statusCode: 200,
