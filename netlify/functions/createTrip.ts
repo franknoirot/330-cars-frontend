@@ -1,5 +1,6 @@
 import { Handler } from '@netlify/functions';
 import sanityClient from '@sanity/client';
+import { nanoid } from 'nanoid'
 
 const client = sanityClient({
 	projectId: 'yycjemqk',
@@ -24,11 +25,16 @@ const handler: Handler = async (httpEvent) => {
 
 	trip._type = "trip"
 
+	// Sanity is supposed to auto-generate IDs, but appears to be broken
+	// Instead generating something that looks like a  _rev value,
+	// so we are generating our own.
+	trip._id = nanoid()
+
 	const res = await client.create(trip);
 
 	return {
-		statusCode: 200,
-		body: JSON.stringify(res)
+		statusCode: 201,
+		body: JSON.stringify(res),
 	};
 };
 

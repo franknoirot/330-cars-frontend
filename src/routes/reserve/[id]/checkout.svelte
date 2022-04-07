@@ -34,6 +34,7 @@
   			})),
 			scheduledPickup: $pickup,
 			scheduledDropoff: $dropoff,
+			status: "Scheduled",
 		}, Object.fromEntries(formData.entries()))
 
 		console.log(formObj)
