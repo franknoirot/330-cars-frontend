@@ -25,9 +25,11 @@
 		const formData = new FormData(e.target)
 		const formObj = Object.assign({
 			car: car._id,
-			extras: [...$tripExtras.map(extra => extra._id)],
+			extras: Object.values($tripExtras).filter(isNotFalsey => isNotFalsey).map(extra => extra._id),
 		}, Object.fromEntries(formData.entries()))
 
+		console.log(formObj)
+		
 		const res = await fetch('/.netlify/createTrip', {
 			method: 'POST', // *GET, POST, PUT, DELETE, etc.
 			mode: 'same-origin', // no-cors, *cors, same-origin
