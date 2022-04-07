@@ -30,6 +30,9 @@ const handler: Handler = async (httpEvent) => {
 	// so we are generating our own.
 	trip._id = nanoid()
 
+	// array items appear need a _key value
+	trip.extras.forEach(extra => (extra._key = nanoid()))
+
 	const res = await client.create(trip);
 
 	return {
