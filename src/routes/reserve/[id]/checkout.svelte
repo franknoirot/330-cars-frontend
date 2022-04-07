@@ -14,9 +14,10 @@
 </script>
 
 <script>
-    import { pickup, dropoff, tripExtras } from '$lib/stores'
+    import { pickup, dropoff, tripExtras, tripId } from '$lib/stores'
     import ReservationSidebar from '$lib/components/ReservationSidebar.svelte'
 	import Icon from '$lib/components/Icon.svelte';
+import { goto } from '$app/navigation';
 
     export let car
 
@@ -37,8 +38,6 @@
 			status: "Scheduled",
 		}, Object.fromEntries(formData.entries()))
 
-		console.log(formObj)
-
 		const res = await fetch('/.netlify/functions/createTrip', {
 			method: 'POST', // *GET, POST, PUT, DELETE, etc.
 			mode: 'same-origin', // no-cors, *cors, same-origin
@@ -50,8 +49,10 @@
 		})
 
 		console.log({ res })
-		const resData = await res.body.json()
-		console.log({ resData })
+		const resData = await res.json()
+		console.log({resData})
+		$tripId = resData._id
+		goto('/confirmation')
 	}
 </script>
 
