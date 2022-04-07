@@ -38,6 +38,7 @@ toLocalStorage(tripExtras, 'tripExtras')
 
 // Trip ID. The ID of the user's most recent reserved trip.
 export const tripId = writable(fromLocalStorage('tripId', ''))
+toLocalStorage(tripId, 'tripId')
 
 // Get value from localStorage if in browser and the value is stored, otherwise fallback
 function fromLocalStorage(storageKey: string, fallbackValue: any) {
