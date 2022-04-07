@@ -90,10 +90,10 @@
 			<div class="split-grid-1-3">
 				<h3>Billing information</h3>
 				<div>
-					<label class="capitalized-label" for="address-1">Address Line 1</label>
-					<input id="address-1" name="address-1" type="text" required />
-					<label class="capitalized-label" for="address-2">Address Line 2</label>
-					<input id="address-2" name="address-2" type="text" required />
+					<label class="capitalized-label" for="address_1">Address Line 1</label>
+					<input id="address_1" name="address_1" type="text" required />
+					<label class="capitalized-label" for="address_2">Address Line 2</label>
+					<input id="address_2" name="address_2" type="text" required />
 					<div class="split-grid-2-1-1">
 						<div>
 							<label class="capitalized-label" for="city">City</label>
@@ -104,8 +104,8 @@
 							<input id="state" name="state" type="text" maxlength="2" required />
 						</div>
 						<div>
-							<label class="capitalized-label" for="zip">ZIP Code</label>
-							<input id="zip" name="zip" type="text" maxlength="5" required />
+							<label class="capitalized-label" for="zipCode">ZIP Code</label>
+							<input id="zipCode" name="zipCode" type="text" maxlength="5" required />
 						</div>
 					</div>
 				</div>
