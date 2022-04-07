@@ -10,7 +10,8 @@ const client = sanityClient({
 });
 
 const handler: Handler = async (httpEvent) => {
-	const trip = JSON.parse(httpEvent.body);
+	console.log({httpEvent})
+	const trip = httpEvent.body;
 
 	if (!trip) {
 		return {
