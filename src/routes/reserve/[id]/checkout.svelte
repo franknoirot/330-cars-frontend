@@ -24,8 +24,16 @@
 		e.preventDefault()
 		const formData = new FormData(e.target)
 		const formObj = Object.assign({
-			car: car._id,
-			extras: Object.values($tripExtras).filter(isNotFalsey => isNotFalsey).map(extra => extra._id),
+			car: {
+				_type: 'reference',
+				_ref: car._id,
+			},
+			extras: Object.values($tripExtras).filter(isNotFalsey => isNotFalsey).map(extra => ({
+				_type: 'reference',
+				_ref: extra._id,
+  			})),
+			scheduledPickup: $pickup,
+			scheduledDropoff: $dropoff,
 		}, Object.fromEntries(formData.entries()))
 
 		console.log(formObj)
