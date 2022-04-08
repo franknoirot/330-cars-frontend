@@ -97,7 +97,7 @@ import { goto } from '$app/navigation';
 					<label class="capitalized-label" for="address_1">Address Line 1</label>
 					<input id="address_1" name="address_1" type="text" required />
 					<label class="capitalized-label" for="address_2">Address Line 2</label>
-					<input id="address_2" name="address_2" type="text" required />
+					<input id="address_2" name="address_2" type="text" />
 					<div class="split-grid-2-1-1">
 						<div>
 							<label class="capitalized-label" for="city">City</label>
