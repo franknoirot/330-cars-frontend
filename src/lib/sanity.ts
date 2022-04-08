@@ -166,3 +166,33 @@ export async function getAllExtras() : Promise<TripExtra> {
 
 	return extras;
 }
+
+
+/**
+ * Query Sanity for a Trip document by its ID
+ * @returns Trip
+ */
+ export async function getTripById(id) {
+	const query = `*[_type == "trip" && _id == $id][0] {
+        _id,
+        name,
+		email,
+		phone,
+		scheduledPickup,
+		scheduledDropoff,
+		car-> {
+			_id,
+			make,
+			model,
+			year,
+		},
+		extras[]-> {
+			_id,
+			title,
+		}
+    }`;
+
+	const trip = await client.fetch(query, { id });
+
+	return trip;
+}
