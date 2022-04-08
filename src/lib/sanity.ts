@@ -1,3 +1,4 @@
+import fetch from 'isomorphic-fetch';
 import sanityClient from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 const publicPreviewToken = 'adwlkfjatw4oi3'

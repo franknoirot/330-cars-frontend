@@ -34,6 +34,7 @@
 		"@netlify/functions": "^1.0.0",
 		"@sanity/client": "2.23",
 		"@sanity/image-url": "^1.0.1",
+		"isomorphic-fetch": "^3.0.0",
 		"nanoid": "^3.3.2"
 	}
 }
