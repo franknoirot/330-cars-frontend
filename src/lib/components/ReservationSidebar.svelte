@@ -64,7 +64,7 @@
         <div>
             <div class="heading-row">
                 <h2>Protection & extras</h2>
-                <a href={`/reserve/${car._id}`} class="capitalized-label">Modify</a>
+                <a href={`/cars/${car._id}/reserve`} class="capitalized-label">Modify</a>
             </div>
             {#each Object.values(tripExtras).filter(isNotFalsey => isNotFalsey) as extra, i (extra._id)}
             <div class="basic-row">

@@ -43,7 +43,7 @@
 	}
 
 	function handleClick(e) {
-		goto(`/reserve/${car._id}`)
+		goto(`/cars/${car._id}/reserve`)
 	}
 </script>
 

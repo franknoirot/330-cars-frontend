@@ -33,7 +33,7 @@
 	<section>
 		<div class="heading-row">
 			<h1>Protection & Extras</h1>
-			<a href={`/reserve/${car._id}/checkout`} class="btn-link">
+			<a href={`/cars/${car._id}/checkout`} class="btn-link">
 				Checkout
 				<Icon type="arrow" width="20" class="flip-x"/>
 			</a>
