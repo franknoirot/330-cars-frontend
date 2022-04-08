@@ -1,5 +1,6 @@
 import sanityClient from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
+const publicPreviewToken = 'adwlkfjatw4oi3'
 
 /**
  * Basic Sanity client implementation following startup guide
@@ -7,15 +8,51 @@ import imageUrlBuilder from '@sanity/image-url';
 export const client = sanityClient({
 	projectId: 'yycjemqk',
 	dataset: 'production',
-	apiVersion: '2022-02-21',
-	useCdn: false
+	apiVersion: '2022-04-08',
+	useCdn: true
 });
+
+/**
+ * Wraps Sanity client with preview authentication into a
+ * serverless function call
+ */
+class PreviewClient {
+	async fetch(query, params) {
+		return await fetch('/.netlify/functions/preview', {
+			method: 'POST', // *GET, POST, PUT, DELETE, etc.
+			mode: 'same-origin', // no-cors, *cors, same-origin
+			credentials: 'same-origin', // include, *same-origin, omit
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ query, params }),
+		})
+	}
+}
+
+const previewClient = new PreviewClient()
 
 // Util wrapper for Sanity Image API 
 const builder = imageUrlBuilder(client);
 export function urlFor(source) {
 	return builder.image(source);
 }
+
+// 🂱 GENERAL SANITY UTILS
+
+/**
+ * Sanity query snippet to get the latest draft entry of a model,
+ * with fallback to latest published document
+ * @param modelName 
+ * @param preview 
+ * @returns {string}
+ */
+const draftWithFallbackSnippet = (modelName: string, preview: boolean) => (preview)
+		? `coalesce(
+			*[_id == 'drafts.' + $id && _type == "${ modelName }"][0], 
+			*[_id == $id && _type == "${ modelName }"][0]
+		  )`
+		: `*[_id == $id && _type == "${ modelName }"][0]`
 
 
 // 🚗 CAR QUERY UTILS
@@ -90,12 +127,13 @@ type Car = {
 }
 
 /**
- * Query Sanity for a Car with the provided ID
+ * Query Sanity for a Car with the provided ID.
+ * Supports preview mode.
  * @param {string} id 
  * @returns {Promise<Car>}
  */
-export async function getCarById(id) : Promise<Car> {
-	const query = `*[_type == "car" && _id == $id][0] {
+export async function getCarById(id, options = { preview: false, token: '' }) : Promise<Car> {
+	const query = `${ draftWithFallbackSnippet('car', options.preview) } {
         _id,
         make,
         model,
@@ -109,7 +147,11 @@ export async function getCarById(id) : Promise<Car> {
         features
     }`;
 
-	const car = await client.fetch(query, { id });
+	console.log({ query })
+
+	const usedClient = (options.preview && options.token && options.token === publicPreviewToken) ? previewClient : client
+
+	const car = await usedClient.fetch(query, { id });
 
 	return car;
 }
