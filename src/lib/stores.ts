@@ -18,6 +18,13 @@ export const userStore = writable(null);
 export const globalSettingsInitialValue = fromLocalStorage('globalSettings', {
 	companyName: '330 Cars',
 	companyPhone: '330-858-6940',
+	companyAddress: {
+		street: '1 Super duper Way',
+		street_2: 'Apt 4',
+		city: 'Akron',
+		state: 'OH',
+		zipCode: '55555',
+	}
 })
 export const globalSettings = writable(globalSettingsInitialValue)
 toLocalStorage(globalSettings, 'globalSettings')

@@ -1,16 +1,31 @@
 <script>
+	import { globalSettings } from '$lib/stores';
 	import Icon from '$lib/components/Icon.svelte';
+
+	let {
+		street,
+		street_2,
+		city,
+		state,
+		zipCode
+	} = $globalSettings.companyAddress
+
+	let formattedAddress = street + '<br>'
+		+ (street_2 ? street_2 + '<br>' : '')
+		+ `${ city }, ${ state } ${ zipCode }`
+
+	let addressSlug = (`${ street }+${ city }+${ state }+${ zipCode }`).replace(' ', '+')
 </script>
 
 <a
-	href="https://www.google.com/maps/place/330+N+Arlington+St,+Akron,+OH+44305/@41.0814338,-81.4928358,17z"
+	href={"https://www.google.com/maps/place/" + addressSlug}
 	target="_blank"
 	rel="noopener noreferrer"
 >
 	<Icon type="mapPin" width="28" />
 	<div>
 		<small class="capitalized-label">Location</small>
-		<p>330 Arlington Road <br />Akron, OH 44312</p>
+		<p>{@html formattedAddress }</p>
 	</div>
 </a>
 

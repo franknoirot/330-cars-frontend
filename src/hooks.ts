@@ -18,9 +18,9 @@ export async function handle({ event, resolve }) {
         event.params.preview = false
     }
 
-    console.log({
-        newPreview, ongoingPreview, exitPreview
-    })
+    // console.log({
+    //     newPreview, ongoingPreview, exitPreview
+    // })
 
     const response = await resolve(event);
 
