@@ -27,7 +27,7 @@ const handler: Handler = async (httpEvent) => {
 		};
 	}
 
-    const res = await previewClient.fetch(body);
+    const res = await previewClient.fetch(body.query, body.params);
 
     console.log({ res })
 

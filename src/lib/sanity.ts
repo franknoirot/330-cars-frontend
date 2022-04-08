@@ -2,6 +2,8 @@ import fetch from 'isomorphic-fetch';
 import sanityClient from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 const publicPreviewToken = 'adwlkfjatw4oi3'
+const origin = (process.env.NODE_ENV == "development") ? 'http://localhost:8888' : 'https://dev--330-cars.netlify.app';
+
 
 /**
  * Basic Sanity client implementation following startup guide
@@ -19,15 +21,15 @@ export const client = sanityClient({
  */
 class PreviewClient {
 	async fetch(query, params) {
-		return await fetch('/.netlify/functions/preview', {
+		return await fetch(origin + '/.netlify/functions/preview', {
 			method: 'POST', // *GET, POST, PUT, DELETE, etc.
-			mode: 'same-origin', // no-cors, *cors, same-origin
-			credentials: 'same-origin', // include, *same-origin, omit
+			// mode: 'same-origin', // no-cors, *cors, same-origin
+			// credentials: 'same-origin', // include, *same-origin, omit
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({ query, params }),
-		})
+		}).then(res => res.json())
 	}
 }
 
@@ -48,13 +50,12 @@ export function urlFor(source) {
  * @param preview 
  * @returns {string}
  */
-const draftWithFallbackSnippet = (modelName: string, preview: boolean) => (preview)
-		? `coalesce(
-			*[_id == 'drafts.' + $id && _type == "${ modelName }"][0], 
-			*[_id == $id && _type == "${ modelName }"][0]
-		  )`
-		: `*[_id == $id && _type == "${ modelName }"][0]`
-
+const byIdWithDraftFallback = (query: string) => (
+	`coalesce(
+		*[_id == 'drafts.' + $id][0] ${ query }, 
+		*[_id == $id][0] ${ query }
+	)`
+)
 
 // 🚗 CAR QUERY UTILS
 
@@ -134,7 +135,7 @@ type Car = {
  * @returns {Promise<Car>}
  */
 export async function getCarById(id, options = { preview: false, token: '' }) : Promise<Car> {
-	const query = `${ draftWithFallbackSnippet('car', options.preview) } {
+	const query = byIdWithDraftFallback(`{
         _id,
         make,
         model,
@@ -146,9 +147,7 @@ export async function getCarById(id, options = { preview: false, token: '' }) : 
         status,
         description,
         features
-    }`;
-
-	console.log({ query })
+    }`);
 
 	const usedClient = (options.preview && options.token && options.token === publicPreviewToken) ? previewClient : client
 

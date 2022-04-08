@@ -4,6 +4,7 @@
 	"engineStrict": true,
 	"scripts": {
 		"dev": "svelte-kit dev",
+		"ntl-dev": "netlify dev",
 		"build": "svelte-kit build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",

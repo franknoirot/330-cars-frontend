@@ -10,8 +10,6 @@
 			token: url.searchParams.get('token')
 		});
 
-		console.log({ car })
-
 		const isAvailable = await validateCarDates(params.id, {
 			pickup: prepTimeString(pickupInitialValue),
 			dropoff: prepTimeString(dropoffInitialValue),
