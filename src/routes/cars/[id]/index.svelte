@@ -33,8 +33,15 @@
 	export let car, isAvailable;
 	let duration = durationInDays($pickup, $dropoff); // trip duration in days
 
+	// TODO: make this CMS editable
+	let cta = {
+        title: "Renting can be the best test drive.",
+        body: "Love renting this car? Take it home! All of our cars are available for purchase. Call now to learn more."
+    }
+
 	$: carTitle = `${car.year} ${car.make} ${car.model}`;
 
+	// Check if the car is available at the newly selected dates
 	async function onFormChange(e) {
 		isAvailable = await validateCarDates(car._id, {
 			pickup: prepTimeString($pickup),
@@ -42,6 +49,7 @@
 		});
 	}
 
+	// Used by reserve button to advance through reservation flow
 	function handleClick(e) {
 		goto(`/cars/${car._id}/reserve`)
 	}
@@ -91,7 +99,10 @@
 				</div>
 			{/if}
 		</div>
-		<BuyCTA />
+		<BuyCTA>
+			<h2>{ cta.title }</h2>
+        	<p>{ cta.body }</p>
+		</BuyCTA>
 	</section>
 </div>
 

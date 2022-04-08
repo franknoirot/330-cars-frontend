@@ -9,6 +9,7 @@
 	<div class="car-list" style={`--columns-desktop: ${columns}`}>
 		{#each cars as car, i ('car-' + i)}
 			<a
+				sveltekit:prefetch
 				class="car-item"
 				href={'/cars/' + car._id }
 				in:fly={{ y: 20, duration: 200, delay: 50 * i }}

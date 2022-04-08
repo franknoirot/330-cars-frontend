@@ -1,15 +1,11 @@
 <script>
-import Icon from "./Icon.svelte"
-
-    export let title = "Renting can be the best test drive."
-    export let body = "Love renting this car? Take it home! All of our cars are available for purchase. Call now to learn more."
+    import Icon from "./Icon.svelte"
     export let phoneNumber = "330-858-6940"
 </script>
 
 <section>
     <div>
-        <h2>{ title }</h2>
-        <p>{ body }</p>
+        <slot />
     </div>
     <a href={ 'tel:' + phoneNumber }>
         <Icon type="phone" width="28" />
