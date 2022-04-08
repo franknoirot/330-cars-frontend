@@ -15,6 +15,13 @@ type NotificationsById = Map<string, INotification>;
 export const notifications = writable({} as NotificationsById);
 export const userStore = writable(null);
 
+export const globalSettingsInitialValue = fromLocalStorage('globalSettings', {
+	companyName: '330 Cars',
+	companyPhone: '330-858-6940',
+})
+export const globalSettings = writable(globalSettingsInitialValue)
+toLocalStorage(globalSettings, 'globalSettings')
+
 
 // TODO: Implement a check on localStorage date values against this
 const isAfterNow = storedValue => new Date(storedValue).getTime() > new Date().getTime()

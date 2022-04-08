@@ -41,7 +41,7 @@ export function urlFor(source) {
 	return builder.image(source);
 }
 
-// 🂱 GENERAL SANITY UTILS
+// 🚀 GENERAL SANITY UTILS
 
 /**
  * Sanity query snippet to get the latest draft entry of a model,
@@ -56,6 +56,18 @@ const byIdWithDraftFallback = (query: string) => (
 		*[_id == $id][0] ${ query }
 	)`
 )
+
+export async function getGlobalSettings() {
+	const query = `*[_type == "settings"][0] {
+		companyName,
+		companyAddress,
+		companyPhone,
+		openingTime,
+		closingTime
+	}`
+
+	return await client.fetch(query)
+}
 
 // 🚗 CAR QUERY UTILS
 

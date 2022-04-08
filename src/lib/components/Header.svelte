@@ -1,6 +1,9 @@
 <script>
 	import { page } from '$app/stores';
 	import Icon from '$lib/components/Icon.svelte';
+
+	export let phoneNumber = '330-858-6940'
+
 	let menuOpen = false;
 	let isCurrentPage = (url) => ($page.url.pathname === url ? 'active' : '');
 </script>
@@ -30,9 +33,9 @@
 			</li>
 			<div class="vl" />
 			<li class="phone-number">
-				<a href="tel:3308586940">
+				<a href={`tel:${ phoneNumber }`}>
 					<Icon type="phone" width="20" />
-					<span class="desktop-only"><strong>330</strong>-858-6940</span>
+					<span class="desktop-only">{ phoneNumber }</span>
 				</a>
 			</li>
 			<li class="mobile-only menu-toggle">

@@ -1,6 +1,7 @@
 <script>
+    import { globalSettings } from "$lib/stores";
     import Icon from "./Icon.svelte"
-    export let phoneNumber = "330-858-6940"
+    export let phoneNumber = $globalSettings.companyPhone || "330-858-6940"
 </script>
 
 <section>

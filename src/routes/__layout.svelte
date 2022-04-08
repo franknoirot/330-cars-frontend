@@ -1,12 +1,33 @@
+<script context="module">
+	import { getGlobalSettings } from '$lib/sanity';
+
+	export async function load() {
+		const globalSettings = await getGlobalSettings()
+		return {
+			props: {
+				globalSettings
+			}
+		}
+	}
+</script>
+
 <script>
-	import '../app.css';
+	import { globalSettings as globalSettingsStore } from '$lib/stores';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import NotificationList from '$lib/components/NotificationList.svelte';
+	import '../app.css';
+	export let globalSettings = {}
+
+	// whenever fetched global settings become available, stash them into a
+	// localStorage-back Svelte store.
+	$: if (globalSettingsStore) {
+		$globalSettingsStore = globalSettings
+	}
 </script>
 
 <div>
-	<Header />
+	<Header phoneNumber={globalSettings.companyPhone} />
 	<main>
 		<slot />
 		<NotificationList />
