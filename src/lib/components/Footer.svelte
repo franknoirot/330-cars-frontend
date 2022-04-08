@@ -1,8 +1,8 @@
 <footer>
 	<nav>
 		<div>
-			<a href="/terms"><strong>Terms of Service</strong></a>
-			<a href="/privacy"><strong>Privacy</strong></a>
+			<a href="/terms-of-use"><strong>Terms of Use</strong></a>
+			<a href="/privacy-policy"><strong>Privacy</strong></a>
 		</div>
 		<a
 			class="designer-badge"

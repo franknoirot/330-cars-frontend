@@ -238,3 +238,29 @@ export async function getAllExtras() : Promise<TripExtra> {
 
 	return trip;
 }
+
+// 📄 PAGE QUERY UTILS
+
+type Page = {
+	_id: string,
+	slug: string,
+	seo: {
+		title: string,
+		description: string,
+		image?: object
+	},
+	content: object[]
+}
+
+export async function getPageBySlug(slug) : Promise<Page> {
+	const query = `*[_type == "page" && slug.current == $slug][0] {
+		_id,
+		slug,
+		seo,
+		content,
+	}`
+
+	const page = await client.fetch(query, { slug })
+
+	return page;
+}

@@ -18,8 +18,6 @@ const handler: Handler = async (httpEvent) => {
     // HTTP POST bodies are always strings
 	const body = JSON.parse(httpEvent.body);
 
-    console.log({ body, httpEvent })
-
     if (!(body && body.query)) {
 		return {
 			statusCode: 400,
@@ -28,8 +26,6 @@ const handler: Handler = async (httpEvent) => {
 	}
 
     const res = await previewClient.fetch(body.query, body.params);
-
-    console.log({ res })
 
     return {
 		statusCode: 200,
