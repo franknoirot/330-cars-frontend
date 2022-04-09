@@ -18,6 +18,6 @@
 </script>
 
 {#if page.seo}
-<SEO title={page.seo.title} />
+<SEO title={page.seo.metaTitle} description={page.seo.metaDescription} />
 {/if}
 <BlockContent blocks={page.content} />

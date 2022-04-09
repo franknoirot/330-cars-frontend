@@ -1,11 +1,13 @@
 <script>
 	import { page } from '$app/stores';
+	import { globalSettings } from '$lib/stores';
 	import Icon from '$lib/components/Icon.svelte';
 
 	export let phoneNumber = '330-858-6940'
 
 	let menuOpen = false;
 	let isCurrentPage = (url) => ($page.url.pathname === url ? 'active' : '');
+	let tagline = $globalSettings.microCopy.find(item => item.key === 'tagline').value || 'Homegrown car rentals for Cleveland and Akron, Ohio.'
 </script>
 
 <header>
@@ -14,7 +16,7 @@
 			<a href="/" class="logo">
 				<Icon type="logo" />
 			</a>
-			<span class="tagline">Homegrown car rentals for Cleveland and Akron, Ohio.</span>
+			<span class="tagline">{ tagline }</span>
 		</div>
 		<ul class="top-nav">
 			<div class="display-contents desktop-only">

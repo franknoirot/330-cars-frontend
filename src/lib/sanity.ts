@@ -63,7 +63,8 @@ export async function getGlobalSettings() {
 		companyAddress,
 		companyPhone,
 		openingTime,
-		closingTime
+		closingTime,
+		microCopy[]
 	}`
 
 	return await client.fetch(query)
