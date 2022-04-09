@@ -1,9 +1,22 @@
 <script>
+import { browser } from '$app/env';
+
     import { goto } from '$app/navigation';
     import { makeIcsFile } from '$lib/calendar';
     import { globalSettings, pickup, dropoff, tripId, userStore } from '$lib/stores'
+import { offsetNowHours } from '$lib/timeHelpers';
     let pickupDateTime = new Date($pickup)
     let calURL = ''
+
+    // If the user is missing any of the necessary values, exit
+    if (!($tripId && $pickup && $dropoff) && browser) {
+        goto('/')
+    } else if (new Date($dropoff).getTime() < new Date().getTime()) {
+        $pickup = offsetNowHours(1.5)
+        $dropoff = offsetNowHours(25.5)
+        goto('/')
+    }
+    
 
     $: if ($pickup && $dropoff) {
         calURL = makeIcsFile(
@@ -14,9 +27,9 @@
         )
     }
 
-    // if (!$tripId) goto('/')
 </script>
 
+{#if $tripId && $pickup && $dropoff}
 <h1>Your reservation is confirmed.</h1>
 <div class="split-grid-1-3">
     <h2>Reservation ID</h2>
@@ -43,6 +56,7 @@
         </p>
     </div>
 </div>
+{/if}
 
 
 <style>
