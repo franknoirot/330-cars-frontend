@@ -1,10 +1,29 @@
 <script context="module">
-	import { getAllExtras, getCarById } from '$lib/sanity';
+	import { getAllExtras, getCarById, prepTimeString, validateCarDates } from '$lib/sanity';
 	export const prerender = false; // set page to not pre-render for live car info
 
 	export async function load({ params }) {
 		const car = await getCarById(params.id, { preview: false });
 		const extras = await getAllExtras();
+
+		if (!car) {
+			return {
+				status: 301,
+				redirect: '/',
+			}
+		}
+
+		const hasValidDates = await validateCarDates(params.id, {
+			pickup: prepTimeString(pickupInitialValue),
+			dropoff: prepTimeString(dropoffInitialValue),
+		})
+
+		if (!(hasValidDates && pickupInitialValue && dropoffInitialValue)) {
+			return {
+				status: 301,
+				redirect: '/cars/' + params.id,
+			}
+		}
 
 		return {
 			props: {
@@ -18,7 +37,7 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
 	import ReservationSidebar from '$lib/components/ReservationSidebar.svelte';
-	import { pickup, dropoff, tripExtras } from '$lib/stores';
+	import { pickup, dropoff, tripExtras, pickupInitialValue, dropoffInitialValue } from '$lib/stores';
 	import type { TripExtra } from '$lib/sanity';
 	import { durationInDays, roundToDecimalPlaces } from '$lib/utils';
 	import { getCosts } from '$lib/accounting';

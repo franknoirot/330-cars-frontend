@@ -9,6 +9,13 @@
 			preview: isPreviewInitialValue,
 		});
 
+		if (!car) {
+			return {
+				status: 301,
+				redirect: '/',
+			}
+		}
+
 		const isAvailable = await validateCarDates(params.id, {
 			pickup: prepTimeString(pickupInitialValue),
 			dropoff: prepTimeString(dropoffInitialValue),

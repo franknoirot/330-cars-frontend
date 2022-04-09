@@ -1,9 +1,28 @@
 <script context="module">
-	import { getCarById } from '$lib/sanity';
+	import { getCarById, prepTimeString, validateCarDates } from '$lib/sanity';
 	export const prerender = false; // set page to not pre-render for live car info
 
 	export async function load({ params }) {
 		const car = await getCarById(params.id);
+
+		if (!car) {
+			return {
+				status: 301,
+				redirect: '/',
+			}
+		}
+
+		const hasValidDates = await validateCarDates(params.id, {
+			pickup: prepTimeString(pickupInitialValue),
+			dropoff: prepTimeString(dropoffInitialValue),
+		})
+
+		if (!(hasValidDates && pickupInitialValue && dropoffInitialValue)) {
+			return {
+				status: 301,
+				redirect: '/cars/' + params.id,
+			}
+		}
 
 		return {
 			props: {
@@ -14,7 +33,7 @@
 </script>
 
 <script>
-    import { pickup, dropoff, tripExtras, tripId, userStore } from '$lib/stores'
+    import { pickup, dropoff, tripExtras, tripId, userStore, pickupInitialValue, dropoffInitialValue } from '$lib/stores'
     import ReservationSidebar from '$lib/components/ReservationSidebar.svelte'
 	import Icon from '$lib/components/Icon.svelte';
 	import { goto } from '$app/navigation';
