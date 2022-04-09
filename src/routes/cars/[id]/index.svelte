@@ -4,10 +4,9 @@
 	import { pickupInitialValue, dropoffInitialValue } from '$lib/stores';
 	export const prerender = false; // set page to not pre-render for live car info
 
-	export async function load({ params, url }) {
+	export async function load({ params, url, props }) {
 		const car = await getCarById(params.id, {
 			preview: url.searchParams.has('preview'),
-			token: url.searchParams.get('token')
 		});
 
 		const isAvailable = await validateCarDates(params.id, {

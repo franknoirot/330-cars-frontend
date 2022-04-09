@@ -17,7 +17,7 @@
     import { pickup, dropoff, tripExtras, tripId } from '$lib/stores'
     import ReservationSidebar from '$lib/components/ReservationSidebar.svelte'
 	import Icon from '$lib/components/Icon.svelte';
-import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 
     export let car
 

@@ -1,9 +1,15 @@
 import fetch from 'isomorphic-fetch';
+import * as cookie from 'cookie';
 import sanityClient from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
+import { browser } from '$app/env';
+
 const publicPreviewToken = 'adwlkfjatw4oi3'
 const origin = (process.env.NODE_ENV == "development") ? 'http://localhost:8888' : 'https://dev--330-cars.netlify.app';
 
+// Preview state
+const cookies = (browser && window) ? cookie.parse(window.document.cookie) : ''
+export const isPreview = cookies && cookies.previewToken === publicPreviewToken
 
 /**
  * Basic Sanity client implementation following startup guide
@@ -147,7 +153,7 @@ type Car = {
  * @param {string} id 
  * @returns {Promise<Car>}
  */
-export async function getCarById(id, options = { preview: false, token: '' }) : Promise<Car> {
+export async function getCarById(id, options) : Promise<Car> {
 	const query = byIdWithDraftFallback(`{
         _id,
         make,
@@ -162,7 +168,7 @@ export async function getCarById(id, options = { preview: false, token: '' }) : 
         features
     }`);
 
-	const usedClient = (options.preview && options.token && options.token === publicPreviewToken) ? previewClient : client
+	const usedClient = (options.preview) ? previewClient : client
 
 	const car = await usedClient.fetch(query, { id });
 
