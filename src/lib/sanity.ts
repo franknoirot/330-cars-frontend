@@ -157,12 +157,13 @@ export async function getCarById(id, options) : Promise<Car> {
         vinNumber,
         mileage,
         dailyRate,
+		tankSize,
         status,
         description,
         features
     }`);
 
-	const usedClient = (options.preview) ? previewClient : client
+	const usedClient = (options?.preview) ? previewClient : client
 
 	const car = await usedClient.fetch(query, { id });
 
@@ -195,12 +196,13 @@ export async function validateCarDates(id: string, options) : Promise<boolean> {
 
 
 // 💅 TRIP EXTRA QUERY UTILS
-type TripExtra = {
+export type TripExtra = {
 	_id: string,
 	title: string,
 	description: string,
-	price: number,
-	rateType: string,
+	basePrice: number,
+	ratePrice: number,
+	rateType: "trip"|"day"|"gallon",
 }
 
 
@@ -213,7 +215,8 @@ export async function getAllExtras() : Promise<TripExtra> {
         _id,
         title,
 		description,
-		price,
+		basePrice,
+		ratePrice,
 		rateType
     }`;
 

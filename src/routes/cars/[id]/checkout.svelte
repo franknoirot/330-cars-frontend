@@ -18,8 +18,12 @@
     import ReservationSidebar from '$lib/components/ReservationSidebar.svelte'
 	import Icon from '$lib/components/Icon.svelte';
 	import { goto } from '$app/navigation';
+	import { getCosts } from '$lib/accounting';
 
     export let car
+
+	const costs = getCosts({pickup: $pickup, dropoff: $dropoff}, car, $tripExtras)
+    const totalPrice = costs.reduce((acc, curr) => acc + curr[1], 0)
 
 	async function submitForm(e) {
 		e.preventDefault()
@@ -35,7 +39,10 @@
   			})),
 			scheduledPickup: $pickup,
 			scheduledDropoff: $dropoff,
+			lineItems: costs.map(([label, cost]) => ({ label, cost, _key: label })),
+			totalPrice,
 			status: "Scheduled",
+
 		}, Object.fromEntries(formData.entries()))
 
 		const res = await fetch('/.netlify/functions/createTrip', {
@@ -48,16 +55,15 @@
 			body: JSON.stringify(formObj)
 		})
 
-		console.log({ res })
 		const resData = await res.json()
-		console.log({resData})
+
 		$tripId = resData._id
 		goto('/confirmation')
 	}
 </script>
 
 <div class="content-wrapper">
-	<ReservationSidebar {car} {pickup} {dropoff} tripExtras={$tripExtras} />	
+	<ReservationSidebar {car} {pickup} {dropoff} tripExtras={$tripExtras} {costs} {totalPrice} />	
     <section>
         <h1>Checkout</h1>
 		<form on:submit={submitForm}>

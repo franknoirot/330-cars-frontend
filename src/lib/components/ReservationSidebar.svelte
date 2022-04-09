@@ -1,16 +1,11 @@
 <script>
+    import { getCosts, taxRate } from '$lib/accounting';
     import { urlFor } from '$lib/sanity';
-    import { durationInDays, roundToDecimalPlaces } from '$lib/utils';
-    export let car, pickup, dropoff, tripExtras = false
+    import { roundToDecimalPlaces } from '$lib/utils';
+    export let car, pickup, dropoff, tripExtras, costs, totalPrice
     $: carTitle = car && `${car.year} ${car.make} ${car.model}`;
 
-    const costs = {
-        rental: roundToDecimalPlaces(car.dailyRate * durationInDays($pickup, $dropoff), 2),
-        extras: roundToDecimalPlaces(Object.values(tripExtras).filter(x => x).reduce((prev, curr) => prev + curr.price, 0), 2),
-        serviceFee: 3.00,
-    }
-
-    costs.tax = roundToDecimalPlaces((costs.rental + costs.extras) * .1, 2)
+    const extrasSubtotal = roundToDecimalPlaces(costs.filter(lineItem => lineItem[0].includes('extra')).reduce((acc, curr) => acc + curr[1], 0), 2)
 
     function formatDate(dateString) {
 		function normalizeHour(hour) {
@@ -25,7 +20,7 @@
 		const d = new Date(dateString)
 		const [normalizedHour, periodOfDay] = normalizeHour(d.getHours())
 
-		return `${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')}/${d.getFullYear().toString().slice(-2)}, ${normalizedHour}:${d.getMinutes()} ${periodOfDay}`
+		return `${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')}/${d.getFullYear().toString().slice(-2)}, ${normalizedHour}:${d.getMinutes().toString().padStart(2, '0')} ${periodOfDay}`
 	}
 </script>
 
@@ -69,7 +64,7 @@
             {#each Object.values(tripExtras).filter(isNotFalsey => isNotFalsey) as extra, i (extra._id)}
             <div class="basic-row">
                 <span>{ extra.title }</span>
-                <span>${ extra.price } / { extra.rateType }</span>
+                <span>${ extra.fullPrice }</span>
             </div>
             {/each}
         </div>
@@ -82,24 +77,24 @@
             <div>
                 <div class="basic-row">
                     <span>Vehicle rental</span>
-                    <span>${ costs.rental }</span>
+                    <span>{ costs.find(lineItem => lineItem[0] === 'rental')[1].toFixed(2) }</span>
                 </div>
                 <div class="basic-row">
-                    <span>Production & extras</span>
-                    <span>${ costs.extras }</span>
+                    <span>Protection & extras</span>
+                    <span>{ extrasSubtotal.toFixed(2) }</span>
                 </div>
                 <div class="basic-row">
-                    <span>Tax</span>
-                    <span>${ costs.tax }</span>
+                    <span>Tax ({ taxRate * 100 }%)</span>
+                    <span>{ costs.find(lineItem => lineItem[0] === 'tax')[1].toFixed(2) }</span>
                 </div>
                 <div class="basic-row">
                     <span>Service Fee</span>
-                    <span>${ costs.serviceFee }</span>
+                    <span>{ costs.find(lineItem => lineItem[0] === 'service fee')[1].toFixed(2) }</span>
                 </div>
                 <hr>
                 <div class="basic-row">
                     <strong>Total</strong>
-                    <span>${ roundToDecimalPlaces(Object.values(costs).reduce((prev, curr) => prev + curr, 0), 2) }</span>
+                    <span>${ totalPrice.toFixed(2) }</span>
                 </div>
             </div>
         </div>

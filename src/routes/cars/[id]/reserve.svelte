@@ -4,7 +4,7 @@
 	export const prerender = false; // set page to not pre-render for live car info
 
 	export async function load({ params }) {
-		const car = await getCarById(params.id);
+		const car = await getCarById(params.id, { preview: false });
 		const extras = await getAllExtras();
 
 		return {
@@ -16,12 +16,34 @@
 	}
 </script>
 
-<script>
+<script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
 	import ReservationSidebar from '$lib/components/ReservationSidebar.svelte';
 	import { pickup, dropoff, tripExtras } from '$lib/stores';
-	import { roundToDecimalPlaces } from '$lib/utils';
-	export let car, extras = [];
+	import type { TripExtra } from '$lib/sanity';
+	import { durationInDays, roundToDecimalPlaces } from '$lib/utils';
+	import { getCosts } from '$lib/accounting';
+	export let car, extras;
+
+	$: (extras) && extras.forEach(extra => { extra.fullPrice = calculateExtraPrice(extra) })
+
+	const costs = getCosts({pickup: $pickup, dropoff: $dropoff}, car)
+    const total = costs.reduce((acc, curr) => acc + curr[1], 0)
+
+	function calculateExtraPrice(extra: TripExtra) {
+		let ratedPortion = 0
+		switch (extra.rateType) {
+			case "trip":
+				ratedPortion = extra.ratePrice
+				break
+			case "day":
+				ratedPortion = extra.ratePrice * durationInDays($pickup, $dropoff)
+				break
+			case "gallon":
+				ratedPortion = extra.ratePrice * car.tankSize * .75
+		}
+		return roundToDecimalPlaces(extra.basePrice + ratedPortion, 2)
+	}
 
 	function setExtraSelection(isChecked, extra) {
 		$tripExtras[extra._id] = isChecked ? extra : false
@@ -29,7 +51,7 @@
 </script>
 
 <div class="content-wrapper">
-	<ReservationSidebar {car} {pickup} {dropoff} />	
+	<ReservationSidebar {car} {pickup} {dropoff} {costs} />	
 	<section>
 		<div class="heading-row">
 			<h1>Protection & Extras</h1>
@@ -43,8 +65,10 @@
 			<label class={'extra ' + (($tripExtras[extra._id]) ? 'active' : '')}>
 				<input type="checkbox" class="visually-hidden" id={extra._id} checked={!!$tripExtras[extra._id]} on:change={e => setExtraSelection(e.target.checked, extra)}/>
 				<h2>{ extra.title }</h2>
-				<p>{ extra.description }</p>
-				<p class="price-rate"><span class="price">${ extra.price }</span> / { extra.rateType }</p>
+				<p class="description">{ extra.description }</p>
+				<p class="price-rate"><span class="price">
+					${ (extra.fullPrice.toFixed(2).endsWith("00")) ? extra.fullPrice : extra.fullPrice.toFixed(2) }
+				</p>
 			</label>
 			{/each}
 		</div>
@@ -112,6 +136,14 @@
 		filter: drop-shadow(0px 5px 12px rgba(33, 112, 147, 0.06)) drop-shadow(0px 1px 3px rgba(33, 112, 147, 0.13));
 		border-radius: 3px;
 		position: relative;
+	}
+
+	.extra > * {
+		flex-basis: 0;
+	}
+
+	.description {
+		flex-basis: 1;
 	}
 
 	.extra::before {
