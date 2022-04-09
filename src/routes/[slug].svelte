@@ -1,10 +1,11 @@
 <script context="module">
-    import { getPageBySlug } from "$lib/sanity";
+    import { getPageBySlug, publicPreviewToken } from "$lib/sanity";
     import { isPreviewInitialValue } from "$lib/stores";
 
-    export async function load({ params }) {
+    export async function load({ params, url }) {
         const page = await getPageBySlug(params.slug, {
-            preview: isPreviewInitialValue,
+            preview: isPreviewInitialValue
+                || (url.searchParams.has('preview') && url.searchParams.get('token') === publicPreviewToken),
         })
         
         return {
