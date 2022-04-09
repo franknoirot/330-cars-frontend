@@ -94,7 +94,7 @@ import { durationInDays, roundToDecimalPlaces } from "$lib/utils";
     <div class="split-grid-1-3">
         <h2>Protection & extras</h2>
         <div>
-            {#each trip.lineItems.filter(item => item.label.includes('extra')) as extra, i (extra._id + i)}
+            {#each trip.lineItems.filter(item => item.label.includes('extra')) as extra}
             <div class="basic-row">
                 <span>{ extra.label.replace('extra - ', '') }</span>
                 <span>${ extra.cost.toFixed(2) }</span>
@@ -105,7 +105,7 @@ import { durationInDays, roundToDecimalPlaces } from "$lib/utils";
     <div class="split-grid-1-3">
         <h2>Other fees</h2>
         <div>
-            {#each trip.lineItems.filter(item => !(item.label.includes('extra') || item.label.includes('rental'))) as extra, i (extra._id + i)}
+            {#each trip.lineItems.filter(item => !(item.label.includes('extra') || item.label.includes('rental'))) as extra}
             <div class="basic-row">
                 <span>{ extra.label.replace('extra - ', '') }</span>
                 <span>${ extra.cost.toFixed(2) }</span>

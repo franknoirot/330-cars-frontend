@@ -13,7 +13,9 @@
         e.preventDefault()
         tripDetails = await getTripById(id)
         if (tripDetails && tripDetails._id && browser) {
-            goto('/reservation/' + id)
+            goto('/reservation/' + id, {
+                state: tripDetails
+            })
         } else {
             // TODO handle error
         }
