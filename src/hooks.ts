@@ -27,8 +27,8 @@ export async function handle({ event, resolve }) {
 
     // set a browser cookie if the user is in preview mode
     if (newPreview) {
-        response.headers.set('Set-Cookie', `previewToken=${previewToken}; Max-Age=${60 * 60}; SameSite=Strict; Secure`)
-    } if (exitPreview) {
+        response.headers.set('Set-Cookie', `previewToken=${previewToken}; Max-Age=${60 * 60}; SameSite=Strict; Secure; Path=/`)
+    } else if (exitPreview) {
         response.headers.set('Set-Cookie', 'previewToken=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT')
     }
 
