@@ -19,7 +19,10 @@ export interface INotification {
 type NotificationsById = Map<string, INotification>;
 
 export const notifications = writable({} as NotificationsById);
-export const userStore = writable(null);
+
+export const userStoreInitialValue = fromLocalStorage('userStore', {})
+export const userStore = writable(userStoreInitialValue)
+toLocalStorage(userStore, 'userStore')
 
 export const globalSettingsInitialValue = fromLocalStorage('globalSettings', {
 	companyName: '330 Cars',

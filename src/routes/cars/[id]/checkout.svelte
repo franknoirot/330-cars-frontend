@@ -14,16 +14,17 @@
 </script>
 
 <script>
-    import { pickup, dropoff, tripExtras, tripId } from '$lib/stores'
+    import { pickup, dropoff, tripExtras, tripId, userStore } from '$lib/stores'
     import ReservationSidebar from '$lib/components/ReservationSidebar.svelte'
 	import Icon from '$lib/components/Icon.svelte';
 	import { goto } from '$app/navigation';
 	import { getCosts } from '$lib/accounting';
+	import { roundToDecimalPlaces } from '$lib/utils';
 
     export let car
 
 	const costs = getCosts({pickup: $pickup, dropoff: $dropoff}, car, $tripExtras)
-    const totalPrice = costs.reduce((acc, curr) => acc + curr[1], 0)
+    const totalPrice = roundToDecimalPlaces(costs.reduce((acc, curr) => acc + curr[1], 0), 2)
 
 	async function submitForm(e) {
 		e.preventDefault()
@@ -58,6 +59,11 @@
 		const resData = await res.json()
 
 		$tripId = resData._id
+		$userStore = {
+			name: formData.get('name'),
+			email: formData.get('email'),
+		}
+
 		goto('/confirmation')
 	}
 </script>

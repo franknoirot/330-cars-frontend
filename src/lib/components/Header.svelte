@@ -88,6 +88,10 @@
 		color: hsl(190deg, 20%, 40%);
 	}
 
+	a {
+		font-weight: normal;
+	}
+
 	.logo {
 		width: 10vw;
 		max-width: 150px;
@@ -138,7 +142,7 @@
 	button.link-button:hover,
 	button.link-button:active {
 		cursor: pointer;
-		color: cornflowerblue;
+		color: var(--color-1);
 	}
 
 	.menu-toggle button {
