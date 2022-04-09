@@ -29,7 +29,8 @@ import { durationInDays, roundToDecimalPlaces } from "$lib/utils";
     const statusIcons = {
         'Cancelled': 'x',
         'Scheduled': 'clock',
-        'Returned': 'checkmark',
+        'Returned': 'check',
+        'Rented': 'arrow',
     }
 </script>
 
@@ -153,6 +154,11 @@ import { durationInDays, roundToDecimalPlaces } from "$lib/utils";
     .badge.Scheduled {
         color: #9B9027;
         background: #FFFDEC;
+    }
+
+    .badge.Rented {
+        color: #0B85C9;
+        background: #E2F5FF;
     }
 
     .badge.Returned {
