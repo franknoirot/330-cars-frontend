@@ -47,8 +47,7 @@ export function urlFor(source) {
 /**
  * Sanity query snippet to get the latest draft entry of a model,
  * with fallback to latest published document
- * @param modelName 
- * @param preview 
+ * @param query 
  * @returns {string}
  */
 const byIdWithDraftFallback = (query: string) => (
@@ -266,15 +265,24 @@ type Page = {
 	content: object[]
 }
 
-export async function getPageBySlug(slug) : Promise<Page> {
-	const query = `*[_type == "page" && slug.current == $slug][0] {
+export async function getPageBySlug(slug, options) : Promise<Page> {
+	const fields = `{
 		_id,
 		slug,
 		seo,
 		content,
 	}`
 
-	const page = await client.fetch(query, { slug })
+	// GROQ query for a Page by slug, taking the draft if available
+	// and if the client is authorized
+	const query = `coalesce(
+		*[_type == "page" && slug.current == $slug && _id in path("drafts.**")][0] ${ fields }, 
+		*[_type == "page" && slug.current == $slug][0] ${ fields }
+	)`
+
+	const usedClient = (options.preview) ? previewClient : client
+
+	const page = await usedClient.fetch(query, { slug })
 
 	return page;
 }

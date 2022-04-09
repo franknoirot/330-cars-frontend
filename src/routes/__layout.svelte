@@ -12,9 +12,8 @@
 </script>
 
 <script>
-	import { page } from '$app/stores'
-	import { goto } from '$app/navigation';
 	import { globalSettings as globalSettingsStore, isPreview } from '$lib/stores'; 
+	import PreviewBanner from '$lib/components/PreviewBanner.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import NotificationList from '$lib/components/NotificationList.svelte';
@@ -27,20 +26,11 @@
 		$globalSettingsStore = globalSettings
 	}
 
-	async function exitPreview() {
-		const res = await fetch(origin + '/.netlify/functions/exitPreview')
-		$isPreview = false
-		goto($page.url.pathname)
-	}
+	
 </script>
 
-<div class={$isPreview ? 'preview' : ''}>
-	{#if $isPreview}
-	<aside>
-		<strong>Browsing in Preview Mode</strong>
-		<button on:click={exitPreview}>Exit Preview Mode</button>
-	</aside>
-	{/if}
+<div class={$isPreview ? 'has-preview-banner' : ''}>
+	<PreviewBanner />
 	<Header phoneNumber={globalSettings.companyPhone} />
 	<main>
 		<slot />
@@ -57,7 +47,7 @@
 		width: 100%;
 	}
 
-	div.preview {
+	div.has-preview-banner {
 		grid-template-rows: auto auto 1fr auto;
 	}
 	main {
@@ -66,28 +56,6 @@
 		max-width: 1366px;
 		margin: 0 auto;
 		padding: 2rem 1rem;
-	}
-
-	aside {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		background: radial-gradient(circle at top center, hsl(30deg, 70%, 94%), hsl(30deg, 70%, 88%));
-		padding: .5rem 2rem;
-		border: solid 3px hsl(25deg, 78%, 60%);
-	}
-
-	aside button {
-		background: hsl(25deg, 75%, 65%);
-		padding: .5rem 1.25rem;
-		border: none;
-		border-radius: 3px;
-		cursor: pointer;
-	}
-
-	aside button:hover,
-	aside button:focus {
-		background: hsl(25deg, 78%, 60%);
 	}
 
 	@media (max-width: 768px) {

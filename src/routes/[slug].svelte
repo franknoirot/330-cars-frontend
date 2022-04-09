@@ -1,11 +1,12 @@
 <script context="module">
     import { getPageBySlug } from "$lib/sanity";
+    import { isPreviewInitialValue } from "$lib/stores";
 
     export async function load({ params }) {
-        const page = await getPageBySlug(params.slug)
-
-        console.log({ page, params })
-
+        const page = await getPageBySlug(params.slug, {
+            preview: isPreviewInitialValue,
+        })
+        
         return {
             props: { page }
         }
