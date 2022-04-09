@@ -77,6 +77,23 @@ h1.display {
 	border: solid 1px #B5CDE8;
 }
 
+.basic-row {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	margin: 1rem 0;
+}
+
+.basic-row > span:last-of-type {
+	text-align: right;
+}
+
+.car-row {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	align-items: center;
+	gap: 1.25rem;
+}
+
 input[type='datetime-local'] {
 	font-family: 'Roboto Mono', monospace;
 	padding: 0;
@@ -126,6 +143,7 @@ ol {
 
 /* SPACING UTILITIES */
 .mt-0 { margin-top: 0; }
+.mb-0 { margin-bottom: 0; }
 
 @media (prefers-color-scheme: dark) {
 	body,

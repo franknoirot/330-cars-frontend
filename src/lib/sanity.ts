@@ -242,11 +242,15 @@ export async function getAllExtras() : Promise<TripExtra> {
 			make,
 			model,
 			year,
+			dailyRate,
+			images
 		},
 		extras[]-> {
 			_id,
 			title,
-		}
+		},
+		lineItems,	
+		status
     }`;
 
 	const trip = await client.fetch(query, { id });

@@ -1,27 +1,12 @@
 <script>
     import { getCosts, taxRate } from '$lib/accounting';
     import { urlFor } from '$lib/sanity';
+    import { formatDate } from '$lib/timeHelpers';
     import { roundToDecimalPlaces } from '$lib/utils';
     export let car, pickup, dropoff, tripExtras, costs, totalPrice
     $: carTitle = car && `${car.year} ${car.make} ${car.model}`;
 
     const extrasSubtotal = roundToDecimalPlaces(costs.filter(lineItem => lineItem[0].includes('extra')).reduce((acc, curr) => acc + curr[1], 0), 2)
-
-    function formatDate(dateString) {
-		function normalizeHour(hour) {
-			if (hour === 0) {
-				return [12, 'AM']
-			} else if (hour < 12) {
-				return [hour, 'AM']
-			} else {
-				return [hour - 12, 'PM']
-			}
-		}
-		const d = new Date(dateString)
-		const [normalizedHour, periodOfDay] = normalizeHour(d.getHours())
-
-		return `${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')}/${d.getFullYear().toString().slice(-2)}, ${normalizedHour}:${d.getMinutes().toString().padStart(2, '0')} ${periodOfDay}`
-	}
 </script>
 
 <section class="sidebar">

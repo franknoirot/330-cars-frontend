@@ -34,3 +34,20 @@ export function fromBusinessTime(businessTimeObj: BusinessTime) : Date {
 
 	return newDate
 }
+
+
+export function formatDate(dateString) {
+	function normalizeHour(hour) {
+		if (hour === 0) {
+			return [12, 'AM']
+		} else if (hour < 12) {
+			return [hour, 'AM']
+		} else {
+			return [hour - 12, 'PM']
+		}
+	}
+	const d = new Date(dateString)
+	const [normalizedHour, periodOfDay] = normalizeHour(d.getHours())
+
+	return `${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')}/${d.getFullYear().toString().slice(-2)}, ${normalizedHour}:${d.getMinutes().toString().padStart(2, '0')} ${periodOfDay}`
+}
