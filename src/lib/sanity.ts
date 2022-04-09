@@ -1,15 +1,10 @@
 import fetch from 'isomorphic-fetch';
-import * as cookie from 'cookie';
 import sanityClient from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
-import { browser } from '$app/env';
 
-const publicPreviewToken = 'adwlkfjatw4oi3'
-const origin = (process.env.NODE_ENV == "development") ? 'http://localhost:8888' : 'https://dev--330-cars.netlify.app';
+export const publicPreviewToken = 'adwlkfjatw4oi3'
+export const origin = (process.env.NODE_ENV == "development") ? 'http://localhost:8888' : 'https://dev--330-cars.netlify.app';
 
-// Preview state
-const cookies = (browser && window) ? cookie.parse(window.document.cookie) : ''
-export const isPreview = cookies && cookies.previewToken === publicPreviewToken
 
 /**
  * Basic Sanity client implementation following startup guide

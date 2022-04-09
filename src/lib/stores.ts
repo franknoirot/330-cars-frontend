@@ -1,7 +1,13 @@
 import { browser } from '$app/env';
 import { writable } from 'svelte/store';
-import { prepTimeString } from './sanity';
+import { prepTimeString, publicPreviewToken } from './sanity';
 import { offsetNowHours } from './timeHelpers';
+import * as cookie from 'cookie';
+
+// Preview state
+export const cookies = (browser && window) ? cookie.parse(window.document.cookie) : ''
+export const isPreviewInitialValue = cookies && cookies.previewToken === publicPreviewToken
+export const isPreview = writable(isPreviewInitialValue)
 
 export interface INotification {
 	id: string;
