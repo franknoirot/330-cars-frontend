@@ -76,12 +76,18 @@
 			<div class="split-grid-1-3">
 				<h2>Driver details</h2>
 				<div>
-					<label class="capitalized-label" for="name">Name</label>
-					<input id="name" name="name" type="text" required />
-					<label class="capitalized-label" for="email">Email</label>
-					<input id="email" name="email" type="email" required />
-					<label class="capitalized-label" for="phone">Phone Number</label>
-					<input id="phone" name="phone" type="tel" required />
+					<div class="field-pair mt-0">
+						<label class="capitalized-label" for="name">Name</label>
+						<input id="name" name="name" type="text" required />
+					</div>
+					<div class="field-pair">
+						<label class="capitalized-label" for="email">Email</label>
+						<input id="email" name="email" type="email" required />
+					</div>
+					<div class="field-pair">
+						<label class="capitalized-label" for="phone">Phone Number</label>
+						<input id="phone" name="phone" type="tel" required />
+					</div>
 				</div>
 			</div>
 			<h2>Payment information</h2>
@@ -89,11 +95,11 @@
 				<h3>Card details</h3>
 				<div>
 					<div class="split-grid-2-3" style="margin-top: 0">
-						<div>
+						<div class="field-pair mt-0">
 							<label class="capitalized-label" for="card">Card Number</label>
 							<input id="card" name="card" type="text" required />
 						</div>
-						<div>
+						<div class="field-pair mt-0">
 							<label class="capitalized-label" for="expDate">Exp. Date</label>
 							<input id="expDate" name="expDate" type="text" required />
 						</div>
@@ -106,20 +112,24 @@
 			<div class="split-grid-1-3">
 				<h3>Billing information</h3>
 				<div>
-					<label class="capitalized-label" for="address_1">Address Line 1</label>
-					<input id="address_1" name="address_1" type="text" required />
-					<label class="capitalized-label" for="address_2">Address Line 2</label>
-					<input id="address_2" name="address_2" type="text" />
+					<div class="field-pair mt-0">
+						<label class="capitalized-label" for="address_1">Address Line 1</label>
+						<input id="address_1" name="address_1" type="text" required />
+					</div>
+					<div class="field-pair">
+						<label class="capitalized-label" for="address_2">Address Line 2</label>
+						<input id="address_2" name="address_2" type="text" />
+					</div>
 					<div class="split-grid-2-1-1">
-						<div>
+						<div class="field-pair mt-0">
 							<label class="capitalized-label" for="city">City</label>
 							<input id="city" name="city" type="text" required />
 						</div>
-						<div>
+						<div class="field-pair mt-0">
 							<label class="capitalized-label" for="state">State</label>
 							<input id="state" name="state" type="text" maxlength="2" required />
 						</div>
-						<div>
+						<div class="field-pair mt-0">
 							<label class="capitalized-label" for="zipCode">ZIP Code</label>
 							<input id="zipCode" name="zipCode" type="text" maxlength="5" required />
 						</div>
@@ -154,11 +164,7 @@
 	}
 
 	h1 {
-		font-family: var(--serif);
-		font-size: 4rem;
-		font-weight: 600;
-		margin: 0;
-		margin-bottom: 2rem;
+		text-align: center;
 	}
 
 	
@@ -190,27 +196,6 @@
 		font-size: 1.5rem;
 		font-weight: 400;
 		margin-top: 0;
-	}
-
-	label,
-	input {
-		display: block;
-		width: 100%;
-		margin: .25rem 0;
-	}
-
-	label {
-		margin-top: 1.75rem;
-	}
-
-	label:first-of-type {
-		margin-top: 0;
-	}
-
-	input {
-		padding: .375rem .5rem;
-		border-radius: 3px;
-		border: solid 1px #B5CDE8;
 	}
 
 	.btn-link {

@@ -1,20 +1,121 @@
 <script>
     import { tripId } from "$lib/stores";
     import { getTripById } from "$lib/sanity";
-    let inputValue = ($tripId) ? $tripId : ""
+    import Icon from "$lib/components/Icon.svelte";
+    import { goto } from "$app/navigation";
+    import { browser } from "$app/env";
+    let id = ($tripId) ? $tripId : ""
+    let email = ''
 
-    let tripDetails = {}
+    let tripDetails
 
-    async function submitForm(e) {
+    async function submitIdForm(e) {
         e.preventDefault()
-        tripDetails = await getTripById(inputValue)
+        tripDetails = await getTripById(id)
+        if (tripDetails && tripDetails._id && browser) {
+            goto('/reservation/' + id)
+        } else {
+            // TODO handle error
+        }
+    }
+
+    async function submitEmailForm(e) {
+        e.preventDefault()
+        console.log({ email })
     }
 </script>
 
-<h1>View, Modify, or Cancel a Reservation</h1>
-<form on:submit={submitForm}>
-    <label class="capitalized-label" for="tripId">Trip ID</label>
-    <input id="tripId" name="tripId" type="text" bind:value={inputValue} required />
-    <button type="submit">Submit</button>
-</form>
-<pre>{ JSON.stringify(tripDetails, null, 2) }</pre>
+<svelte:head>
+    <meta name="robots" content="noindex nofollow" />
+</svelte:head>
+<h1 class="display">View or Cancel your reservation</h1>
+<div class="split-grid-1-3">
+    <h2>By reservation ID</h2>
+    <div>
+        <form on:submit={submitIdForm}>
+            <div class="field-pair mt-0">
+                <label class="capitalized-label" for="tripId">Reservation ID</label>
+                <input id="tripId" name="tripId" type="text" bind:value={id} required />
+            </div>
+            <button class="btn-link " type="submit">
+                Submit
+                <Icon type="arrow" width="20" class="flip-x"/>
+            </button>
+        </form>
+    </div>
+</div> 
+<div class="split-grid-1-3 mt-6">
+    <h2>By email</h2>
+    <div>
+        <form on:submit={submitEmailForm}>
+            <div class="field-pair mt-0">
+                <label class="capitalized-label" for="email">Email</label>
+                <input id="email" name="email" type="email" bind:value={email} required />
+            </div>
+            <button class="btn-link" type="submit" disabled>
+                Submit
+                <Icon type="arrow" width="20" class="flip-x"/>
+            </button>
+        </form>
+        <p>
+            If you don’t have your reservation ID, enter the email address you booked with and we’ll resend the reservation details email to you.
+        </p>
+    </div>
+</div>
+
+<style>
+    h1.display {
+        text-align: center;
+        margin: 3rem 0 4rem;
+    }
+
+    h2 {
+        margin-top: 0;
+    }
+
+    .split-grid-1-3 {
+		display: grid;
+		gap: 2rem;
+        margin: auto;
+		margin-top: 1.75rem;
+		margin-bottom: 2rem;
+		grid-template-columns: 1fr 2fr;
+        max-width: 75ch;
+	}
+
+    form {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        align-items: flex-end;
+        gap: 2rem;
+    }
+
+    input {
+        margin-bottom: 0;
+    }
+
+    .btn-link {
+		font-size: 1rem;
+		font-weight: 600;
+		text-decoration: none;
+		color: #E2F5FF;
+		padding: .4rem 1.5rem;
+		border-radius: 3px;
+		display: inline-block;
+		background: #0B85C9;
+		border: 0;
+	}
+
+	.btn-link:hover:not(:disabled) {
+		background-color: #005d8f;
+	}
+
+    .btn-link:disabled {
+        background: hsl(190deg, 15%, 70%);
+        cursor: not-allowed;
+    }
+
+    .mt-6 {
+        margin-top: 6rem;
+    }
+</style>

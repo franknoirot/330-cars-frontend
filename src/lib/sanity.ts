@@ -225,7 +225,6 @@ export async function getAllExtras() : Promise<TripExtra> {
 	return extras;
 }
 
-
 /**
  * Query Sanity for a Trip document by its ID
  * @returns Trip

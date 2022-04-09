@@ -51,6 +51,32 @@ a[href] {
 	font-weight: 600;
 }
 
+h1.display {
+	font-family: var(--serif);
+	font-size: 4rem;
+	font-weight: 600;
+	margin: 0;
+	margin-bottom: 2rem;
+}
+
+.field-pair label,
+.field-pair input {
+	display: block;
+	width: 100%;
+	margin: .25rem 0;
+}
+
+.field-pair {
+	margin-top: 1.5rem;
+}
+
+
+.field-pair input {
+	padding: .375rem .5rem;
+	border-radius: 3px;
+	border: solid 1px #B5CDE8;
+}
+
 input[type='datetime-local'] {
 	font-family: 'Roboto Mono', monospace;
 	padding: 0;
@@ -97,6 +123,9 @@ ol {
 .flip-x {
 	transform: scaleX(-1);
 }
+
+/* SPACING UTILITIES */
+.mt-0 { margin-top: 0; }
 
 @media (prefers-color-scheme: dark) {
 	body,
