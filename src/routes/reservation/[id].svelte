@@ -22,12 +22,12 @@
 <script>
     import { formatDate } from '$lib/timeHelpers';
     import Icon from "$lib/components/Icon.svelte"
-    import { durationInDays, ONE_DAY_MS, roundToDecimalPlaces } from "$lib/utils";
+    import { durationInDays, ONE_DAY_IN_MS, roundToDecimalPlaces } from "$lib/utils";
     import Modal from '$lib/components/Modal.svelte';
 
     export let trip
     let modalOpen = false
-    let beforeChargeCutoff = (new Date(trip.scheduledPickup).getTime() - new Date().getTime()) / ONE_DAY_MS > 1.0
+    let beforeChargeCutoff = (new Date(trip.scheduledPickup).getTime() - new Date().getTime()) / ONE_DAY_IN_MS > 1.0
     let modalMessage = (beforeChargeCutoff)
         ? 'You are more than 24 hours from your rental time, so you will not be charged anything for cancelling.'
         : 'You are less than 24 hours from your rental time, so <strong>you will be charged $40</strong> for cancelling.'
@@ -37,7 +37,7 @@
 
     console.log({ duration: durationInDays(trip.scheduledPickup, trip.scheduledDropoff), trip})
 
-    console.log({ beforeChargeCutoff, timeUntil: (new Date(trip.scheduledPickup).getTime() - new Date().getTime()) / ONE_DAY_MS })
+    console.log({ beforeChargeCutoff, timeUntil: (new Date(trip.scheduledPickup).getTime() - new Date().getTime()) / ONE_DAY_IN_MS })
 
     const statusIcons = {
         'Cancelled': 'x',

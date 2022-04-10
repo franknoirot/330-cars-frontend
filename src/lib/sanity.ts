@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import sanityClient from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
+import { offsetTime } from './timeHelpers';
 
 export const publicPreviewToken = 'adwlkfjatw4oi3'
 export const origin = (process.env.NODE_ENV == "development") ? 'http://localhost:8888' : 'https://dev--330-cars.netlify.app';
@@ -106,6 +107,7 @@ export async function allCarsWithinDates(pickup, dropoff) {
 		const query = `*[_type == "car" &&
             count(*[_type == "trip" &&
                 references(^._id) &&
+				status != "Cancelled" &&
                 !(scheduledDropoff <= $pickup || scheduledPickup >= $dropoff)
             ]) < 1
         ] {
@@ -119,8 +121,8 @@ export async function allCarsWithinDates(pickup, dropoff) {
         }`;
 
 		cars = await client.fetch(query, {
-			pickup,
-			dropoff
+			pickup: offsetTime(new Date(pickup), { minutes: -30 }).toISOString(),
+			dropoff: offsetTime(new Date(dropoff), { minutes: 30 }).toISOString(),
 		});
 	}
 
@@ -182,13 +184,14 @@ export async function validateCarDates(id: string, options) : Promise<boolean> {
 
 	const query = `count(*[_type == "trip" &&
         references($id) &&
+		status != "Cancelled" &&
         !(scheduledDropoff <= $pickup || scheduledPickup >= $dropoff)
     ]) < 1`;
 
 	const isAvailable = await client.fetch(query, {
 		id,
-		pickup,
-		dropoff
+		pickup: offsetTime(new Date(pickup), { minutes: -30 }).toISOString(),
+		dropoff: offsetTime(new Date(dropoff), { minutes: 30 }).toISOString(),
 	});
 
 	return isAvailable;

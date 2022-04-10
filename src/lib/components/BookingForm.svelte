@@ -2,12 +2,12 @@
 	import { createEventDispatcher } from 'svelte';
 	import { pickup, dropoff } from '$lib/stores';
 	import { offsetNowHours } from '$lib/timeHelpers';
-	import { durationInDays, ONE_DAY_MS } from '$lib/utils';
+	import { durationInDays, ONE_DAY_IN_MS } from '$lib/utils';
 
 	const dispatch = createEventDispatcher();
 	export let onSubmit = () => {}; // no-op by default
 	export let onChange = () => {}; // no-op by default
-	let duration = ONE_DAY_MS;
+	let duration = ONE_DAY_IN_MS;
 
 	function onPickupChange(e) {
 		$dropoff = new Date(new Date($pickup + 'Z').getTime() + duration).toISOString().slice(0, -1);

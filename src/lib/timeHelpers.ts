@@ -1,3 +1,5 @@
+import { ONE_DAY_IN_MS, ONE_HOUR_IN_MS, ONE_MIN_IN_MS } from "./utils";
+
 /**
  * Utility to get Datetime given a number of hours to offset from now.
  * Offset can be decimal, and can be negative
@@ -50,4 +52,31 @@ export function formatDate(dateString) {
 	const [normalizedHour, periodOfDay] = normalizeHour(d.getHours())
 
 	return `${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')}/${d.getFullYear().toString().slice(-2)}, ${normalizedHour}:${d.getMinutes().toString().padStart(2, '0')} ${periodOfDay}`
+}
+
+export function withTimezoneOffset(date) {
+	return new Date(date.getTime() + 60_000 * date.getTimezoneOffset())
+}
+
+
+type TimeOffsetParams = {
+	days?: number,
+	hours?: number,
+	minutes?: number,
+}
+
+const offsetsInitial = {
+	days: 0,
+	hours: 0,
+	minutes: 0,
+}
+
+export function offsetTime(date: Date, offsets = offsetsInitial as TimeOffsetParams) {
+	const mergedOffsets = Object.assign(offsetsInitial, offsets)
+
+	return new Date(Math.floor(date.getTime()
+		+ mergedOffsets.days * ONE_DAY_IN_MS
+		+ mergedOffsets.hours * ONE_HOUR_IN_MS
+		+ mergedOffsets.minutes * ONE_MIN_IN_MS
+	))
 }
