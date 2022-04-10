@@ -1,5 +1,6 @@
 <script context="module">
     import { getTripById, origin, urlFor } from "$lib/sanity";
+    export const prerender = false; // set page to not pre-render
 
     export async function load({ params }) {
         const trip = await getTripById(params.id)
@@ -57,10 +58,10 @@
 			body: JSON.stringify({ tripId: trip._id, cancellationFee: modalCost })
         })
 
-        console.log({ res })
-
-        if (res.status == 204) {
-            trip = await res.json()
+        if (res.status == 202) {
+            const newTrip = await res.json()
+            newTrip.car = trip.car // The fetched car is an empty ref, so keep the old one
+            trip = newTrip
         }
 
         modalOpen = false
@@ -69,6 +70,7 @@
 
 <svelte:head>
     <meta name="robots" content="noindex nofollow" />
+    <title>View Reservation | 330 Cars</title>
 </svelte:head>
 <section class="title-area">
     <h1 class="display">Your reservation</h1>
@@ -142,7 +144,8 @@
             {#each trip.lineItems.filter(item => !(item.label.includes('extra') || item.label.includes('rental'))) as extra}
             <div class="basic-row">
                 <span>{ extra.label.replace('extra - ', '') }</span>
-                <span>${ extra.cost.toFixed(2) }</span>
+                <!-- There is some funky formatting here to get the minus sign in front of the dollar sign -->
+                <span>{ (extra.cost < 0) ? '-' : '' }${ Math.abs(extra.cost).toFixed(2) }</span>
             </div>
             {/each}
             <hr class="mb-0"/>
@@ -150,7 +153,7 @@
                 <strong>Total</strong>
                 <span>${ roundToDecimalPlaces(trip.lineItems.reduce((acc, curr) => acc + curr.cost, 0), 2).toFixed(2) }</span>
             </div>
-            {#if trip.status == "Scheduled"}
+            {#if trip.status == "Scheduled" && (new Date(trip.scheduledPickup)).getTime() > (new Date().getTime()) }
             <button class="cancel" on:click={() => {modalOpen = true}}>
                 Cancel reservation
                 <Icon type="x" width="16" />

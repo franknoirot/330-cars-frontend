@@ -48,8 +48,11 @@ const handler: Handler = async (httpEvent) => {
 	// TODO Send a cancellation email
 
 	return {
-		statusCode: 204,
+		statusCode: 202,
 		body: JSON.stringify(res),
+		headers: {
+			'Content-Type': 'application/json',
+		}
 	};
 };
 
