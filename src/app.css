@@ -33,6 +33,10 @@ body {
 	--color-1: var(--l-color-1);
 }
 
+body.noscroll {
+	overflow: hidden;
+}
+
 .visually-hidden {
 	clip-path: inset(100%);
 	clip: rect(1px, 1px, 1px, 1px);

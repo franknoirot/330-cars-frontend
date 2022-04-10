@@ -1,5 +1,5 @@
 <script context="module">
-import { getTripById, urlFor } from "$lib/sanity";
+    import { getTripById, origin, urlFor } from "$lib/sanity";
 
     export async function load({ params }) {
         const trip = await getTripById(params.id)
@@ -22,15 +22,48 @@ import { getTripById, urlFor } from "$lib/sanity";
 <script>
     import { formatDate } from '$lib/timeHelpers';
     import Icon from "$lib/components/Icon.svelte"
-import { durationInDays, roundToDecimalPlaces } from "$lib/utils";
+    import { durationInDays, ONE_DAY_MS, roundToDecimalPlaces } from "$lib/utils";
+    import Modal from '$lib/components/Modal.svelte';
 
     export let trip
+    let modalOpen = false
+    let beforeChargeCutoff = (new Date(trip.scheduledPickup).getTime() - new Date().getTime()) / ONE_DAY_MS > 1.0
+    let modalMessage = (beforeChargeCutoff)
+        ? 'You are more than 24 hours from your rental time, so you will not be charged anything for cancelling.'
+        : 'You are less than 24 hours from your rental time, so <strong>you will be charged $40</strong> for cancelling.'
+    let modalCost = (beforeChargeCutoff)
+        ? 0
+        : 40
+
+    console.log({ duration: durationInDays(trip.scheduledPickup, trip.scheduledDropoff), trip})
+
+    console.log({ beforeChargeCutoff, timeUntil: (new Date(trip.scheduledPickup).getTime() - new Date().getTime()) / ONE_DAY_MS })
 
     const statusIcons = {
         'Cancelled': 'x',
         'Scheduled': 'clock',
         'Returned': 'check',
         'Rented': 'arrow',
+    }
+
+    async function cancelReservation() {
+        const res = await fetch(origin + '/.netlify/functions/cancelTrip', {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+			mode: 'same-origin', // no-cors, *cors, same-origin
+			credentials: 'same-origin', // include, *same-origin, omit
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ tripId: trip._id, cancellationFee: modalCost })
+        })
+
+        console.log({ res })
+
+        if (res.status == 204) {
+            trip = await res.json()
+        }
+
+        modalOpen = false
     }
 </script>
 
@@ -117,12 +150,33 @@ import { durationInDays, roundToDecimalPlaces } from "$lib/utils";
                 <strong>Total</strong>
                 <span>${ roundToDecimalPlaces(trip.lineItems.reduce((acc, curr) => acc + curr.cost, 0), 2).toFixed(2) }</span>
             </div>
-
+            {#if trip.status == "Scheduled"}
+            <button class="cancel" on:click={() => {modalOpen = true}}>
+                Cancel reservation
+                <Icon type="x" width="16" />
+            </button>
+            {/if}
         </div>
     </div> 
 </section>
+<Modal bind:isOpen={modalOpen}>
+    <h2>Are you sure you want to cancel?</h2>
+    <p>{@html modalMessage }</p>
+    <div class="button-row">
+        <button on:click={() => {modalOpen = false}}>
+            No, don't cancel
+        </button>
+        <button class="cancel" on:click={cancelReservation}>
+            Yes, cancel for ${modalCost.toFixed(2)}
+        </button>
+    </div>
+</Modal>
 
 <style>
+    .title-area {
+        margin-bottom: 4rem;
+    }
+
     h1.display {
         margin-bottom: 0;
         text-align: center;
@@ -139,7 +193,7 @@ import { durationInDays, roundToDecimalPlaces } from "$lib/utils";
     .badge {
         margin: auto;
         width: fit-content;
-        padding: .4rem .8rem;
+        padding: .25rem .8rem;
         border-radius: 3px;
         display: flex;
         align-items: center;
@@ -190,5 +244,43 @@ import { durationInDays, roundToDecimalPlaces } from "$lib/utils";
 
     .basic-row:first-of-type {
         margin-top: 0;
+    }
+
+    .button-row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    button {
+        padding: .5rem 2rem;
+        border: 1px solid transparent;
+        font-weight: 600;
+        display: flex;
+        gap: 1ch;
+        align-items: center;
+        border-radius: 3px;
+        font-size: 1rem;
+        font-family: var(--sans-serif);
+        margin-top: 2rem;
+        color: #0B85C9;
+        background: #E2F5FF;
+    }
+    
+    button:hover,
+    button:focus {
+        color: #0B85C9;
+        background: #d1efff;
+        cursor: pointer;
+    }
+    
+    .cancel {
+        border: 1px solid rgba(255, 226, 229, 0.5);
+        color: #FFE2E5;
+        background: #E23E4F;
+    }
+    .cancel:hover,
+    .cancel:focus {
+        color: #FFE2E5;
+        background: #b42534;
     }
 </style>

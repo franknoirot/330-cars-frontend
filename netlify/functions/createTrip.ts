@@ -33,6 +33,8 @@ const handler: Handler = async (httpEvent) => {
 
 	const res = await client.create(trip);
 
+	// TODO: Send a booking confirmation email
+
 	return {
 		statusCode: 201,
 		body: JSON.stringify(res),
