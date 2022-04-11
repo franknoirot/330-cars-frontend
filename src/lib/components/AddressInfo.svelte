@@ -2,6 +2,19 @@
 	import { globalSettings } from '$lib/stores';
 	import Icon from '$lib/components/Icon.svelte';
 
+	export let hasLabel = true, size = "normal"
+
+	const styles = {
+		iconSize: {
+			normal: '28',
+			small: '16',	
+		},
+		fontSize: {
+			normal: '1.2rem',
+			small: '1rem',
+		},
+	}
+
 	let {
 		street,
 		street_2,
@@ -21,10 +34,11 @@
 	href={"https://www.google.com/maps/place/" + addressSlug}
 	target="_blank"
 	rel="noopener noreferrer"
+	style={`font-size: ${styles.fontSize[size]};`}
 >
-	<Icon type="mapPin" width="28" />
+	<Icon type="mapPin" width={styles.iconSize[size]} />
 	<div>
-		<small class="capitalized-label">Location</small>
+		{#if hasLabel}<small class="capitalized-label">Location</small>{/if}
 		<p>{@html formattedAddress }</p>
 	</div>
 </a>
@@ -34,7 +48,7 @@
 		text-decoration: none;
 		color: inherit;
 		display: grid;
-		grid-template-columns: 28px auto;
+		grid-template-columns: auto auto;
 		align-items: center;
 		gap: 20px;
 	}
@@ -49,7 +63,6 @@
 	}
 
 	p {
-		font-size: 1.2rem;
 		font-weight: 300;
 	}
 </style>

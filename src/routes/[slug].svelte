@@ -7,6 +7,12 @@
             preview: isPreviewInitialValue
                 || (url.searchParams.has('preview') && url.searchParams.get('token') === publicPreviewToken),
         })
+
+        if (!page) {
+            return {
+                status: 404,
+            }
+        }
         
         return {
             props: { page }
