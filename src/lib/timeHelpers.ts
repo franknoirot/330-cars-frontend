@@ -45,7 +45,7 @@ export function formatDate(dateString) {
 		} else if (hour < 12) {
 			return [hour, 'AM']
 		} else {
-			return [hour - 12, 'PM']
+			return [(hour === 12) ? hour : hour - 12, 'PM']
 		}
 	}
 	const d = new Date(dateString)
