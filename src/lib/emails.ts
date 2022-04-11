@@ -1,4 +1,5 @@
 import type { ImageUrlBuilder } from "@sanity/image-url/lib/types/builder"
+import { origin } from "./sanity"
 
 type EmailConfig = {
     toEmail: string,
@@ -63,7 +64,7 @@ export function tripConfirmationEmail(trip: TripEmailConfig) : EmailConfig {
             }
         </style>
         <h1>Your 330 Cars reservation is confirmed</h1>
-        <p>Your reservation ID is <a href="https://dev-330-cars.netlify.app/reservation/${ trip.id }">${ trip.id }</a>. You can view or cancel your reservation on 330-cars.com with it.</p>
+        <p>Your reservation ID is <a href="${ origin }/reservation/${ trip.id }">${ trip.id }</a>. You can view or cancel your reservation on 330-cars.com with it.</p>
         <p>Thank you for renting with us! If you have any questions or concerns, call <a href="${ trip.company.phone }">${ trip.company.phone }</a> between 9AM-5PM 7 days a week.</p>
         <h2>Trip dates</h2>
         <table>
