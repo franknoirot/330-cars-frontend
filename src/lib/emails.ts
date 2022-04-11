@@ -51,8 +51,8 @@ export function tripConfirmationEmail(trip: TripEmailConfig) : EmailConfig {
                 font-family: "Work Sans", sans-serif;
             }
 
-            h1 {
-                font-family: "Source Serif Pro", serif;
+            h1, h2, h3 {
+                font-family: "Source Serif Pro", "Work Sans", sans-serif;
             }
 
             th {
@@ -119,12 +119,12 @@ export function tripConfirmationEmail(trip: TripEmailConfig) : EmailConfig {
                 ${ trip.lineItems.map(({label, cost}) => (`
                     <tr>
                         <th>${ label }</th>
-                        <td>${ cost }</td>
+                        <td style="text-align: right;">${ cost.toFixed(2) }</td>
                     </tr>
                 `)).join('\n') }
                 <tr style="border-top: solid 3px black;">
-                    <th>Total</th>
-                    <td>$${ trip.totalPrice }</td>
+                    <th style="border-top: solid 3px black;">Total</th>
+                    <td style="border-top: solid 3px black;">$${ trip.totalPrice.toFixed(2) }</td>
                 </tr>
             </tbody>
         </table>
@@ -156,8 +156,8 @@ export function tripCancellationEmail(trip: TripEmailConfig, cancellationMessage
                 font-family: "Work Sans", sans-serif;
             }
 
-            h1 {
-                font-family: "Source Serif Pro", serif;
+            h1, h2, h3 {
+                font-family: "Source Serif Pro", "Work Sans", sans-serif;
             }
 
             th {
@@ -222,15 +222,15 @@ export function tripCancellationEmail(trip: TripEmailConfig, cancellationMessage
         <h2>Full receipt</h2>
         <table>
             <tbody>
-                ${ trip.lineItems.map(({label, cost}) => (`
-                    <tr>
-                        <th>${ label }</th>
-                        <td>${ cost }</td>
-                    </tr>
-                `)).join('\n') }
-                <tr style="border-top: solid 3px black;">
-                    <th>Total</th>
-                    <td>$${ trip.totalPrice }</td>
+            ${ trip.lineItems.map(({label, cost}) => (`
+                <tr>
+                    <th>${ label }</th>
+                    <td style="text-align: right;">${ cost.toFixed(2) }</td>
+                </tr>
+            `)).join('\n') }
+                <tr>
+                    <th style="border-top: solid 3px black;">Total</th>
+                    <td style="border-top: solid 3px black;">$${ trip.totalPrice.toFixed(2) }</td>
                 </tr>
             </tbody>
         </table>
