@@ -4,7 +4,7 @@ import imageUrlBuilder from '@sanity/image-url';
 import { offsetTime } from './timeHelpers';
 
 export const publicPreviewToken = 'adwlkfjatw4oi3'
-export const origin = (process.env.NODE_ENV == "development") ? 'http://localhost:8888' : 'https://dev--330-cars.netlify.app';
+export const origin = (process.env.NODE_ENV == "development") ? 'http://localhost:8888' : 'https://dev.330-cars.com';
 
 
 /**
