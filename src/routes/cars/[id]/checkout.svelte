@@ -1,5 +1,5 @@
 <script context="module">
-	import { getCarById, prepTimeString, validateCarDates } from '$lib/sanity';
+	import { getCarById, origin, prepTimeString, urlFor, validateCarDates } from '$lib/sanity';
 	export const prerender = false; // set page to not pre-render for live car info
 
 	export async function load({ params }) {
@@ -33,12 +33,13 @@
 </script>
 
 <script>
-    import { pickup, dropoff, tripExtras, tripId, userStore, pickupInitialValue, dropoffInitialValue } from '$lib/stores'
+    import { pickup, dropoff, tripExtras, tripId, userStore, pickupInitialValue, dropoffInitialValue, globalSettings } from '$lib/stores'
     import ReservationSidebar from '$lib/components/ReservationSidebar.svelte'
 	import Icon from '$lib/components/Icon.svelte';
 	import { goto } from '$app/navigation';
 	import { getCosts } from '$lib/accounting';
 	import { roundToDecimalPlaces } from '$lib/utils';
+	import { tripConfirmationEmail } from '$lib/emails';
 
     export let car
 
@@ -65,7 +66,7 @@
 
 		}, Object.fromEntries(formData.entries()))
 
-		const res = await fetch('/.netlify/functions/createTrip', {
+		const res = await fetch(origin + '/.netlify/functions/createTrip', {
 			method: 'POST', // *GET, POST, PUT, DELETE, etc.
 			mode: 'same-origin', // no-cors, *cors, same-origin
 			credentials: 'same-origin', // include, *same-origin, omit
@@ -77,10 +78,43 @@
 
 		const resData = await res.json()
 
+		const emailConfig = tripConfirmationEmail({
+			id: resData._id,
+			driver: {
+				name: formObj.name,
+				email: formObj.email,
+				phone: formObj.phone,
+			},
+			car: {
+				title: `${ car.year } ${ car.make } ${ car.model }`,
+				imageUrl: urlFor(car.images[0]).width(200),
+			},
+			pickup: $pickup,
+			dropoff: $dropoff,
+			lineItems: formObj.lineItems,
+			totalPrice,
+			company: {
+				phone: $globalSettings.companyPhone,
+			}
+		})
+
+		console.log({ emailConfig })
+
+		fetch(origin + '/.netlify/functions/sendEmail',{
+			method: 'POST', // *GET, POST, PUT, DELETE, etc.
+			mode: 'same-origin', // no-cors, *cors, same-origin
+			credentials: 'same-origin', // include, *same-origin, omit
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(emailConfig)
+		}).then(res => res.json())
+			.then(data => console.log(data))
+
 		$tripId = resData._id
 		$userStore = {
-			name: formData.get('name'),
-			email: formData.get('email'),
+			name: formObj.name,
+			email: formObj.email,
 		}
 
 		goto('/confirmation')

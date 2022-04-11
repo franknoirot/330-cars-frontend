@@ -38,6 +38,7 @@
 		"@sanity/image-url": "^1.0.1",
 		"cookie": "^0.4.2",
 		"isomorphic-fetch": "^3.0.0",
-		"nanoid": "^3.3.2"
+		"nanoid": "^3.3.2",
+		"nodemailer": "^6.7.3"
 	}
 }
