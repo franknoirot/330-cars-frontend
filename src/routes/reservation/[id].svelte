@@ -25,6 +25,8 @@
     import Icon from "$lib/components/Icon.svelte"
     import { durationInDays, ONE_DAY_IN_MS, roundToDecimalPlaces } from "$lib/utils";
     import Modal from '$lib/components/Modal.svelte';
+    import { globalSettings } from "$lib/stores";
+import { tripCancellationEmail } from "$lib/emails";
 
     export let trip
     let modalOpen = false
@@ -62,6 +64,39 @@
             const newTrip = await res.json()
             newTrip.car = trip.car // The fetched car is an empty ref, so keep the old one
             trip = newTrip
+
+            const emailConfig = tripCancellationEmail({
+                id: newTrip._id,
+                driver: {
+                    name: newTrip.name,
+                    email: newTrip.email,
+                    phone: newTrip.phone,
+                },
+                car: {
+                    title: `${ newTrip.car.year } ${ newTrip.car.make } ${ newTrip.car.model }`,
+                    imageUrl: urlFor(newTrip.car.images[0]).width(200),
+                },
+                pickup: newTrip.scheduledPickup,
+                dropoff: newTrip.scheduledDropoff,
+                lineItems: newTrip.lineItems,
+                totalPrice: newTrip.totalPrice,
+                company: {
+                    phone: $globalSettings.companyPhone,
+                }
+            }, modalMessage)
+
+            console.log({ emailConfig })
+
+            fetch(origin + '/.netlify/functions/sendEmail',{
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'same-origin', // no-cors, *cors, same-origin
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(emailConfig)
+            }).then(res => res.json())
+                .then(data => console.log(data))
         }
 
         modalOpen = false
@@ -143,7 +178,7 @@
         <div>
             {#each trip.lineItems.filter(item => !(item.label.includes('extra') || item.label.includes('rental'))) as extra}
             <div class="basic-row">
-                <span>{ extra.label.replace('extra - ', '') }</span>
+                <span class="cap-first-letter">{ extra.label.replace('extra - ', '') }</span>
                 <!-- There is some funky formatting here to get the minus sign in front of the dollar sign -->
                 <span>{ (extra.cost < 0) ? '-' : '' }${ Math.abs(extra.cost).toFixed(2) }</span>
             </div>
@@ -247,6 +282,10 @@
 
     .basic-row:first-of-type {
         margin-top: 0;
+    }
+
+    .cap-first-letter::first-letter {
+        text-transform: capitalize;
     }
 
     .button-row {
