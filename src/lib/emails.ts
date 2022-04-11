@@ -31,7 +31,11 @@ type TripEmailConfig = {
     }
 }
 
-
+/**
+ * Builds an API-friendly config for the trip confirmation email sent after successful checkout.
+ * @param {TripEmailConfig} trip 
+ * @returns {EmailConfig}
+ */
 export function tripConfirmationEmail(trip: TripEmailConfig) : EmailConfig {
     return {
         toEmail: trip.driver.email,
