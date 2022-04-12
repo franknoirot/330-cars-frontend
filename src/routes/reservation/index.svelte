@@ -1,13 +1,13 @@
 <script>
-    import { tripId } from "$lib/stores";
-    import { getTripById } from "$lib/sanity";
+    import { globalSettings, tripId } from "$lib/stores";
+    import { getTripById, origin } from "$lib/sanity";
     import Icon from "$lib/components/Icon.svelte";
     import { goto } from "$app/navigation";
     import { browser } from "$app/env";
     let id = ($tripId) ? $tripId : ""
     let email = ''
 
-    let tripDetails
+    let tripDetails, emailStatus = 'Unsent'
 
     async function submitIdForm(e) {
         e.preventDefault()
@@ -24,6 +24,29 @@
     async function submitEmailForm(e) {
         e.preventDefault()
         console.log({ email })
+
+        const emailConfig = {
+            toEmail: email,
+            companyPhone: $globalSettings.companyPhone,
+            origin,
+        }
+
+        const res = await fetch(origin + '/.netlify/functions/resendTripEmail',{
+			method: 'POST', // *GET, POST, PUT, DELETE, etc.
+			mode: 'same-origin', // no-cors, *cors, same-origin
+			credentials: 'same-origin', // include, *same-origin, omit
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(emailConfig)
+        })
+
+        
+        if (res.status == 202) {
+            emailStatus = 'Sent'
+        } else if (res.status == 400) {
+            emailStatus = 'Error'
+        }
     }
 </script>
 
@@ -54,13 +77,19 @@
                 <label class="capitalized-label" for="email">Email</label>
                 <input id="email" name="email" type="email" bind:value={email} required />
             </div>
-            <button class="btn-link" type="submit" disabled>
+            <button class="btn-link" type="submit">
                 Submit
                 <Icon type="arrow" width="20" class="flip-x"/>
             </button>
         </form>
         <p>
+            {#if emailStatus == "Unsent"}
             If you don’t have your reservation ID, enter the email address you booked with and we’ll resend the reservation details email to you.
+            {:else if emailStatus == "Sent"}
+            We found a trip reserved for { email } and have re-sent an email with its details to you. There is a link to view or cancel your reservation within it.
+            {:else}
+            Sorry, we didn't find a reserved trip associated with { email }.
+            {/if}
         </p>
     </div>
 </div>

@@ -32,7 +32,7 @@ import { globalSettings } from '$lib/stores'
 			</ul>
 			<ul>
 				<li><strong>Policies</strong></li>
-				<li><a href="/terms-of-use">Terms of Use</a></li>
+				<li><a href="/terms-of-use">Terms of use</a></li>
 				<li><a href="/privacy-policy">Privacy</a></li>
 				<li><a href="/renter-eligibility">Renter eligibility</a></li>
 			</ul>
