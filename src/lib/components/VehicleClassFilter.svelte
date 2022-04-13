@@ -22,14 +22,10 @@
 </section>
 
 <style>
-	section {
-		margin: 1rem;
-	}
-
 	h2 {
 		margin-top: 0;
 	}
-	
+
 	.vc-fields {
 		box-sizing: border-box;
 		padding: 0;
@@ -53,6 +49,10 @@
 	}
 
 	@media (max-width: 920px) {
+		section {
+			margin-top: 1rem;
+		}
+		
 		.vc-fields {
 			display: flex;
 			gap: 1rem;

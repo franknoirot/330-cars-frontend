@@ -148,6 +148,7 @@
 
 		aside {
 			grid-row: 2 / 3;
+			margin: 1rem;
 		}
 	}
 

@@ -20,7 +20,7 @@
 </script>
 
 <section>
-	<h2>Reservation Dates</h2>
+	<h2>Reservation dates</h2>
 	<form
 		id="booking-form"
 		on:submit|preventDefault={onSubmit}
@@ -90,14 +90,6 @@
 		margin: 1.5rem auto;
 	}
 	@media (max-width: 768px) {
-		section {
-			margin: 1rem;
-		}
-
-		:global(section:not(.home)) {
-			margin: 0;
-		}
-
 		h2 {
 			margin-top: 0;
 		}

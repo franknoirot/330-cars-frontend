@@ -242,6 +242,14 @@
 			order: 1;
 		}
 
+		.description {
+			padding-inline-start: .75rem;
+		}
+
+		.description::before {
+			background: cornflowerblue;
+		}
+
 		.cta {
 			order: 2;
 			margin: 3rem 0 4rem;
