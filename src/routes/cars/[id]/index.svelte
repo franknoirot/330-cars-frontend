@@ -90,6 +90,8 @@
 	<section>
 		<h1>{carTitle}</h1>
 		<CarCarousel images={car.images} />
+	</section>
+	<section class="right-col">
 		<div class="info-wrapper">
 			{#if car.description}
 				<div class="description">
@@ -108,9 +110,11 @@
 				</div>
 			{/if}
 		</div>
+	</section>
+	<section class="right-col cta">
 		<BuyCTA>
 			<h2>{ cta.title }</h2>
-        	<p>{ cta.body }</p>
+			<p>{ cta.body }</p>
 		</BuyCTA>
 	</section>
 </div>
@@ -132,12 +136,20 @@
 		top: 32px;
 	}
 
+	section { 
+		width: 100%;
+	}
+
 	h1 {
 		font-family: var(--serif);
 		font-size: 4rem;
 		font-weight: 600;
 		margin: 0;
 		margin-bottom: 2rem;
+	}
+
+	.right-col {
+		grid-column: 2 / 3;
 	}
 
 	.cost-info h2 {
@@ -173,13 +185,13 @@
 	}
 
 	.info-wrapper {
-		margin-block-start: 3rem;
 		display: grid;
 		grid-template-columns: 3fr 2fr;
 		gap: 2rem;
 	}
 
 	.features {
+		width: 100%;
 		display: flex;
 		flex-wrap: wrap;
 		gap: 1rem;
@@ -199,17 +211,40 @@
 	}
 
 	@media (max-width: 768px) {
-		.content-wrapper {
+		.content-wrapper,
+		.info-wrapper  {
 			grid-template-columns: 1fr;
+		}
+
+		.content-wrapper {
+			gap: 1rem;
+		}
+
+		section {
+			box-sizing: border-box;
+			position: relative;
+		}
+
+		section:not(.cta) {
 			padding: 1rem;
 		}
 
 		h1 {
-			margin-block-start: 1rem;
+			margin: 1rem 0 1rem;
+			font-size: 2.5rem;
+		}
+
+		.right-col {
+			grid-column: auto;
 		}
 
 		.sidebar {
+			order: 1;
+		}
+
+		.cta {
 			order: 2;
+			margin: 3rem 0 4rem;
 		}
 
 		.sidebar aside {

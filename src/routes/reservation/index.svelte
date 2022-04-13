@@ -116,7 +116,7 @@
 
     form {
         display: grid;
-        grid-template-columns: 2fr 1fr;
+        grid-template-columns: 1fr auto;
         align-items: flex-end;
         gap: 2rem;
     }
@@ -148,5 +148,18 @@
 
     .mt-6 {
         margin-top: 6rem;
+    }
+
+    @media (max-width: 720px) {
+        .split-grid-1-3 {
+            box-sizing: border-box;
+            padding: 1rem;
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .mt-6 {
+            margin: 0;
+        }
     }
 </style>

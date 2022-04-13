@@ -29,4 +29,10 @@
 		align-items: center;
         margin-bottom: 4rem;
 	}
+
+    @media (max-width: 768px) {
+        section {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>

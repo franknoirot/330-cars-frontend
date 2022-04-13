@@ -3,7 +3,7 @@
 	export let vehicleClassesWithCounts = {};
 </script>
 
-<div>
+<section>
 	<h2>Car class</h2>
 	<fieldset class="vc-fields">
 		{#each Object.keys(vehicleClassesWithCounts) as vehicleClass, i (vehicleClass)}
@@ -19,9 +19,17 @@
 			</label>
 		{/each}
 	</fieldset>
-</div>
+</section>
 
 <style>
+	section {
+		margin: 1rem;
+	}
+
+	h2 {
+		margin-top: 0;
+	}
+	
 	.vc-fields {
 		box-sizing: border-box;
 		padding: 0;
@@ -49,17 +57,15 @@
 			display: flex;
 			gap: 1rem;
 			flex-wrap: wrap;
-			padding: 0.5rem 1rem;
-			margin: 1rem;
-		}
-
-		.vc-fields legend {
-			padding-inline-start: 1rem;
 		}
 
 		.vc-fields label {
 			flex: 40%;
-			margin: 0.25rem;
+			margin: 0;
+		}
+
+		.capitalized-label {
+			margin-inline-start: 0;
 		}
 	}
 </style>

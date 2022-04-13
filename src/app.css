@@ -177,4 +177,10 @@ button:disabled {
 	.desktop-only {
 		display: none;
 	}
+
+	h1.display,
+	.block-content h1 {
+		font-size: 3rem;
+		margin-bottom: 0;
+	}
 }

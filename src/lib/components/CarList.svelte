@@ -82,7 +82,8 @@
 
 	@media (max-width: 768px) {
 		.car-list {
-			gap: 1rem;
+			gap: .5rem;
+			margin: .5rem;
 		}
 
 		.car-item {

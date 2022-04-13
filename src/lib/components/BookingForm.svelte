@@ -19,7 +19,7 @@
 	}
 </script>
 
-<div>
+<section>
 	<h2>Reservation Dates</h2>
 	<form
 		id="booking-form"
@@ -56,7 +56,7 @@
 			</label>
 		</div>
 	</form>
-</div>
+</section>
 
 <style>
 	#booking-form {
@@ -81,39 +81,46 @@
 		letter-spacing: -0.015rem;
 		border-radius: 2px;
 		margin-top: 0.5rem;
+		background: var(--bg);
+		padding: 4px;
+    	border: solid 1px #B5CDE8;
 	}
 
 	:global(#booking-form.home) {
 		margin: 1.5rem auto;
 	}
 	@media (max-width: 768px) {
-		#booking-form {
+		section {
+			margin: 1rem;
+		}
+
+		:global(section:not(.home)) {
+			margin: 0;
+		}
+
+		h2 {
 			margin-top: 0;
 		}
 
-		:global(#booking-form.home) {
+		#booking-form {
 			margin: 0;
-			width: 100%;
-			padding: 0 1rem;
-			box-sizing: border-box;
-			margin-block-end: 1.5rem;
 		}
 
 		/* Home page-specific mobile styles */
-		:global(#booking-form.home) .fields {
+		.fields {
 			padding: 0;
 			display: flex;
 			flex-wrap: wrap;
 			gap: 1rem;
-			margin-block-end: 1rem;
+			margin-block-end: 0;
 		}
 
-		:global(#booking-form.home) label {
+		label {
 			margin: 0;
 			width: 100%;
 		}
 
-		:global(#booking-form.home) input[type='datetime-local'] {
+		input[type='datetime-local'] {
 			box-sizing: border-box;
 			width: 100%;
 		}

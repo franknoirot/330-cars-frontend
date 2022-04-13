@@ -154,7 +154,6 @@
 
 	@media (max-width: 768px) {
 		.grid-wrapper {
-			width: 100%;
 			grid-template-columns: 1fr;
 		}
 

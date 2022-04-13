@@ -117,7 +117,7 @@ import { tripCancellationEmail } from "$lib/emails";
         </span>
     </p>
 </section>
-<section>
+<section class="main-area">
     <div class="split-grid-1-3">
         <h2>Driver details</h2>
         <div>
@@ -324,5 +324,20 @@ import { tripCancellationEmail } from "$lib/emails";
     .cancel:focus {
         color: #FFE2E5;
         background: #b42534;
+    }
+
+    @media (max-width: 720px) {
+        .title-area {
+            margin-bottom: 0rem;
+        }
+
+        .title-area,
+        .main-area {
+            padding: 1rem;
+        }
+
+        .split-grid-1-3 {
+            grid-template-columns: 1fr;
+        }
     }
 </style>

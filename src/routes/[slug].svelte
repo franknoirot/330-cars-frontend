@@ -36,5 +36,7 @@
     div {
         max-width: 960px;
         margin: auto;
+        box-sizing: border-box;
+        padding: 1rem;
     }
 </style>
