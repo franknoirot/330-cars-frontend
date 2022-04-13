@@ -28,4 +28,13 @@
 {#if page.seo}
 <SEO title={page.seo.metaTitle} description={page.seo.metaDescription} />
 {/if}
-<BlockContent blocks={page.content} />
+<div>
+    <BlockContent blocks={page.content} />
+</div>
+
+<style>
+    div {
+        max-width: 960px;
+        margin: auto;
+    }
+</style>

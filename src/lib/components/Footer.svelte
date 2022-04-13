@@ -11,7 +11,7 @@ import { globalSettings } from '$lib/stores'
 				<Icon type="logo" width="130" />
 			</a>
 			<div class="link-columns">
-				<AddressInfo hasLabel={false} size="small" />
+				<AddressInfo label="" size="small" />
 				<a class="phone" href={`tel:${ $globalSettings.companyPhone }`}>
 					<Icon type="phone" width="16" />
 					<span>{ $globalSettings.companyPhone }</span>

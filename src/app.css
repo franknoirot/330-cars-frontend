@@ -55,7 +55,8 @@ a[href] {
 	font-weight: 600;
 }
 
-h1.display {
+h1.display,
+.block-content h1 {
 	font-family: var(--serif);
 	font-size: 4rem;
 	font-weight: 600;
