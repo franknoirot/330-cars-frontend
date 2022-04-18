@@ -2,6 +2,7 @@
     import PortableText from '@portabletext/svelte'
     import AddressBlock from './AddressBlock.svelte';
     import FAQ from './FAQ.svelte'
+    import TwoColumnSection from './TwoColumnSection.svelte';
 
     export let blocks = []
 
@@ -10,6 +11,7 @@
             // embedded components and content types
             addressBlock: AddressBlock,
             faq: FAQ,
+            twoColumnSection: TwoColumnSection,
         },
         marks: {
             // marks like bold and italics
