@@ -49,7 +49,7 @@ import { urlFor } from '$lib/sanity';
         grid-template-columns: 1fr 1fr;
 		column-gap: 10%;
 		align-items: center;
-        margin-bottom: 4rem;
+        margin: 4rem 0;
 	}
 
     .on-right {
@@ -94,12 +94,6 @@ import { urlFor } from '$lib/sanity';
     img:first-of-type {
         grid-column: 1 / -2;
     }
-
-    
-    img:only-of-type,
-    .images.on-right img:only-of-type {
-        grid-column: start / end;
-    }
     
     img:last-of-type {
         isolation: isolate;
@@ -113,6 +107,11 @@ import { urlFor } from '$lib/sanity';
 
     .on-right img:last-of-type {
         grid-column: 1 / -2;
+    }
+
+    .images img:only-of-type,
+    .images.on-right img:only-of-type {
+        grid-column: start / end;
     }
 
     /* img:not(:first-of-type) {

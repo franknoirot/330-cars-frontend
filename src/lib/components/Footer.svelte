@@ -27,8 +27,8 @@ import { globalSettings } from '$lib/stores'
 			</ul>
 			<ul>
 				<li><strong>Our Company</strong></li>
-				<li><a href="/terms-of-use">About us</a></li>
-				<li><a href="/privacy-policy">Help & FAQ</a></li>
+				<li><a href="/about">About us</a></li>
+				<li><a href="/help">Help & FAQ</a></li>
 			</ul>
 			<ul>
 				<li><strong>Policies</strong></li>
