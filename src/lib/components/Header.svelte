@@ -59,7 +59,7 @@
 
 <style>
 	header {
-		background: var(--bg-light);
+		background: var(--bg);
 		border-bottom: solid 1px hsl(190deg, 20%, 85%);
 		width: 100%;
 		box-sizing: border-box;

@@ -43,6 +43,17 @@
         background:linear-gradient(180deg, rgba(213, 235, 244, 0) 0%, #D5EBF4 100%);
     }
 
+    @media (prefers-color-scheme: dark) {
+        section {
+            background-color: #41484b;
+        }
+
+        a {
+            color: #62ccf9;
+            background: linear-gradient(180deg, rgba(36, 43, 46, 0) 0%, #182930 100%);
+        }
+    }
+
     @media (max-width: 768px) {
         section {
             display: flex;

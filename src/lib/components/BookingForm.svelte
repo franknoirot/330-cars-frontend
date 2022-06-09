@@ -81,6 +81,7 @@
 		letter-spacing: -0.015rem;
 		border-radius: 2px;
 		margin-top: 0.5rem;
+		color: var(--text-dark);
 		background: var(--bg);
 		padding: 4px;
     	border: solid 1px #B5CDE8;
@@ -89,6 +90,13 @@
 	:global(#booking-form.home) {
 		margin: 1.5rem auto;
 	}
+
+	@media (prefers-color-scheme: dark) {
+		input[type='datetime-local'] {
+			border-color: var(--gray);
+		}
+	}
+
 	@media (max-width: 768px) {
 		h2 {
 			margin-top: 0;

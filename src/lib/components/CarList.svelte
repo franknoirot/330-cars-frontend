@@ -36,14 +36,16 @@
 
 	.car-item {
 		text-decoration: none;
-		color: inherit;
 		border-radius: 4px;
+		background: var(--bg-light);
+		color: var(--text-light);
+		border: solid transparent;
 		padding: 1rem;
 		transition: all 0.14s ease-out;
 	}
 
 	.car-item:hover {
-		background-color: hsl(190deg, 60%, 97%);
+		border-color: var(--l-color-1);
 	}
 
 	.car-item:focus {
@@ -63,15 +65,6 @@
 		min-height: 120px;
 		object-fit: contain;
 		mix-blend-mode: darken;
-	}
-
-	@media (prefers-color-scheme: dark) {
-		.car-item:hover {
-			background-color: hsl(198deg, 15%, 14%);
-		}
-		.car-item img {
-			mix-blend-mode: normal;
-		}
 	}
 
 	@media (min-width: 769px) {

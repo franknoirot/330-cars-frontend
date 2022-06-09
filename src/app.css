@@ -112,6 +112,10 @@ p, li {
 	font-size: 1rem;
 }
 
+input {
+	color: inherit;
+}
+
 a[href] {
 	color: inherit;
 	text-decoration: none;
@@ -157,9 +161,16 @@ ol {
 @media (prefers-color-scheme: dark) {
 	body,
 	html {
-		--bg: hsl(190deg, 40%, 5%);
+		--bg: hsl(190deg, 20%, 10%);
 		--text-dark: hsl(220deg, 30%, 95%);
+		--bg-light: hsl(190deg, 5%, 78%);
+		--text-light: #23313c;
 		--color-1: 
+	}
+
+	input {
+		border-color: var(--gray);
+		background-color: transparent;
 	}
 }
 

@@ -84,20 +84,18 @@
 	.main-image:focus-within button,
 	.main-image:hover button {
 		opacity: 1;
+		--grad-color-1: rgba(226, 245, 255, 0);
+		
 		background: linear-gradient(
 			180deg,
-			rgba(226, 245, 255, 0) 31.54%,
-			rgba(226, 245, 255, 0.4) 100%
+			var(--grad-color-1) 31.54%,
+			var(--grad-color-2) 100%
 		);
 	}
 
 	.main-image button:focus,
 	.main-image button:hover {
-		background: linear-gradient(
-			180deg,
-			rgba(226, 245, 255, 0) 31.54%,
-			rgba(226, 245, 255, 0.8) 100%
-		);
+		--grad-color-2: rgba(226, 245, 255, 0.8);
 	}
 
 	.main-image .back {
@@ -141,7 +139,7 @@
 	}
 
 	.film-strip button.current {
-		outline: solid 2px cornflowerblue;
+		outline: solid 2px #62ccf9;
 		outline-offset: 2px;
 	}
 
@@ -150,6 +148,24 @@
 		width: 100%;
 		height: 3rem;
 		object-fit: cover;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.main-image {
+			border-color: var(--gray);
+		}
+
+		.main-image button {
+			--grad-color-1: rgba(226, 245, 255, 0);
+			--grad-color-2: rgba(125, 151, 166, 0.4);
+			color: var(--text-dark);
+		}
+
+		.main-image button:hover,
+		.main-image button:focus {
+			--grad-color-1: rgba(226, 245, 255, 0);
+			--grad-color-2: rgba(125, 151, 166, 0.8);
+		}
 	}
 
 	@media (max-width: 768px) {
