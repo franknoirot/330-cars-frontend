@@ -38,7 +38,7 @@
 		text-decoration: none;
 		border-radius: 4px;
 		background: var(--bg-light);
-		color: var(--text-light);
+		color: var(--text-dark);
 		border: solid transparent;
 		padding: 1rem;
 		transition: all 0.14s ease-out;
@@ -65,6 +65,12 @@
 		min-height: 120px;
 		object-fit: contain;
 		mix-blend-mode: darken;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.car-item {
+			color: var(--text-light);
+		}
 	}
 
 	@media (min-width: 769px) {
